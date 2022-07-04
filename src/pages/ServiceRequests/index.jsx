@@ -59,6 +59,14 @@ export default config({
     const [uploadVisible, setUploadVisible] = useState(false);
     const [fileList, setFileList] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const [selectedRows, setSelectedRows] = useState();
+    const [btnDisabled, setBtnDisabled] = useState({
+        print: true,
+        printAll: true,
+        start: true,
+        finish: true,
+        approve: true
+    });
     const [form] = Form.useForm();
     const useQuery = () => {
         return new URLSearchParams(useLocation().search);
@@ -195,16 +203,6 @@ export default config({
         },
         [refreshSearch],
     );
-
-    const rowSelection = {
-        type: 'radio',
-        selectedRowKeys,
-        onChange: (selectedRowKeys, selectedRows) => {
-            setSelectedRowKeys(selectedRowKeys);
-            console.log(selectedRowKeys);
-            console.log(selectedRows);
-        },
-    };
     /**
      * 下载
      * @returns {Promise<void>}
@@ -259,9 +257,94 @@ export default config({
     const queryItem = {
         style: {width: 160},
     };
+    const rowSelection = {
+        type: 'radio',
+        selectedRowKeys,
+        onChange: (selectedRowKeys, selectedRows) => {
+            setSelectedRowKeys(selectedRowKeys);
+            setSelectedRows(selectedRows);
+            console.log(selectedRowKeys);
+            console.log(selectedRows);
+            if (selectedRowKeys.length > 0) {
+                btnDisabled.print = false;
+                setBtnDisabled(btnDisabled)
+            }
+        },
+    };
     const dbGridStart = async () => {
 
     };
+    /**
+     * 打印选中记录
+     * @returns {Promise<void>}
+     */
+    const dbGridPrint = async () => {
+        if (selectedRowKeys.length == 0) return;
+        const res = await props.ajax.post('DbGrid/PrintSelected', convertToFormData({
+            DbGridName: dbGridName,
+            draw: DRAW,
+            Id: selectedRowKeys[0],
+        }), {responseType: "blob"});
+        let blob = new Blob([res]);
+        let name = dbGridName + "-" + GetDateNow() + '.pdf';
+        if (typeof window.navigator.msSaveBlob !== "undefined") {
+            // 兼容IE，window.navigator.msSaveBlob：以本地方式保存文件
+            window.navigator.msSaveBlob(blob, decodeURI(name));
+        } else {
+            // 创建新的URL并指向File对象或者Blob对象的地址
+            const blobURL = window.URL.createObjectURL(blob);
+            // 创建a标签，用于跳转至下载链接
+            const tempLink = document.createElement("a");
+            tempLink.style.display = "none";
+            tempLink.href = blobURL;
+            tempLink.setAttribute("download", decodeURI(name));
+            // 兼容：某些浏览器不支持HTML5的download属性
+            if (typeof tempLink.download === "undefined") {
+                tempLink.setAttribute("target", "_blank");
+            }
+            // 挂载a标签
+            document.body.appendChild(tempLink);
+            tempLink.click();
+            document.body.removeChild(tempLink);
+            // 释放blob URL地址
+            window.URL.revokeObjectURL(blobURL);
+        }
+    };
+    /**
+     * 打印全部
+     * @returns {Promise<void>}
+     */
+    const dbGridPrintAll = async () => {
+        const res = await props.ajax.post('DbGrid/PrintAll', convertToFormData({
+            DbGridName: dbGridName,
+            draw: DRAW,
+            UnprintedOnly: false
+        }), {responseType: "blob"});
+        let blob = new Blob([res]);
+        let name = dbGridName + "-" + GetDateNow() + '.pdf';
+        if (typeof window.navigator.msSaveBlob !== "undefined") {
+            // 兼容IE，window.navigator.msSaveBlob：以本地方式保存文件
+            window.navigator.msSaveBlob(blob, decodeURI(name));
+        } else {
+            // 创建新的URL并指向File对象或者Blob对象的地址
+            const blobURL = window.URL.createObjectURL(blob);
+            // 创建a标签，用于跳转至下载链接
+            const tempLink = document.createElement("a");
+            tempLink.style.display = "none";
+            tempLink.href = blobURL;
+            tempLink.setAttribute("download", decodeURI(name));
+            // 兼容：某些浏览器不支持HTML5的download属性
+            if (typeof tempLink.download === "undefined") {
+                tempLink.setAttribute("target", "_blank");
+            }
+            // 挂载a标签
+            document.body.appendChild(tempLink);
+            tempLink.click();
+            document.body.removeChild(tempLink);
+            // 释放blob URL地址
+            window.URL.revokeObjectURL(blobURL);
+        }
+    }
     /**
      * 上传配置
      * @type {{onRemove: uploadConfig.onRemove, fileList: *[], beforeUpload: (function(*): boolean)}}
@@ -404,7 +487,7 @@ export default config({
                             (resBtnFlags & BtnFlags.CanDownload) > 0 ?
                                 <Button type="primary"
                                         onClick={() => dbGridDownload()}>
-                                    <FormattedMessage id="GridFlags_CanDownload" defaultMessage=""/>
+                                    <FormattedMessage id="GridFlags_CanDownload" defaultMessage="Download"/>
                                 </Button>
                                 : null
                         }
@@ -412,7 +495,26 @@ export default config({
                             ((resBtnFlags & BtnFlags.CanUpload) > 0) ?
                                 <Button type="primary"
                                         onClick={() => setUploadVisible(true)}>
-                                    <FormattedMessage id="GridFlags_CanUpload" defaultMessage=""/>
+                                    <FormattedMessage id="GridFlags_CanUpload" defaultMessage="Upload"/>
+                                </Button>
+                                : null
+                        }
+                        {
+                            (resBtnFlags & BtnFlags.CanPrint) > 0 ?
+                                <Button type="primary"
+                                        onClick={() => dbGridPrint()}
+                                        disabled={btnDisabled.print}
+                                >
+                                    <FormattedMessage id="GridFlags_CanPrint" defaultMessage="Print"/>
+                                </Button>
+                                : null
+
+                        }
+                        {
+                            (resBtnFlags & BtnFlags.CanPrintAll) > 0 ?
+                                <Button type="primary"
+                                        onClick={() => dbGridPrintAll()}>
+                                    <FormattedMessage id="GridFlags_CanPrintAll" defaultMessage="PrintAll"/>
                                 </Button>
                                 : null
                         }
