@@ -1,0 +1,3540 @@
+﻿{
+  "ErrorCodes": [
+    {
+      "Name": "1",
+      "Value": "未知错误代码"
+    },
+    {
+      "Name": "2",
+      "Value": "严重系统错误，请联系网站维护人员"
+    },
+    {
+      "Name": "3",
+      "Value": "系统内部需要数据，但是数据为空"
+    },
+    {
+      "Name": "4",
+      "Value": "表格不存在于系统中"
+    },
+    {
+      "Name": "30",
+      "Value": "没有权限访问功能"
+    },
+    {
+      "Name": "31",
+      "Value": "没有足够的预付款，请支付一笔预付款"
+    },
+    {
+      "Name": "32",
+      "Value": "没有更改权限"
+    },
+    {
+      "Name": "33",
+      "Value": "没有读取数据权限"
+    },
+    {
+      "Name": "34",
+      "Value": "没有复制权限"
+    },
+    {
+      "Name": "35",
+      "Value": "没有新增数据权限"
+    },
+    {
+      "Name": "36",
+      "Value": "没有删除权限"
+    },
+    {
+      "Name": "37",
+      "Value": "没有打印权限"
+    },
+    {
+      "Name": "38",
+      "Value": "没有下载权限"
+    },
+    {
+      "Name": "39",
+      "Value": "没有上载权限"
+    },
+    {
+      "Name": "60",
+      "Value": "授权地址不存在或者无权访问"
+    },
+    {
+      "Name": "61",
+      "Value": "账号不存在或者无权访问"
+    },
+    {
+      "Name": "62",
+      "Value": "和DHL系统整合的接口不存在，系统错误"
+    },
+    {
+      "Name": "63",
+      "Value": "和DHL系统整合的接口不存在，系统错误"
+    },
+    {
+      "Name": "64",
+      "Value": "请选中一项，然后重试"
+    },
+    {
+      "Name": "65",
+      "Value": "租户不存在，或者无权访问"
+    },
+    {
+      "Name": "66",
+      "Value": "供应商不存在，或者无权访问"
+    },
+    {
+      "Name": "67",
+      "Value": "公司不存在，或者无权访问"
+    },
+    {
+      "Name": "68",
+      "Value": "项目不存在，或者无权访问"
+    },
+    {
+      "Name": "90",
+      "Value": "附件文件结构中，父目录不存在"
+    },
+    {
+      "Name": "91",
+      "Value": "附件文件不存在"
+    },
+    {
+      "Name": "92",
+      "Value": "附件目录已经存在"
+    },
+    {
+      "Name": "93",
+      "Value": "附件文件已经存在"
+    },
+    {
+      "Name": "94",
+      "Value": "删除的附件文件不存在"
+    },
+    {
+      "Name": "95",
+      "Value": "删除的附件文件名不能为空"
+    },
+    {
+      "Name": "120",
+      "Value": "数据的Id应该为0"
+    },
+    {
+      "Name": "121",
+      "Value": "更新数据时发生错误"
+    },
+    {
+      "Name": "122",
+      "Value": "删除数据时发生错误"
+    },
+    {
+      "Name": "123",
+      "Value": "字段的值无效"
+    },
+    {
+      "Name": "124",
+      "Value": "读取数据发生错误，可能数据对当前用户不可见，或者当前用户无权访问该数据"
+    },
+    {
+      "Name": "125",
+      "Value": "增加数据时发生错误，可能当前用户无权增加数据"
+    },
+    {
+      "Name": "126",
+      "Value": "数据在系统里不存在，或者是数据的Id应该不等于0"
+    },
+    {
+      "Name": "127",
+      "Value": "要删除的数据不存在于系统中"
+    },
+    {
+      "Name": "128",
+      "Value": "JSon字符串的格式不合规"
+    },
+    {
+      "Name": "129",
+      "Value": "搜索数据库时发生错误"
+    },
+    {
+      "Name": "220",
+      "Value": "字段名字不存在，请检查"
+    },
+    {
+      "Name": "5000",
+      "Value": "不能识别的DHL错误代码"
+    },
+    {
+      "Name": "5001",
+      "Value": "按照你的搜索条件，没有找到请求的产品服务！"
+    },
+    {
+      "Name": "5002",
+      "Value": "账号没有找到或无效，请检查后重试！"
+    },
+    {
+      "Name": "5003",
+      "Value": "该账号不支持无纸交易。请检查后重试！"
+    },
+    {
+      "Name": "5004",
+      "Value": "发货日期只可能在未来十日之内。请检查日期后重试！"
+    },
+    {
+      "Name": "5005",
+      "Value": "输入值位数太短，请检查后重试！"
+    },
+    {
+      "Name": "5006",
+      "Value": "进程失败错误。请与系统的技术支持联系。"
+    },
+    {
+      "Name": "5007",
+      "Value": "按照你的搜索条件，没有找到请求的产品服务！"
+    },
+    {
+      "Name": "5008",
+      "Value": "指定日没有取货服务。"
+    },
+    {
+      "Name": "5009",
+      "Value": "指定的起点和目的地没有相应的服务"
+    },
+    {
+      "Name": "5010",
+      "Value": "单件重量必须高于用户额定值 0.001. 请更新"
+    },
+    {
+      "Name": "5011",
+      "Value": "海关申报价值不得低于0.01. 请更新"
+    },
+    {
+      "Name": "5016",
+      "Value": "单件净重必须高于用户额定值 0.001. 请更新"
+    },
+    {
+      "Name": "5017",
+      "Value": "当地或网络产品代码没有设定"
+    },
+    {
+      "Name": "5018",
+      "Value": "始发地国家代码没有设定"
+    },
+    {
+      "Name": "5019",
+      "Value": "始发地服务区代码没有设定"
+    },
+    {
+      "Name": "5020",
+      "Value": "目的地国家代码没有设定"
+    },
+    {
+      "Name": "5033",
+      "Value": "目的地邮编和国家代码没有设定"
+    },
+    {
+      "Name": "5034",
+      "Value": "当地特殊代码超过长度限制"
+    },
+    {
+      "Name": "5035",
+      "Value": "非法邮编格式"
+    },
+    {
+      "Name": "5036",
+      "Value": "产品简称缺失"
+    },
+    {
+      "Name": "5037",
+      "Value": "产品实物代码缺失"
+    },
+    {
+      "Name": "5039",
+      "Value": "目的地代码缺失"
+    },
+    {
+      "Name": "5040",
+      "Value": "找到多个目的地服务区代码"
+    },
+    {
+      "Name": "5041",
+      "Value": "不明错误"
+    },
+    {
+      "Name": "5042",
+      "Value": "非法 XML"
+    },
+    {
+      "Name": "5043",
+      "Value": "存取缓存错误"
+    },
+    {
+      "Name": "5044",
+      "Value": "找不到 GLS 服务器"
+    },
+    {
+      "Name": "5045",
+      "Value": "请求的危险品实物ID非法。请更新后再试"
+    },
+    {
+      "Name": "5046",
+      "Value": "请求的危险品实物 ID：901 干冰的净重缺失。请更新后再试"
+    },
+    {
+      "Name": "5047",
+      "Value": "请求的危险品 ID： E01 的UN代码缺失。请更新后再试"
+    },
+    {
+      "Name": "5048",
+      "Value": "始发地国家代码缺失，请检查国家代码"
+    },
+    {
+      "Name": "5049",
+      "Value": "目的地国家代码缺失，请检查国家代码"
+    },
+    {
+      "Name": "5050",
+      "Value": "找不到付款国家代码"
+    },
+    {
+      "Name": "5051",
+      "Value": "位置信息不全，至少需要提供邮编，城市或郊区名"
+    },
+    {
+      "Name": "5052",
+      "Value": "取货日期缺失，必要信息"
+    },
+    {
+      "Name": "5053",
+      "Value": "准备时间缺失， 必要信息"
+    },
+    {
+      "Name": "5054",
+      "Value": "找不到商品代码， 请检查"
+    },
+    {
+      "Name": "5055",
+      "Value": "单件重量缺失， 必要信息"
+    },
+    {
+      "Name": "5056",
+      "Value": "单件数量缺失"
+    },
+    {
+      "Name": "5057",
+      "Value": "总共发货容积缺失"
+    },
+    {
+      "Name": "5058",
+      "Value": "单间最大重量缺失"
+    },
+    {
+      "Name": "5059",
+      "Value": "单间最大高度缺失"
+    },
+    {
+      "Name": "5060",
+      "Value": "单间最大长度缺失"
+    },
+    {
+      "Name": "5061",
+      "Value": "单间最大宽度/直径缺失"
+    },
+    {
+      "Name": "5062",
+      "Value": "申报价格缺失"
+    },
+    {
+      "Name": "5063",
+      "Value": "物件类型不对"
+    },
+    {
+      "Name": "5064",
+      "Value": "没有重量单位"
+    },
+    {
+      "Name": "5065",
+      "Value": "申报的价格超过国家上限"
+    },
+    {
+      "Name": "5066",
+      "Value": "未知的重量测量单位"
+    },
+    {
+      "Name": "5067",
+      "Value": "未知的尺寸测量单位"
+    },
+    {
+      "Name": "5068",
+      "Value": "货币名称缺失"
+    },
+    {
+      "Name": "5069",
+      "Value": "单件总重超过了发货重量"
+    },
+    {
+      "Name": "5070",
+      "Value": "未知货币代码"
+    },
+    {
+      "Name": "5071",
+      "Value": "全球或本地产品代码缺失"
+    },
+    {
+      "Name": "5072",
+      "Value": "全球或本地服务代码缺失"
+    },
+    {
+      "Name": "5073",
+      "Value": "非法的重量单位和尺寸组合"
+    },
+    {
+      "Name": "5074",
+      "Value": "非法的产品服务组合"
+    },
+    {
+      "Name": "5075",
+      "Value": "测量单位缺失"
+    },
+    {
+      "Name": "5076",
+      "Value": "尺寸的测量单位应该一致"
+    },
+    {
+      "Name": "5077",
+      "Value": "未知的通用标准代码"
+    },
+    {
+      "Name": "5078",
+      "Value": "尺寸格式不对， 请检查"
+    },
+    {
+      "Name": "5079",
+      "Value": "重量格式不对， 请检查"
+    },
+    {
+      "Name": "5080",
+      "Value": "DHL错误码：5089"
+    },
+    {
+      "Name": "5082",
+      "Value": "准备时间格式不对"
+    },
+    {
+      "Name": "5083",
+      "Value": "尺寸单位缺失"
+    },
+    {
+      "Name": "5085",
+      "Value": "出港日期格式应该是 YYYY-MM-DD"
+    },
+    {
+      "Name": "5086",
+      "Value": "如设置 VLDPICKUP = N， 设备离开时间也要在请求里设定"
+    },
+    {
+      "Name": "5087",
+      "Value": "如设置 VLDPICKUP = Y， 设备离开时间则不要在请求里设定"
+    },
+    {
+      "Name": "5088",
+      "Value": "合法的操作符是 'eq'- equal, 'ge' - greater than 或 equal, 'gt' - greater than"
+    },
+    {
+      "Name": "5089",
+      "Value": "找不到给定地址的路径代码"
+    },
+    {
+      "Name": "5101",
+      "Value": "发货重量超过上限"
+    },
+    {
+      "Name": "5102",
+      "Value": "发货高度超过上限"
+    },
+    {
+      "Name": "5103",
+      "Value": "发货长度超过上限"
+    },
+    {
+      "Name": "5104",
+      "Value": "发货宽度/直径超过上限"
+    },
+    {
+      "Name": "5105",
+      "Value": "请求的产品服务现在没有"
+    },
+    {
+      "Name": "5106",
+      "Value": "单件重量超过上限"
+    },
+    {
+      "Name": "5107",
+      "Value": "单件高度超过上限"
+    },
+    {
+      "Name": "5108",
+      "Value": "单件长度超过上限"
+    },
+    {
+      "Name": "5109",
+      "Value": "单件宽度/直接超过上限"
+    },
+    {
+      "Name": "5110",
+      "Value": "发货重量不足下限"
+    },
+    {
+      "Name": "5111",
+      "Value": "发货高度不足下限"
+    },
+    {
+      "Name": "5112",
+      "Value": "发货长度超出限制"
+    },
+    {
+      "Name": "5113",
+      "Value": "发货宽度/直径不足下限"
+    },
+    {
+      "Name": "5114",
+      "Value": "单件最小尺寸不够"
+    },
+    {
+      "Name": "5115",
+      "Value": "单件中间尺寸不够"
+    },
+    {
+      "Name": "5116",
+      "Value": "单件最大尺寸不够"
+    },
+    {
+      "Name": "5117",
+      "Value": "单件最低重量不够"
+    },
+    {
+      "Name": "5118",
+      "Value": "总件数超限"
+    },
+    {
+      "Name": "5119",
+      "Value": "发货的最低尺寸不够"
+    },
+    {
+      "Name": "5120",
+      "Value": "发货的中间尺寸不够"
+    },
+    {
+      "Name": "5121",
+      "Value": "发货的最大尺寸不够"
+    },
+    {
+      "Name": "5122",
+      "Value": "发货的最低重量不够"
+    },
+    {
+      "Name": "5123",
+      "Value": "货物的申报价格超限"
+    },
+    {
+      "Name": "5124",
+      "Value": "使用地域市场规则"
+    },
+    {
+      "Name": "5125",
+      "Value": "不够进口货币价值下限"
+    },
+    {
+      "Name": "5126",
+      "Value": "超过进口货币价值上限"
+    },
+    {
+      "Name": "5127",
+      "Value": "最低单件数量不够"
+    },
+    {
+      "Name": "5128",
+      "Value": "不够出口货币价值下限"
+    },
+    {
+      "Name": "5129",
+      "Value": "超过出口货币价值上限"
+    },
+    {
+      "Name": "5130",
+      "Value": "不够托盘数量下限"
+    },
+    {
+      "Name": "5131",
+      "Value": "超过托盘数量上限"
+    },
+    {
+      "Name": "5132",
+      "Value": "不够托盘重量下限"
+    },
+    {
+      "Name": "5133",
+      "Value": "超过托盘重量上限"
+    },
+    {
+      "Name": "5134",
+      "Value": "单件长，宽，高最大值超限"
+    },
+    {
+      "Name": "5135",
+      "Value": "请求的始发地产品服务不存在"
+    },
+    {
+      "Name": "5136",
+      "Value": "请求的目的地产品服务不存在"
+    },
+    {
+      "Name": "5137",
+      "Value": "产品服务被过滤掉了（运输方的TTS设置实际运输时间大于承运规定时间)"
+    },
+    {
+      "Name": "5138",
+      "Value": "客户请求的产品服务没有找到，请检查设置，再重试！"
+    },
+    {
+      "Name": "5139",
+      "Value": "请求的产品服务只限于合同规定"
+    },
+    {
+      "Name": "5140",
+      "Value": "指定的运输网络没有请求的服务"
+    },
+    {
+      "Name": "5201",
+      "Value": "该提案没有取货服务"
+    },
+    {
+      "Name": "5202",
+      "Value": "取货日期超出了服务窗口"
+    },
+    {
+      "Name": "5203",
+      "Value": "准备时间超出了取货窗口"
+    },
+    {
+      "Name": "5301",
+      "Value": "指定的始发地和目的地没有相应的服务"
+    },
+    {
+      "Name": "5302",
+      "Value": "临时的网络目的地变更"
+    },
+    {
+      "Name": "5303",
+      "Value": "可能的产品服务被市场促销滤除"
+    },
+    {
+      "Name": "5304",
+      "Value": "没有可能的产品服务"
+    },
+    {
+      "Name": "5501",
+      "Value": "运用取货 PL 模糊规则. 存在多个PL"
+    },
+    {
+      "Name": "5502",
+      "Value": "运用取货 PL 应变规则： PS-&gt;CP"
+    },
+    {
+      "Name": "5503",
+      "Value": "运用取货 PL 应变规则"
+    },
+    {
+      "Name": "5504",
+      "Value": "运用取货 PL 应变规则： PS-&gt;CP-&gt;P-&gt;C"
+    },
+    {
+      "Name": "5505",
+      "Value": "运用取货 PL 应变规则： CP-&gt;P"
+    },
+    {
+      "Name": "5506",
+      "Value": "运用取货 PL 应变规则： CP-&gt;P-&gt;C"
+    },
+    {
+      "Name": "5507",
+      "Value": "运用取货 PL 应变规则： P-&gt;C"
+    },
+    {
+      "Name": "5508",
+      "Value": "运用取货 PL 应变规则： S-&gt;C"
+    },
+    {
+      "Name": "5509",
+      "Value": "运用投递 PL 模糊规则 存在多个PL"
+    },
+    {
+      "Name": "5510",
+      "Value": "运用投递 PL 模糊规则"
+    },
+    {
+      "Name": "5511",
+      "Value": "运用投递 PL 模糊规则: PS-&gt;CP-&gt;P"
+    },
+    {
+      "Name": "5512",
+      "Value": "运用投递 PL 模糊规则"
+    },
+    {
+      "Name": "5513",
+      "Value": "运用投递L 模糊规则: CP-&gt;P"
+    },
+    {
+      "Name": "5514",
+      "Value": "运用投递L 模糊规则: PS-&gt;CP-&gt;P"
+    },
+    {
+      "Name": "5515",
+      "Value": "运用投递 PL 模糊规则: P-&gt;C"
+    },
+    {
+      "Name": "5517",
+      "Value": "始发地设施暂停"
+    },
+    {
+      "Name": "5518",
+      "Value": "目的地设施暂停"
+    },
+    {
+      "Name": "5519",
+      "Value": "找不到始发地国家代码，请检查"
+    },
+    {
+      "Name": "5520",
+      "Value": "找不到目的地国家代码，请检查"
+    },
+    {
+      "Name": "5521",
+      "Value": "找不到付款国家代码"
+    },
+    {
+      "Name": "5522",
+      "Value": "非法始发地地址，请核查"
+    },
+    {
+      "Name": "5523",
+      "Value": "非法目的地地址，请核查"
+    },
+    {
+      "Name": "5524",
+      "Value": "找不到邮编，请核查对应国家的邮编格式"
+    },
+    {
+      "Name": "5525",
+      "Value": "将超出了每日最大可允许的出货量，剩余"
+    },
+    {
+      "Name": "6000",
+      "Value": "系统设置字符串无效，系统无法识别"
+    },
+    {
+      "Name": "6001",
+      "Value": "本表格只支持已创建状态"
+    },
+    {
+      "Name": "6002",
+      "Value": "因为已经有客服案例，不能被删除"
+    },
+    {
+      "Name": "6003",
+      "Value": "因为已经有账单，数据不能被删除"
+    },
+    {
+      "Name": "6004",
+      "Value": "接下来的10天内，都没有可以发货的日期，请检查项目可发货时间表"
+    },
+    {
+      "Name": "6005",
+      "Value": "表格应该支持数额字段，但是没有"
+    },
+    {
+      "Name": "6006",
+      "Value": "系统在转换字符串到布尔时，发生错误"
+    },
+    {
+      "Name": "6007",
+      "Value": "系统在转换字符到枚举时，发生错误"
+    },
+    {
+      "Name": "6008",
+      "Value": "从csv文件中读取字段时发生错误，请检查文件格式"
+    },
+    {
+      "Name": "6009",
+      "Value": "预留"
+    },
+    {
+      "Name": "6010",
+      "Value": "系统错误，没有发现API整合配置程序"
+    },
+    {
+      "Name": "6011",
+      "Value": "在给数据库创建空数据记录时发生错误"
+    },
+    {
+      "Name": "6012",
+      "Value": "发货地址已经存在"
+    },
+    {
+      "Name": "6013",
+      "Value": "表格在数据库中不存在，可能是软件错误或者不争取的初始化过程"
+    },
+    {
+      "Name": "6014",
+      "Value": "DbContext为空"
+    },
+    {
+      "Name": "6015",
+      "Value": "在系统的表格配置表里，找不到某一表格"
+    },
+    {
+      "Name": "6016",
+      "Value": "表格Id为0，配置表里的表格Id都不应该为空"
+    },
+    {
+      "Name": "6017",
+      "Value": "无权访问其它租户的数据"
+    },
+    {
+      "Name": "6018",
+      "Value": "无权访问其它公司的数据"
+    },
+    {
+      "Name": "6019",
+      "Value": "无权访问其它用户的数据"
+    },
+    {
+      "Name": "6020",
+      "Value": "运单因为已经被扫描，不能被删除"
+    },
+    {
+      "Name": "6021",
+      "Value": "公司的Id为空。因为公司已经在系统里，不应该为空"
+    },
+    {
+      "Name": "6022",
+      "Value": "银行账号Id为0，必须要指定银行账号"
+    },
+    {
+      "Name": "6023",
+      "Value": "发票额为0"
+    },
+    {
+      "Name": "6024",
+      "Value": "发票已经被上传到系统里了，不能再次上传"
+    },
+    {
+      "Name": "6025",
+      "Value": "正在开发"
+    },
+    {
+      "Name": "6026",
+      "Value": "客服收费标准没有定义"
+    },
+    {
+      "Name": "6027",
+      "Value": "上载csv文件时，发现格式错误，请检查文件格式"
+    },
+    {
+      "Name": "6028",
+      "Value": "上载csv文件时，没有数据被上载，可能是上载了错误的csv文件"
+    },
+    {
+      "Name": "6029",
+      "Value": "数据恢复接口没有在表格中配置"
+    },
+    {
+      "Name": "6030",
+      "Value": "数据恢复接口没有在表格的数据中配置"
+    },
+    {
+      "Name": "6031",
+      "Value": "定时器Id已经被使用"
+    },
+    {
+      "Name": "6032",
+      "Value": "定时器本应该被停止"
+    },
+    {
+      "Name": "6033",
+      "Value": "一个运单的进口关税账单总额变成了负数"
+    },
+    {
+      "Name": "6034",
+      "Value": "一个运单的运费账单总额变成了负数"
+    },
+    {
+      "Name": "6035",
+      "Value": "数据恢复只支持创建、更新、删除"
+    },
+    {
+      "Name": "6036",
+      "Value": "没有更改可以恢复"
+    },
+    {
+      "Name": "6037",
+      "Value": "系统创建dto对象时发生错误"
+    },
+    {
+      "Name": "6038",
+      "Value": "系统设置的名字字符串不能被识别"
+    },
+    {
+      "Name": "6039",
+      "Value": "数据恢复接口在dto对象中没有被配置"
+    },
+    {
+      "Name": "6040",
+      "Value": "无法识别的当前语言设置"
+    },
+    {
+      "Name": "6041",
+      "Value": "发送邮件时发生错误"
+    },
+    {
+      "Name": "6042",
+      "Value": "权限的名字无法识别"
+    },
+    {
+      "Name": "6043",
+      "Value": "请检查下面的错误信息"
+    },
+    {
+      "Name": "6044",
+      "Value": "用户已经存在于系统中，同样的用户不能被再次使用"
+    },
+    {
+      "Name": "6045",
+      "Value": "租户不存在"
+    },
+    {
+      "Name": "6046",
+      "Value": "用户密码不匹配"
+    },
+    {
+      "Name": "6047",
+      "Value": "用户账号已经被锁死"
+    },
+    {
+      "Name": "6048",
+      "Value": "用户账号还没有被批准，不能使用"
+    },
+    {
+      "Name": "6049",
+      "Value": "用户账号已经被关闭，不能使用"
+    },
+    {
+      "Name": "6050",
+      "Value": "租户已经被关闭，不能使用"
+    },
+    {
+      "Name": "6051",
+      "Value": "系统错误，表格配置中发现同样的表格别配置两次"
+    },
+    {
+      "Name": "6052",
+      "Value": "用户名不能为空"
+    },
+    {
+      "Name": "6053",
+      "Value": "用户密码不能为空"
+    },
+    {
+      "Name": "6054",
+      "Value": "创建用户时发生错误"
+    },
+    {
+      "Name": "6055",
+      "Value": "在系统中找不到此用户"
+    },
+    {
+      "Name": "6056",
+      "Value": "租户名不能为空"
+    },
+    {
+      "Name": "6057",
+      "Value": "用户必须先登录系统"
+    },
+    {
+      "Name": "6058",
+      "Value": "创建租户时发生错误"
+    },
+    {
+      "Name": "6059",
+      "Value": "系统错误，表格配置中没有发现一个应该存在的表格"
+    },
+    {
+      "Name": "6060",
+      "Value": "更改用户密码时发生错误，请检查旧密码是否正确"
+    },
+    {
+      "Name": "6061",
+      "Value": "权限名称不能为空"
+    },
+    {
+      "Name": "6062",
+      "Value": "系统错误，至少一个权限不能授权给此用户"
+    },
+    {
+      "Name": "6063",
+      "Value": "用户角色不能为空，至少需要一个"
+    },
+    {
+      "Name": "6064",
+      "Value": "用户角色中应该存在至少一个权限"
+    },
+    {
+      "Name": "6065",
+      "Value": "在角色中，发现了至少一个权限不存在于系统中"
+    },
+    {
+      "Name": "6066",
+      "Value": "同样的多个权限出现在同一角色中"
+    },
+    {
+      "Name": "6067",
+      "Value": "角色名不能为空"
+    },
+    {
+      "Name": "6068",
+      "Value": "用户的角色中，只是有一个一个角色无效，系统中找不到"
+    },
+    {
+      "Name": "6069",
+      "Value": "用户的角色表中发现有重复的角色"
+    },
+    {
+      "Name": "6070",
+      "Value": "以其他用户身份登录不支持以主机用户身份登录"
+    },
+    {
+      "Name": "6071",
+      "Value": "表格名不能为空"
+    },
+    {
+      "Name": "6072",
+      "Value": "UI发送的Id不能识别，可能不是数字"
+    },
+    {
+      "Name": "6073",
+      "Value": "附件文件的大小为0，系统不允许"
+    },
+    {
+      "Name": "6074",
+      "Value": "系统错误，附件接口本应该被配置"
+    },
+    {
+      "Name": "6075",
+      "Value": "系统需要的数据字段至少有一个缺失"
+    },
+    {
+      "Name": "6076",
+      "Value": "本API调用，UI应该发送表格数据，但是系统找不到"
+    },
+    {
+      "Name": "6077",
+      "Value": "公司已经被关闭"
+    },
+    {
+      "Name": "6078",
+      "Value": "UI发送的Includes，至少有一个不被本表格支持"
+    },
+    {
+      "Name": "6079",
+      "Value": "创建时，不应该包含Includes，没有意义"
+    },
+    {
+      "Name": "6080",
+      "Value": "公司名已经被使用"
+    },
+    {
+      "Name": "6081",
+      "Value": "租户名已经被使用"
+    },
+    {
+      "Name": "6082",
+      "Value": "用户在系统中不存在"
+    },
+    {
+      "Name": "6083",
+      "Value": "用户的邮箱还没有被确认"
+    },
+    {
+      "Name": "6084",
+      "Value": "用户的邮箱不存在"
+    },
+    {
+      "Name": "6085",
+      "Value": "用于Token不能为空"
+    },
+    {
+      "Name": "6086",
+      "Value": "表格不支持Start Api"
+    },
+    {
+      "Name": "6087",
+      "Value": "因为工作还没有开始，UI应发送Span字段（工作时间）"
+    },
+    {
+      "Name": "6088",
+      "Value": "表格不支持拆分发票"
+    },
+    {
+      "Name": "6089",
+      "Value": "UI应该发送新额度到服务器，以便拆分"
+    },
+    {
+      "Name": "6090",
+      "Value": "拆分新额度为0，没有意义"
+    },
+    {
+      "Name": "6091",
+      "Value": "数字不能为NULL"
+    },
+    {
+      "Name": "6092",
+      "Value": "无法识别的Includes值"
+    },
+    {
+      "Name": "6093",
+      "Value": "附件的读取模式必须为以下之一：FileOnly/FolderOnly/All"
+    },
+    {
+      "Name": "6094",
+      "Value": "本函数是给测试设计的，请以测试身份登录。"
+    },
+    {
+      "Name": "6095",
+      "Value": "表格不支持工作计划"
+    },
+    {
+      "Name": "6096",
+      "Value": "表格不支持“批准”"
+    },
+    {
+      "Name": "6097",
+      "Value": "该工作之前已经被批准"
+    },
+    {
+      "Name": "6098",
+      "Value": "UI应该发送AssignedTo值，因为是必须的"
+    },
+    {
+      "Name": "6099",
+      "Value": "收货地址不能为空"
+    },
+    {
+      "Name": "6100",
+      "Value": "在创建运单时，收货地址对象应该为空"
+    },
+    {
+      "Name": "6101",
+      "Value": "没有可以打印的记录"
+    },
+    {
+      "Name": "6102",
+      "Value": "不能读取相关数据，因为数据字段索引不被支持"
+    },
+    {
+      "Name": "6103",
+      "Value": "授权地址名被多次使用"
+    },
+    {
+      "Name": "6104",
+      "Value": "没有数据可以下载"
+    },
+    {
+      "Name": "6105",
+      "Value": "地址簿找不到地址名"
+    },
+    {
+      "Name": "6106",
+      "Value": "数据已经锁死, 不能做任何改动"
+    },
+    {
+      "Name": "6107",
+      "Value": "年或者月是无效值"
+    },
+    {
+      "Name": "6108",
+      "Value": "本月份已经存在月利润统计表中"
+    },
+    {
+      "Name": "6109",
+      "Value": "数据中的名称或中文名称已经被使用，请有其它的名称"
+    },
+    {
+      "Name": "6110",
+      "Value": "部门不存在"
+    },
+    {
+      "Name": "6111",
+      "Value": "主机用户必须被指定所属部门"
+    },
+    {
+      "Name": "6112",
+      "Value": "本模块不支持名称"
+    },
+    {
+      "Name": "6113",
+      "Value": "工作时间不能为负数"
+    },
+    {
+      "Name": "6114",
+      "Value": "用户已经被 删除"
+    },
+    {
+      "Name": "6115",
+      "Value": "本存盘点不能被恢复，因为之后相同的数据被更改，必须先恢复最近的存盘点："
+    },
+    {
+      "Name": "6116",
+      "Value": "只有就绪的发票才能被支付"
+    },
+    {
+      "Name": "6117",
+      "Value": "X为空，或者不是时间类字段"
+    }
+  ],
+  "Enum": [
+    {
+      "Name": "PermissionAccess_NONE",
+      "Value": "请选择"
+    },
+    {
+      "Name": "PermissionAccess_READ",
+      "Value": "读"
+    },
+    {
+      "Name": "PermissionAccess_WRITE",
+      "Value": "更改"
+    },
+    {
+      "Name": "PermissionAccess_CREATE",
+      "Value": "创建"
+    },
+    {
+      "Name": "PermissionAccess_DELETE",
+      "Value": "删除"
+    },
+    {
+      "Name": "PermissionAccess_UPLOAD",
+      "Value": "上载"
+    },
+    {
+      "Name": "PermissionAccess_DOWNLOAD",
+      "Value": "下载"
+    },
+    {
+      "Name": "PermissionAccess_GRIDATTACHMENTS",
+      "Value": "表格附件"
+    },
+    {
+      "Name": "TransactionStatus_None",
+      "Value": "请选择"
+    },
+    {
+      "Name": "TransactionStatus_Open",
+      "Value": "开放状态"
+    },
+    {
+      "Name": "TransactionStatus_Ready",
+      "Value": "就绪"
+    },
+    {
+      "Name": "TransactionStatus_Close",
+      "Value": "已关闭"
+    },
+    {
+      "Name": "TransactionStatus_Archived",
+      "Value": "已归档"
+    },
+    {
+      "Name": "TransactionStatus_Deleted",
+      "Value": "已删除"
+    },
+    {
+      "Name": "TransactionStatus_Created",
+      "Value": "创建"
+    },
+    {
+      "Name": "TransactionStatus_TimeOut",
+      "Value": "已超时"
+    },
+    {
+      "Name": "TransactionStatus_Invoiced",
+      "Value": "已出发票"
+    },
+    {
+      "Name": "TransactionStatus_Paid",
+      "Value": "已支付"
+    },
+    {
+      "Name": "TransactionStatus_Overdue",
+      "Value": "已过期"
+    },
+    {
+      "Name": "TransactionStatus_UnknownRefund",
+      "Value": "未明退款"
+    },
+    {
+      "Name": "TransactionStatus_ReadyToPay",
+      "Value": "可以支付"
+    },
+    {
+      "Name": "TransactionStatus_Rejected",
+      "Value": "驳回"
+    },
+    {
+      "Name": "TransactionStatus_Agreed",
+      "Value": "同意"
+    },
+    {
+      "Name": "TransactionStatus_Responded",
+      "Value": "已回复"
+    },
+    {
+      "Name": "TransactionStatus_Approved",
+      "Value": "已批准"
+    },
+    {
+      "Name": "TransactionStatus_Locked",
+      "Value": "锁定"
+    },
+    {
+      "Name": "SupplierInvType_Shipments",
+      "Value": "运费"
+    },
+    {
+      "Name": "SupplierInvType_DutyVat",
+      "Value": "进口费"
+    },
+    {
+      "Name": "UnAuthorizedShipmentDetectSource_All",
+      "Value": "请选择"
+    },
+    {
+      "Name": "UnAuthorizedShipmentDetectSource_EmailNotify",
+      "Value": "PROB系统"
+    },
+    {
+      "Name": "UnAuthorizedShipmentDetectSource_FTP",
+      "Value": "FFSTAT系统"
+    },
+    {
+      "Name": "UnAuthorizedShipmentDetectSource_Manual",
+      "Value": "人工"
+    },
+    {
+      "Name": "UnAuthorizedShipmentDetectSource_SupplierInvoice",
+      "Value": "供应商运费发票"
+    },
+    {
+      "Name": "UnAuthorizedShipmentDetectSource_DutyVatInvoice",
+      "Value": "供应商关税发票"
+    },
+    {
+      "Name": "UnAuthorizedShipmentDetectSource_IncorrectDutyVat",
+      "Value": "不应收关税"
+    },
+    {
+      "Name": "DHLNotifyType_All",
+      "Value": "请选择"
+    },
+    {
+      "Name": "DHLNotifyType_Collection",
+      "Value": "货物扫描"
+    },
+    {
+      "Name": "DHLNotifyType_Exception",
+      "Value": "异常通知"
+    },
+    {
+      "Name": "DHLNotifyType_Invoice",
+      "Value": "发票"
+    },
+    {
+      "Name": "ServiceChannelCharge_Shipments",
+      "Value": "运费"
+    },
+    {
+      "Name": "ServiceChannelCharge_DutyVat",
+      "Value": "进口费"
+    },
+    {
+      "Name": "ServiceChannelCharge_CustomerSupport",
+      "Value": "客服"
+    },
+    {
+      "Name": "GridFlags_None",
+      "Value": "请选择"
+    },
+    {
+      "Name": "GridFlags_CanView",
+      "Value": "读"
+    },
+    {
+      "Name": "GridFlags_CanAdd",
+      "Value": "新增"
+    },
+    {
+      "Name": "GridFlags_CanDelete",
+      "Value": "删除"
+    },
+    {
+      "Name": "GridFlags_CanUpload",
+      "Value": "上载"
+    },
+    {
+      "Name": "GridFlags_CanDownload",
+      "Value": "下载"
+    },
+    {
+      "Name": "GridFlags_CanUpdate",
+      "Value": "更新"
+    },
+    {
+      "Name": "GridFlags_IncludeArchived",
+      "Value": "已存档"
+    },
+    {
+      "Name": "GridFlags_CanUploadAttachment",
+      "Value": "上载附件"
+    },
+    {
+      "Name": "GridFlags_CanGridAttachment",
+      "Value": "表格附件"
+    },
+    {
+      "Name": "GridFlags_CanCopyRecord",
+      "Value": "复制"
+    },
+    {
+      "Name": "GridFlags_CanPrint",
+      "Value": "打印"
+    },
+    {
+      "Name": "GridFlags_CanPrintAll",
+      "Value": "全部打印"
+    },
+    {
+      "Name": "GridFlags_CustomerSupport",
+      "Value": "客服"
+    },
+    {
+      "Name": "GridFlags_CanUndo",
+      "Value": "取消"
+    },
+    {
+      "Name": "GridFlags_CanCS",
+      "Value": "假货"
+    },
+    {
+      "Name": "GridFlags_CanUV",
+      "Value": "低报"
+    },
+    {
+      "Name": "GridFlags_CanTransfer",
+      "Value": "转账r"
+    },
+    {
+      "Name": "GridFlags_CanStart",
+      "Value": "开始"
+    },
+    {
+      "Name": "GridFlags_CanFinish",
+      "Value": "结束"
+    },
+    {
+      "Name": "GridFlags_CanApprove",
+      "Value": "批准"
+    },
+    {
+      "Name": "CompanyType_Supplier",
+      "Value": "供应商"
+    },
+    {
+      "Name": "CompanyType_Client",
+      "Value": "客户"
+    },
+    {
+      "Name": "HttpMethod_HTTP_None",
+      "Value": "请选择"
+    },
+    {
+      "Name": "HttpMethod_HTTP_Get",
+      "Value": "HttpGet"
+    },
+    {
+      "Name": "HttpMethod_HTTP_Post",
+      "Value": "HttpPost"
+    },
+    {
+      "Name": "HttpMethod_HTTP_Delete",
+      "Value": "HttpDelete"
+    },
+    {
+      "Name": "UiActionType_DatabaseGrid",
+      "Value": "表格"
+    },
+    {
+      "Name": "UiActionType_Controller",
+      "Value": "链接"
+    },
+    {
+      "Name": "UiActionType_ParentMenu",
+      "Value": "菜单"
+    },
+    {
+      "Name": "DutyPayment_PayByReceiver",
+      "Value": "接收方"
+    },
+    {
+      "Name": "DutyPayment_PayByAccountHolder",
+      "Value": "账号持有人"
+    },
+    {
+      "Name": "WorkRequestType_RequestDTP",
+      "Value": "DTP请求"
+    },
+    {
+      "Name": "WorkRequestType_ChangeAddress",
+      "Value": "更改地址"
+    },
+    {
+      "Name": "WorkRequestType_RedirectToOSB",
+      "Value": "转运到欧商宝仓库"
+    },
+    {
+      "Name": "WorkRequestType_WarehouseStorage",
+      "Value": "仓储"
+    },
+    {
+      "Name": "WorkRequestType_DestroyShipment",
+      "Value": "货物销毁"
+    },
+    {
+      "Name": "WorkRequestType_ReturnToSender",
+      "Value": "货物退回"
+    },
+    {
+      "Name": "WorkRequestType_LossDamageClaim",
+      "Value": "损件索赔"
+    },
+    {
+      "Name": "WorkRequestType_DeleteShippingLabel",
+      "Value": "删除运单"
+    },
+    {
+      "Name": "WorkRequestType_ShipperMistake",
+      "Value": "发货方问题"
+    },
+    {
+      "Name": "WorkRequestType_DHLAtFault",
+      "Value": "DHL的问题"
+    },
+    {
+      "Name": "WorkRequestType_SystemHelp",
+      "Value": "软件系统"
+    },
+    {
+      "Name": "Content2_DOCUMENTS",
+      "Value": "文件"
+    },
+    {
+      "Name": "Content2_NON_DOCUMENTS",
+      "Value": "普货"
+    },
+    {
+      "Name": "DeliveryStatus_BA",
+      "Value": "接收地址不全，不能正常发货"
+    },
+    {
+      "Name": "DeliveryStatus_CA",
+      "Value": "接收公司已经下班，货物未送达"
+    },
+    {
+      "Name": "DeliveryStatus_CD",
+      "Value": "由于进、出口或者清关需求未能满足，派送延误。但在DHL的可控范围之内"
+    },
+    {
+      "Name": "DeliveryStatus_CM",
+      "Value": "接收方已经不在运单的地址居住"
+    },
+    {
+      "Name": "DeliveryStatus_DM",
+      "Value": "部分或者全部货物或者外包装被损坏，有可能导致派送终止，也有可能不影响派送"
+    },
+    {
+      "Name": "DeliveryStatus_HP",
+      "Value": "货物的某箱或者全部在DHL仓库里，由于所需的付款没有结清，派送停止."
+    },
+    {
+      "Name": "DeliveryStatus_IA",
+      "Value": "运单的相关文件已经被扫描到DHL的系统里"
+    },
+    {
+      "Name": "DeliveryStatus_MC",
+      "Value": "由于错误的服务区代码，货物被误收到错误的DHL仓库"
+    },
+    {
+      "Name": "DeliveryStatus_MD",
+      "Value": "派送错过了送货时间段"
+    },
+    {
+      "Name": "DeliveryStatus_MS",
+      "Value": "尽管运单上的接收地区正确，货物被错误地分到不同的路径"
+    },
+    {
+      "Name": "DeliveryStatus_NA",
+      "Value": "长途运输车辆或飞机没有接收到本应该收到的运输通知"
+    },
+    {
+      "Name": "DeliveryStatus_ND",
+      "Value": "货物已经提交给尾程运输部门，但是没有派送，除此之外没有其它问题"
+    },
+    {
+      "Name": "DeliveryStatus_OH",
+      "Value": "派送已经被临时终止，直到接收到放行通知。货物现在已经在DHL的仓库里安全存放"
+    },
+    {
+      "Name": "DeliveryStatus_RD",
+      "Value": "接收方拒绝接收货物"
+    },
+    {
+      "Name": "DeliveryStatus_SC",
+      "Value": "在派送途中，服务项目被更改"
+    },
+    {
+      "Name": "DeliveryStatus_TD",
+      "Value": "在DHL的两个仓库之间的派送已经被延误，但可能不会影响货物的整体派送"
+    },
+    {
+      "Name": "DeliveryStatus_TI",
+      "Value": "DHL已经开始寻找货物"
+    },
+    {
+      "Name": "DeliveryStatus_TT",
+      "Value": "寻找货物已经完成"
+    },
+    {
+      "Name": "DeliveryStatus_UD",
+      "Value": "由于进、出口或者清关需求未能满足，派送延误。已经超出DHL的可控范围之内"
+    },
+    {
+      "Name": "DeliveryStatus_BR",
+      "Value": "已经根据客户要求，把货物转给客户指定的三方公司"
+    },
+    {
+      "Name": "DeliveryStatus_CS",
+      "Value": "在完成标准的DHL货物搜寻流程，货物已经被确认丢失"
+    },
+    {
+      "Name": "DeliveryStatus_DD",
+      "Value": "接收方已经接受货物，但接收方在接收时认为货物被损坏或者部分丢失"
+    },
+    {
+      "Name": "DeliveryStatus_DS",
+      "Value": "根据DHL的全球标准处理规范，货物已经被销毁或者丢弃"
+    },
+    {
+      "Name": "DeliveryStatus_OK",
+      "Value": "派送成功"
+    },
+    {
+      "Name": "DeliveryStatus_RT",
+      "Value": "货物由于某些原因被退回原地，或者DHL的发货地"
+    },
+    {
+      "Name": "DeliveryStatus_SS",
+      "Value": "货物被官方部门扣押，而且此货物将不会被退回给DHL，也无法退回"
+    },
+    {
+      "Name": "DeliveryStatus_TP",
+      "Value": "三方公司将会完成派送，因此没有更多跟踪信息"
+    },
+    {
+      "Name": "DeliveryStatus_HK",
+      "Value": "运单已经被DHL从发货方提走，并完成扫描"
+    },
+    {
+      "Name": "DeliveryStatus_AD",
+      "Value": "货物在目的地DHL服务中心，等待安排好的派送日期。比如，公共假期、或者接收方安排的派送日期"
+    },
+    {
+      "Name": "DeliveryStatus_AF",
+      "Value": "货物送达到DHL的中转仓库，或者集散货物处理中心"
+    },
+    {
+      "Name": "DeliveryStatus_AR",
+      "Value": "货物送达到DHL的最终目的地派送仓库"
+    },
+    {
+      "Name": "DeliveryStatus_BL",
+      "Value": "货物送到监管控制仓库"
+    },
+    {
+      "Name": "DeliveryStatus_BN",
+      "Value": "客户的代理已经联系，安排了货物清关"
+    },
+    {
+      "Name": "DeliveryStatus_CC",
+      "Value": "根据客户请求，DHL在等待接收方安排的从DHL仓库自取货物"
+    },
+    {
+      "Name": "DeliveryStatus_CI",
+      "Value": "货物已经接收到指定的仓库或者地点"
+    },
+    {
+      "Name": "DeliveryStatus_CR",
+      "Value": "货物从监管仓移除，清关完成"
+    },
+    {
+      "Name": "DeliveryStatus_CU",
+      "Value": "货物从处理部门移交给货车司机"
+    },
+    {
+      "Name": "DeliveryStatus_DF",
+      "Value": "货物已经从DHL的控制仓库出发"
+    },
+    {
+      "Name": "DeliveryStatus_DI",
+      "Value": "清关过程中，货物被海关认定需要缴纳关税，因此需要支付关税后DHL才能派送"
+    },
+    {
+      "Name": "DeliveryStatus_ES",
+      "Value": "清关文件已经提交给海关，开始清关"
+    },
+    {
+      "Name": "DeliveryStatus_FD",
+      "Value": "货物被提交给尾程怕送部门，将会在下一个工作日派送（或之后）"
+    },
+    {
+      "Name": "DeliveryStatus_HI",
+      "Value": "货物被寄存在DHL的库存控制中心"
+    },
+    {
+      "Name": "DeliveryStatus_HO",
+      "Value": "原处于停止发货状态，现在已经解决，货物将开始下一步处理"
+    },
+    {
+      "Name": "DeliveryStatus_IC",
+      "Value": "正在进行清关"
+    },
+    {
+      "Name": "DeliveryStatus_PD",
+      "Value": "部分货物被签收，还有一部分没有签收"
+    },
+    {
+      "Name": "DeliveryStatus_PL",
+      "Value": "可能是以下处理之一：货物放进集装箱。移交下一处理部门。处理完成，开始下一步或者在快递公司之间移交"
+    },
+    {
+      "Name": "DeliveryStatus_PU",
+      "Value": "接收到了发货人直接送到的货物"
+    },
+    {
+      "Name": "DeliveryStatus_RR",
+      "Value": "海关已经提供或者更新了单号申报状态，此项申报是之前提交给海关的"
+    },
+    {
+      "Name": "DeliveryStatus_RW",
+      "Value": "货物已经已经完成称重，和丈量体积重"
+    },
+    {
+      "Name": "DeliveryStatus_SA",
+      "Value": "客户把货物投送到DHL的发货点，代理已经接收"
+    },
+    {
+      "Name": "DeliveryStatus_SD",
+      "Value": "DHL跟踪系统接收到了运单数据"
+    },
+    {
+      "Name": "DeliveryStatus_SI",
+      "Value": "DHL或者指定的第三方公司正在进行货物安全检查，以便货物能安全地进入DHL的运输系统"
+    },
+    {
+      "Name": "DeliveryStatus_SM",
+      "Value": "货物被安排在指定的日期进下一步处理"
+    },
+    {
+      "Name": "DeliveryStatus_ST",
+      "Value": "根据特别处理指示，货物会被特别处理"
+    },
+    {
+      "Name": "DeliveryStatus_TR",
+      "Value": "集装箱从DHL仓库出发，集装箱已经被检查，没有打开过"
+    },
+    {
+      "Name": "DeliveryStatus_WC",
+      "Value": "货物已经在发货点，最终派送将会很快开始，派送信息今天会更新"
+    },
+    {
+      "Name": "DeliveryStatus_YY",
+      "Value": "货物没有被扫描，直接送到了DHL目的地分类集散中心"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_BOX",
+      "Value": "箱"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item2GM",
+      "Value": "10毫克"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item2M",
+      "Value": "厘米"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item2M3",
+      "Value": "立方厘米"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item3M3",
+      "Value": "立方英尺"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_M3",
+      "Value": "立方米"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_DPR",
+      "Value": "打（配对）"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_DOZ",
+      "Value": "打"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item2NO",
+      "Value": "个"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_PCS",
+      "Value": "件"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_GM",
+      "Value": "克"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_GRS",
+      "Value": "总计"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_KG",
+      "Value": "公斤"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_L",
+      "Value": "升"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_M",
+      "Value": "米"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item3GM",
+      "Value": "毫克"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item3L",
+      "Value": "毫米"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_X",
+      "Value": "无单位"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_NO",
+      "Value": "数字"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item2KG",
+      "Value": "盎司"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_PRS",
+      "Value": "对"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item2L",
+      "Value": "加仑"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item3KG",
+      "Value": "英磅"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_CM2",
+      "Value": "平方厘米"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item2M2",
+      "Value": "平方英尺"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item3M2",
+      "Value": "平方英寸"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_M2",
+      "Value": "平方米"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item4M2",
+      "Value": "平方码"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item3M",
+      "Value": "码"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_UOM",
+      "Value": "UOM"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_CM",
+      "Value": "CM"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_CONE",
+      "Value": "CONE"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_CT",
+      "Value": "CT"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_EA",
+      "Value": "EA"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_LBS",
+      "Value": "LBS"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_RILL",
+      "Value": "RILL"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_ROLL",
+      "Value": "ROLL"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_SET",
+      "Value": "SET"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_TU",
+      "Value": "TU"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_YDS",
+      "Value": "YDS"
+    },
+    {
+      "Name": "DropOffType2_REGULAR_PICKUP",
+      "Value": "不需要预约取货"
+    },
+    {
+      "Name": "DropOffType2_REQUEST_COURIER",
+      "Value": "需要预约取货"
+    },
+    {
+      "Name": "PaymentInfo2_CFR",
+      "Value": "CFR-成本加运费"
+    },
+    {
+      "Name": "PaymentInfo2_CIF",
+      "Value": "CIF-到岸价 (成本，保险和运费)"
+    },
+    {
+      "Name": "PaymentInfo2_CIP",
+      "Value": "CIP-运费保险费付至"
+    },
+    {
+      "Name": "PaymentInfo2_CPT",
+      "Value": "CPT-运费付至"
+    },
+    {
+      "Name": "PaymentInfo2_DAF",
+      "Value": "DAF-边境交货"
+    },
+    {
+      "Name": "PaymentInfo2_DDP",
+      "Value": "DDP-指定目的地完税后交货"
+    },
+    {
+      "Name": "PaymentInfo2_DDU",
+      "Value": "DDU-指定目的地税前交货"
+    },
+    {
+      "Name": "PaymentInfo2_DAP",
+      "Value": "DAP-指定目的地交货"
+    },
+    {
+      "Name": "PaymentInfo2_DEQ",
+      "Value": "DEQ-目的港码头交货 (完税后)"
+    },
+    {
+      "Name": "PaymentInfo2_DES",
+      "Value": "DES-目的港船上交货"
+    },
+    {
+      "Name": "PaymentInfo2_EXW",
+      "Value": "EXW-工厂交货"
+    },
+    {
+      "Name": "PaymentInfo2_FAS",
+      "Value": "FAS-(启运地)船边交货"
+    },
+    {
+      "Name": "PaymentInfo2_FCA",
+      "Value": "FCA-货交承运人(指定地点)"
+    },
+    {
+      "Name": "PaymentInfo2_FOB",
+      "Value": "FOB-离岸价"
+    },
+    {
+      "Name": "DayOfWeek_Sunday",
+      "Value": "星期天"
+    },
+    {
+      "Name": "DayOfWeek_Monday",
+      "Value": "星期一"
+    },
+    {
+      "Name": "DayOfWeek_Tuesday",
+      "Value": "星期二"
+    },
+    {
+      "Name": "DayOfWeek_Wednesday",
+      "Value": "星期三"
+    },
+    {
+      "Name": "DayOfWeek_Thursday",
+      "Value": "星期四"
+    },
+    {
+      "Name": "DayOfWeek_Friday",
+      "Value": "星期五"
+    },
+    {
+      "Name": "DayOfWeek_Saturday",
+      "Value": "星期六"
+    },
+    {
+      "Name": "ShipmentPurpose2_PERSONAL",
+      "Value": "个人"
+    },
+    {
+      "Name": "ShipmentPurpose2_COMMERCIAL",
+      "Value": "商务"
+    },
+    {
+      "Name": "Country_GB",
+      "Value": "英国"
+    },
+    {
+      "Name": "Country_CN",
+      "Value": "中国"
+    },
+    {
+      "Name": "Country_US",
+      "Value": "美国"
+    },
+    {
+      "Name": "Country_DE",
+      "Value": "德国"
+    },
+    {
+      "Name": "Country_HK",
+      "Value": "香港"
+    },
+    {
+      "Name": "Currency_USD",
+      "Value": "美金"
+    },
+    {
+      "Name": "Currency_EUR",
+      "Value": "欧元"
+    },
+    {
+      "Name": "Currency_CNY",
+      "Value": "人民币"
+    },
+    {
+      "Name": "Currency_GBP",
+      "Value": "英镑"
+    },
+    {
+      "Name": "Currency_HKD",
+      "Value": "港币"
+    },
+    {
+      "Name": "ScopeType_User",
+      "Value": "用户"
+    },
+    {
+      "Name": "ScopeType_Company",
+      "Value": "公司"
+    },
+    {
+      "Name": "ScopeType_Tenant",
+      "Value": "租户"
+    },
+    {
+      "Name": "ScopeType_Host",
+      "Value": "主机"
+    },
+    {
+      "Name": "EXPRESS WORLDWIDE DOCUMENTS",
+      "Value": "特快文件"
+    },
+    {
+      "Name": "EXPRESS 12:00 DOCUMENTS",
+      "Value": "特快12:00到文件"
+    },
+    {
+      "Name": "EXPRESS WORLDWIDE",
+      "Value": "特快普货"
+    },
+    {
+      "Name": "EXPRESS 12:00",
+      "Value": "特快12:00到普货"
+    }
+  ],
+  "Common": [
+    {
+      "Name": "PrevPassword",
+      "Value": "旧密码"
+    },
+    {
+      "Name": "Permissions",
+      "Value": "权限"
+    },
+    {
+      "Name": "LockoutEnd",
+      "Value": "解锁日"
+    },
+    {
+      "Name": "TwoFactorEnabled",
+      "Value": "两步验证"
+    },
+    {
+      "Name": "EmailConfirmed",
+      "Value": "邮箱确认"
+    },
+    {
+      "Name": "PhoneNumberConfirmed",
+      "Value": "手机确认"
+    },
+    {
+      "Name": "LockoutEnabled",
+      "Value": "开启锁定"
+    },
+    {
+      "Name": "PhoneNumber",
+      "Value": "手机号码"
+    },
+    {
+      "Name": "WithChildrenTrackingHistory",
+      "Value": "跟踪信息"
+    },
+    {
+      "Name": "DutyVatCharged",
+      "Value": "进口税"
+    },
+    {
+      "Name": "ServiceChannelName",
+      "Value": "服务账号"
+    },
+    {
+      "Name": "ServiceChannelId",
+      "Value": "手续费收费细节"
+    },
+    {
+      "Name": "ApprovedTime",
+      "Value": "批准时间"
+    },
+    {
+      "Name": "AssignedToName",
+      "Value": "指派员工"
+    },
+    {
+      "Name": "AssignedTo",
+      "Value": "指派员工号"
+    },
+    {
+      "Name": "SourceId",
+      "Value": "源记录"
+    },
+    {
+      "Name": "SourceGridNameDisplay",
+      "Value": "源表格名"
+    },
+    {
+      "Name": "SourceGridId",
+      "Value": "源表格Id"
+    },
+    {
+      "Name": "FullUserName",
+      "Value": "用户全名"
+    },
+    {
+      "Name": "Priority",
+      "Value": "优先权"
+    },
+    {
+      "Name": "OriginInvoiceId",
+      "Value": "源发票Id"
+    },
+    {
+      "Name": "FullBalance",
+      "Value": "总额度"
+    },
+    {
+      "Name": "WithChildrenPaymentToSupplier",
+      "Value": "支付给供应商"
+    },
+    {
+      "Name": "ReceiverAddresses",
+      "Value": "接收地址"
+    },
+    {
+      "Name": "SenderAddresses",
+      "Value": "发货地址"
+    },
+    {
+      "Name": "CollectionAddresses",
+      "Value": "授权地址"
+    },
+    {
+      "Name": "WithChildrenServiceChannels",
+      "Value": "服务账号"
+    },
+    {
+      "Name": "InvoiceTo",
+      "Value": "发票公司名"
+    },
+    {
+      "Name": "CompletionTime",
+      "Value": "完成时间"
+    },
+    {
+      "Name": "StartTime",
+      "Value": "开始时间"
+    },
+    {
+      "Name": "PaymentToSupplier",
+      "Value": "支付给供应商"
+    },
+    {
+      "Name": "PaymentToSupplierId",
+      "Value": "支付给供应商Id"
+    },
+    {
+      "Name": "ApprovedByUserName",
+      "Value": "批准人"
+    },
+    {
+      "Name": "ApprovedByUserId",
+      "Value": "批准人Id"
+    },
+    {
+      "Name": "ExtraChargeMonth",
+      "Value": "额外收费月份"
+    },
+    {
+      "Name": "SupplierInvoiceId",
+      "Value": "供应商发票Id"
+    },
+    {
+      "Name": "CustomerInvoice",
+      "Value": "客户发票"
+    },
+    {
+      "Name": "SupplierInvoice",
+      "Value": "供应商发票"
+    },
+    {
+      "Name": "WithChildrenEmails",
+      "Value": "邮件"
+    },
+    {
+      "Name": "UserName",
+      "Value": "用户名"
+    },
+    {
+      "Name": "InvoiceTotal",
+      "Value": "发票总额"
+    },
+    {
+      "Name": "WorkRequestMapId",
+      "Value": "工作请求映射Id"
+    },
+    {
+      "Name": "WorkRequestMap",
+      "Value": "工作请求映射"
+    },
+    {
+      "Name": "WithChildrenCustomerPayments",
+      "Value": "客户付款"
+    },
+    {
+      "Name": "ShippingLabelId",
+      "Value": "运单Id"
+    },
+    {
+      "Name": "ShippingLabel",
+      "Value": "运单"
+    },
+    {
+      "Name": "WithChildrenPackageList",
+      "Value": "装箱单"
+    },
+    {
+      "Name": "ReceiverAddress",
+      "Value": "接收地址"
+    },
+    {
+      "Name": "ReceiverAddressId",
+      "Value": "接收地址Id"
+    },
+    {
+      "Name": "WithChildrenWorkRequests",
+      "Value": "工作请求"
+    },
+    {
+      "Name": "WithChildrenDutyVatCharges",
+      "Value": "进口费"
+    },
+    {
+      "Name": "WithChildrenInvoicedShipments",
+      "Value": "运费"
+    },
+    {
+      "Name": "TrackingHistory",
+      "Value": "订单跟踪"
+    },
+    {
+      "Name": "TrackingHistoryId",
+      "Value": "订单跟踪Id"
+    },
+    {
+      "Name": "CollectionAddress",
+      "Value": "授权地址"
+    },
+    {
+      "Name": "Supplier",
+      "Value": "供应商"
+    },
+    {
+      "Name": "BankTransId",
+      "Value": "转账Id"
+    },
+    {
+      "Name": "BankTrans",
+      "Value": "转账"
+    },
+    {
+      "Name": "CustomerPaymentId",
+      "Value": "客户付款Id"
+    },
+    {
+      "Name": "CustomerPayment",
+      "Value": "客户付款"
+    },
+    {
+      "Name": "Project",
+      "Value": "项目"
+    },
+    {
+      "Name": "WithChildrenCustomDeclarations",
+      "Value": "清关信息"
+    },
+    {
+      "Name": "WithChildrenCustomerInvoices",
+      "Value": "客户发票"
+    },
+    {
+      "Name": "WithChildrenSupplierInvoices",
+      "Value": "供应商发票"
+    },
+    {
+      "Name": "WithChildrenAddressEntities",
+      "Value": "所有地址"
+    },
+    {
+      "Name": "Payments",
+      "Value": "支付记录"
+    },
+    {
+      "Name": "WithChidrenBankPayments",
+      "Value": "银行支付"
+    },
+    {
+      "Name": "Deleted",
+      "Value": "已删除"
+    },
+    {
+      "Name": "IsDefault",
+      "Value": "默认"
+    },
+    {
+      "Name": "IsStatic",
+      "Value": "是否内置"
+    },
+    {
+      "Name": "DisplayName",
+      "Value": "显示名"
+    },
+    {
+      "Name": "UiRouter",
+      "Value": "链接"
+    },
+    {
+      "Name": "ParentId",
+      "Value": "父Id"
+    },
+    {
+      "Name": "HttpMethod",
+      "Value": "请求模式"
+    },
+    {
+      "Name": "UiActionType",
+      "Value": "Ui动作类型"
+    },
+    {
+      "Name": "AccessModeForCompany",
+      "Value": "公司访问权限"
+    },
+    {
+      "Name": "AccessModeForTenant",
+      "Value": "租户访问权限"
+    },
+    {
+      "Name": "AccessModeForHost",
+      "Value": "主机访问权限"
+    },
+    {
+      "Name": "Roles",
+      "Value": "角色"
+    },
+    {
+      "Name": "AccessMode",
+      "Value": "访问权限"
+    },
+    {
+      "Name": "UserId",
+      "Value": "用户Id"
+    },
+    {
+      "Name": "Value",
+      "Value": "值"
+    },
+    {
+      "Name": "LastModifierUser",
+      "Value": "更改用户"
+    },
+    {
+      "Name": "IsLockEnabled",
+      "Value": "锁定开启"
+    },
+    {
+      "Name": "LockoutEndDate",
+      "Value": "锁定结束日期"
+    },
+    {
+      "Name": "PasswordResetCode",
+      "Value": "密码重置码"
+    },
+    {
+      "Name": "IsEmailConfirmed",
+      "Value": "邮件确认"
+    },
+    {
+      "Name": "CreationTime",
+      "Value": "创建时间"
+    },
+    {
+      "Name": "UnitName",
+      "Value": "单位"
+    },
+    {
+      "Name": "Description",
+      "Value": "描述"
+    },
+    {
+      "Name": "Balance",
+      "Value": "额度"
+    },
+    {
+      "Name": "CreatedUser",
+      "Value": "创建用户名"
+    },
+    {
+      "Name": "CreatorUserId",
+      "Value": "创建用户"
+    },
+    {
+      "Name": "ViewDetail",
+      "Value": "查看"
+    },
+    {
+      "Name": "Id",
+      "Value": "序号"
+    },
+    {
+      "Name": "Parent",
+      "Value": "上级流水"
+    },
+    {
+      "Name": "WithChildrenAttachments",
+      "Value": "附件"
+    },
+    {
+      "Name": "Status",
+      "Value": "状态"
+    },
+    {
+      "Name": "CompanyName",
+      "Value": "公司名称"
+    },
+    {
+      "Name": "CompanyInvoiceShortName",
+      "Value": "发票前缀"
+    },
+    {
+      "Name": "CompanyId",
+      "Value": "公司名"
+    },
+    {
+      "Name": "TenantId",
+      "Value": "租户"
+    },
+    {
+      "Name": "TenantName",
+      "Value": "代理名称"
+    },
+    {
+      "Name": "Operation",
+      "Value": "可用操作"
+    },
+    {
+      "Name": "ExecutedEngineIDs",
+      "Value": "已执行的业务逻辑"
+    },
+    {
+      "Name": "PaidTotal",
+      "Value": "已支付额"
+    },
+    {
+      "Name": "DbGridName",
+      "Value": "业务名称"
+    },
+    {
+      "Name": "DbGridId",
+      "Value": "表格Id"
+    },
+    {
+      "Name": "DbGridNameDisplay",
+      "Value": "业务名称"
+    },
+    {
+      "Name": "LastModifierUserId",
+      "Value": "更改用户"
+    },
+    {
+      "Name": "LastModificationTime",
+      "Value": "最后修改时间"
+    },
+    {
+      "Name": "CustomerName",
+      "Value": "客户名"
+    },
+    {
+      "Name": "ProjectName",
+      "Value": "项目名称"
+    },
+    {
+      "Name": "ProjectNameCn",
+      "Value": "项目中文名称"
+    },
+    {
+      "Name": "ContactFullName",
+      "Value": "联系人全名"
+    },
+    {
+      "Name": "ContactCnName",
+      "Value": "联系人中文名"
+    },
+    {
+      "Name": "EmailAddress",
+      "Value": "邮件"
+    },
+    {
+      "Name": "InternalProject",
+      "Value": "公司内部项目"
+    },
+    {
+      "Name": "ProjectId",
+      "Value": "项目名称"
+    },
+    {
+      "Name": "SupplierId",
+      "Value": "供应商"
+    },
+    {
+      "Name": "VirtualBankAccount",
+      "Value": "虚拟账号"
+    },
+    {
+      "Name": "ShipperCompanyName",
+      "Value": "发货公司"
+    },
+    {
+      "Name": "InvoiceNo",
+      "Value": "发票号"
+    },
+    {
+      "Name": "InvoiceDate",
+      "Value": "发票日期"
+    },
+    {
+      "Name": "AccountNumber",
+      "Value": "账号"
+    },
+    {
+      "Name": "LabelAccountNumber",
+      "Value": "打印账号"
+    },
+    {
+      "Name": "LabelAccount",
+      "Value": "其它公司账号"
+    },
+    {
+      "Name": "Vat",
+      "Value": "增值税"
+    },
+    {
+      "Name": "Boxes",
+      "Value": "箱数"
+    },
+    {
+      "Name": "ShipmentDate",
+      "Value": "发货日期"
+    },
+    {
+      "Name": "Weight",
+      "Value": "重量"
+    },
+    {
+      "Name": "TrackingNum",
+      "Value": "跟踪号"
+    },
+    {
+      "Name": "EstimatedRate",
+      "Value": "估计价格"
+    },
+    {
+      "Name": "ActualRate",
+      "Value": "实际费用"
+    },
+    {
+      "Name": "CustomerRef",
+      "Value": "内单号"
+    },
+    {
+      "Name": "SupplierInvInfo",
+      "Value": "供应商发票"
+    },
+    {
+      "Name": "NettCharge",
+      "Value": "成本费用"
+    },
+    {
+      "Name": "TaxCode",
+      "Value": "税收代码"
+    },
+    {
+      "Name": "LineNumber",
+      "Value": "行数"
+    },
+    {
+      "Name": "DeclaredWeight",
+      "Value": "申报重量"
+    },
+    {
+      "Name": "CollectionAddressName",
+      "Value": "授权地址名"
+    },
+    {
+      "Name": "CollectionAddressId",
+      "Value": "授权地址Id"
+    },
+    {
+      "Name": "DeclaredValue",
+      "Value": "申报价值"
+    },
+    {
+      "Name": "Currency",
+      "Value": "申报币种"
+    },
+    {
+      "Name": "DutyPaymentInfo",
+      "Value": "支付方式"
+    },
+    {
+      "Name": "DropoffType",
+      "Value": "交付类型"
+    },
+    {
+      "Name": "Content",
+      "Value": "内容"
+    },
+    {
+      "Name": "ServiceType",
+      "Value": "服务类型"
+    },
+    {
+      "Name": "InvoiceFileName",
+      "Value": "商业发票"
+    },
+    {
+      "Name": "ShipperName",
+      "Value": "发货公司"
+    },
+    {
+      "Name": "Length",
+      "Value": "长度(CM)"
+    },
+    {
+      "Name": "Width",
+      "Value": "宽度(CM)"
+    },
+    {
+      "Name": "Height",
+      "Value": "高度(CM)"
+    },
+    {
+      "Name": "AuthorizedStatus",
+      "Value": "授权状态"
+    },
+    {
+      "Name": "ContactName",
+      "Value": "联系人"
+    },
+    {
+      "Name": "ContactCompanyName",
+      "Value": "联系公司"
+    },
+    {
+      "Name": "AddressLine1",
+      "Value": "地址第一行"
+    },
+    {
+      "Name": "AddressLine2",
+      "Value": "地址第二行"
+    },
+    {
+      "Name": "AddressLine3",
+      "Value": "地址第三行"
+    },
+    {
+      "Name": "PostCode",
+      "Value": "邮编"
+    },
+    {
+      "Name": "Country",
+      "Value": "国家"
+    },
+    {
+      "Name": "Email",
+      "Value": "邮箱地址"
+    },
+    {
+      "Name": "Phone",
+      "Value": "电话"
+    },
+    {
+      "Name": "Mobile",
+      "Value": "手机"
+    },
+    {
+      "Name": "ShortName",
+      "Value": "别名"
+    },
+    {
+      "Name": "From",
+      "Value": "来自"
+    },
+    {
+      "Name": "To",
+      "Value": "发到"
+    },
+    {
+      "Name": "CC",
+      "Value": "抄送"
+    },
+    {
+      "Name": "DateSent",
+      "Value": "发送日期"
+    },
+    {
+      "Name": "DateReceived",
+      "Value": "接收日期"
+    },
+    {
+      "Name": "Subject",
+      "Value": "标题"
+    },
+    {
+      "Name": "Body",
+      "Value": "正文"
+    },
+    {
+      "Name": "Html",
+      "Value": "Html"
+    },
+    {
+      "Name": "ThreadId",
+      "Value": "事务标识"
+    },
+    {
+      "Name": "AssignedFolder",
+      "Value": "指派目录"
+    },
+    {
+      "Name": "MyEmail",
+      "Value": "系统邮箱"
+    },
+    {
+      "Name": "ShipFrom",
+      "Value": "发货地址"
+    },
+    {
+      "Name": "ShipTo",
+      "Value": "收货地址"
+    },
+    {
+      "Name": "Service",
+      "Value": "快递服务"
+    },
+    {
+      "Name": "DHLNotifyType",
+      "Value": "DHL通知类型"
+    },
+    {
+      "Name": "EventTime",
+      "Value": "日期时间"
+    },
+    {
+      "Name": "Source",
+      "Value": "来源"
+    },
+    {
+      "Name": "Finished",
+      "Value": "已结束"
+    },
+    {
+      "Name": "StartDate",
+      "Value": "开始日期"
+    },
+    {
+      "Name": "CompletionDate",
+      "Value": "结束日期"
+    },
+    {
+      "Name": "CompanyType",
+      "Value": "公司类型"
+    },
+    {
+      "Name": "Website",
+      "Value": "网站"
+    },
+    {
+      "Name": "CustomerCompanyName",
+      "Value": "客户公司名"
+    },
+    {
+      "Name": "MyCompanyName",
+      "Value": "公司名"
+    },
+    {
+      "Name": "CustomerCompanyId",
+      "Value": "客户公司名"
+    },
+    {
+      "Name": "BankAccountId",
+      "Value": "银行账号"
+    },
+    {
+      "Name": "CustomerInvoiceId",
+      "Value": "客户发票"
+    },
+    {
+      "Name": "BankAccountName",
+      "Value": "银行账号"
+    },
+    {
+      "Name": "SupplierName",
+      "Value": "供应商"
+    },
+    {
+      "Name": "SupplierAccountNumber",
+      "Value": "账号"
+    },
+    {
+      "Name": "JsonMarginTable",
+      "Value": "利润率"
+    },
+    {
+      "Name": "MarginKeywords",
+      "Value": "利润率关键字"
+    },
+    {
+      "Name": "MarginSetting",
+      "Value": "利润率设置"
+    },
+    {
+      "Name": "BalanceIndicator",
+      "Value": "余额"
+    },
+    {
+      "Name": "ProjectDescription",
+      "Value": "项目描述"
+    },
+    {
+      "Name": "ForeignBalance",
+      "Value": "外汇额"
+    },
+    {
+      "Name": "ExchangeRate",
+      "Value": "汇率"
+    },
+    {
+      "Name": "DutyVatSurcharge",
+      "Value": "进口税手续费"
+    },
+    {
+      "Name": "VatNumber",
+      "Value": "VAT号"
+    },
+    {
+      "Name": "DeclarationNumber",
+      "Value": "清关号"
+    },
+    {
+      "Name": "Commission",
+      "Value": "手续费"
+    },
+    {
+      "Name": "DutyCharge",
+      "Value": "关税"
+    },
+    {
+      "Name": "TotalNetCharge",
+      "Value": "账单费用"
+    },
+    {
+      "Name": "VatCharge",
+      "Value": "增值税"
+    },
+    {
+      "Name": "InvoiceType",
+      "Value": "发票类型"
+    },
+    {
+      "Name": "CustomerSupportSurcharge",
+      "Value": "客服手续费"
+    },
+    {
+      "Name": "WorkType",
+      "Value": "工作类型"
+    },
+    {
+      "Name": "RefundTotal",
+      "Value": "退款额"
+    },
+    {
+      "Name": "ShipmentCharged",
+      "Value": "运费"
+    },
+    {
+      "Name": "ShipmentChargeRefund",
+      "Value": "运费退款额"
+    },
+    {
+      "Name": "DutyVatRefunded",
+      "Value": "进口税退款"
+    },
+    {
+      "Name": "Index",
+      "Value": "索引"
+    },
+    {
+      "Name": "FileName",
+      "Value": "文件名"
+    },
+    {
+      "Name": "FolderName",
+      "Value": "目录名"
+    },
+    {
+      "Name": "FileContent",
+      "Value": "文件"
+    },
+    {
+      "Name": "IsDirectory",
+      "Value": "目录"
+    },
+    {
+      "Name": "TransactionId",
+      "Value": "流水ID"
+    },
+    {
+      "Name": "FileLength",
+      "Value": "文件大小"
+    },
+    {
+      "Name": "RelatedGridId",
+      "Value": "相关表格Id"
+    },
+    {
+      "Name": "ShipmentPurpose",
+      "Value": "货物类型"
+    },
+    {
+      "Name": "SequenceNumber",
+      "Value": "序号"
+    },
+    {
+      "Name": "Quantity",
+      "Value": "数额"
+    },
+    {
+      "Name": "ItemValue",
+      "Value": "单价"
+    },
+    {
+      "Name": "GrossWeight",
+      "Value": "毛重"
+    },
+    {
+      "Name": "NetWeight",
+      "Value": "净重"
+    },
+    {
+      "Name": "CommodityCode",
+      "Value": "HS编码"
+    },
+    {
+      "Name": "DHLUnitName",
+      "Value": "单位"
+    },
+    {
+      "Name": "InvoiceNumber",
+      "Value": "发票号"
+    },
+    {
+      "Name": "MadeInCountry",
+      "Value": "制造国家"
+    },
+    {
+      "Name": "ScopeType",
+      "Value": "所属类型"
+    },
+    {
+      "Name": "ImportVATNo",
+      "Value": "VAT号"
+    },
+    {
+      "Name": "EORI",
+      "Value": "EORI"
+    },
+    {
+      "Name": "DutyPaidBy",
+      "Value": "支付关税方"
+    },
+    {
+      "Name": "Printed",
+      "Value": "已打印"
+    },
+    {
+      "Name": "PI967_Des",
+      "Value": "PI967金句"
+    },
+    {
+      "Name": "PI967_2_Des",
+      "Value": "PI967_2金句"
+    },
+    {
+      "Name": "BTN_BATTERY_Des",
+      "Value": "纽扣按钮金句"
+    },
+    {
+      "Name": "EmailConfirmationCode",
+      "Value": "邮件确认码"
+    },
+    {
+      "Name": "BuildingName",
+      "Value": "建筑名"
+    },
+    {
+      "Name": "CityDistrict",
+      "Value": "区"
+    },
+    {
+      "Name": "City",
+      "Value": "城市"
+    },
+    {
+      "Name": "ScanWeight",
+      "Value": "扫描重量"
+    },
+    {
+      "Name": "ScanRate",
+      "Value": "扫描价格"
+    },
+    {
+      "Name": "TrackingHistoryList",
+      "Value": "跟踪信息"
+    },
+    {
+      "Name": "DeliveryDate",
+      "Value": "送达日期"
+    },
+    {
+      "Name": "ReportStationCode",
+      "Value": "货物所在地区"
+    },
+    {
+      "Name": "Signatory",
+      "Value": "签收人"
+    },
+    {
+      "Name": "OriStation",
+      "Value": "发货地"
+    },
+    {
+      "Name": "DesStation",
+      "Value": "目标地"
+    },
+    {
+      "Name": "DeliveryStatus",
+      "Value": "跟踪信息"
+    },
+    {
+      "Name": "ShippingLabelBalance",
+      "Value": "订单总额"
+    },
+    {
+      "Name": "CustomerSupportBalance",
+      "Value": "客服总额"
+    },
+    {
+      "Name": "InvoicedShipmentBalance",
+      "Value": "已出运费总额"
+    },
+    {
+      "Name": "DutyVatBalance",
+      "Value": "关税总额"
+    },
+    {
+      "Name": "ServiceRequestBalance",
+      "Value": "服务费总额"
+    },
+    {
+      "Name": "CustomerInvoiceBalance",
+      "Value": "客户发票总额"
+    },
+    {
+      "Name": "CustomerCreditBalance",
+      "Value": "付款总额"
+    },
+    {
+      "Name": "SupplierInvBalance",
+      "Value": "供应商总额"
+    },
+    {
+      "Name": "PaymentInBalance",
+      "Value": "客户支付总额"
+    },
+    {
+      "Name": "PaymentOutBalance",
+      "Value": "支付供应商总额"
+    },
+    {
+      "Name": "ForTest",
+      "Value": "测试用"
+    },
+    {
+      "Name": "Counterfeit",
+      "Value": "假货"
+    },
+    {
+      "Name": "UnderValuation",
+      "Value": "低报"
+    },
+    {
+      "Name": "MaximumDHLDailyVolume",
+      "Value": "DHL打单每日最大公斤数"
+    },
+    {
+      "Name": "JsonWeeklySettings",
+      "Value": "工作日设置"
+    },
+    {
+      "Name": "Day",
+      "Value": "工作日"
+    },
+    {
+      "Name": "Enabled",
+      "Value": "打开"
+    },
+    {
+      "Name": "HostSurchargeSettings",
+      "Value": "账号费用设置"
+    },
+    {
+      "Name": "TenantSurchargeSettings",
+      "Value": "租户费用设置"
+    },
+    {
+      "Name": "HostExtraCharge",
+      "Value": "账号费用"
+    },
+    {
+      "Name": "TenantExtraCharge",
+      "Value": "租户费用"
+    },
+    {
+      "Name": "ExtraChargeSetting",
+      "Value": "账号费用"
+    },
+    {
+      "Name": "TenantSurchargeBalance",
+      "Value": "租户费用"
+    },
+    {
+      "Name": "HostSurchargeBalance",
+      "Value": "账号费用"
+    },
+    {
+      "Name": "OtherGridId",
+      "Value": "相关业务"
+    },
+    {
+      "Name": "RemainingCredit",
+      "Value": "剩余额度"
+    },
+    {
+      "Name": "YearlyRateDifference",
+      "Value": "折扣率差"
+    },
+    {
+      "Name": "ExtraChargeForRateRequest",
+      "Value": "折扣率额外调节"
+    },
+    {
+      "Name": "InvoiceNoList",
+      "Value": "发票列表"
+    },
+    {
+      "Name": "PickupTimestamp",
+      "Value": "取货时间"
+    },
+    {
+      "Name": "PickupLocationCloseTime",
+      "Value": "取货结束时间"
+    },
+    {
+      "Name": "Location",
+      "Value": "位置"
+    },
+    {
+      "Name": "PickupLocationType",
+      "Value": "取货位置类型"
+    },
+    {
+      "Name": "Instruction",
+      "Value": "额外说明"
+    },
+    {
+      "Name": "InstructionTypeCode",
+      "Value": "额外说明类型码"
+    },
+    {
+      "Name": "LocalServiceType",
+      "Value": "本地服务类型"
+    },
+    {
+      "Name": "UnitOfMeasurement",
+      "Value": "单位"
+    },
+    {
+      "Name": "InsuranceServiceType",
+      "Value": "保险"
+    },
+    {
+      "Name": "InsuranceValue",
+      "Value": "保险额"
+    },
+    {
+      "Name": "InsuranceCurrency",
+      "Value": "保险币种"
+    },
+    {
+      "Name": "TimeOutDateTime",
+      "Value": "到期时间"
+    },
+    {
+      "Name": "AccessFailedCount",
+      "Value": "失败访问次数"
+    },
+    {
+      "Name": "AttachmentMapId",
+      "Value": "附件关联Id"
+    },
+    {
+      "Name": "Name",
+      "Value": "名称"
+    },
+    {
+      "Name": "CnName",
+      "Value": "中文名"
+    },
+    {
+      "Name": "Password",
+      "Value": "密码"
+    },
+    {
+      "Name": "WithChildrenCompanies",
+      "Value": "公司"
+    },
+    {
+      "Name": "AttachmentMap",
+      "Value": "附件关联"
+    },
+    {
+      "Name": "WithChidrenSurchargeSettings",
+      "Value": "额外收费标准"
+    },
+    {
+      "Name": "FileData",
+      "Value": "文件数据"
+    },
+    {
+      "Name": "WithChildrenUsers",
+      "Value": "用户"
+    },
+    {
+      "Name": "NormalizedName",
+      "Value": "标准名"
+    },
+    {
+      "Name": "FamilyName",
+      "Value": "名"
+    },
+    {
+      "Name": "SurnName",
+      "Value": "姓"
+    },
+    {
+      "Name": "MiddleName",
+      "Value": "中间名"
+    },
+    {
+      "Name": "PayDay",
+      "Value": "流水日期"
+    },
+    {
+      "Name": "User",
+      "Value": "用户"
+    },
+    {
+      "Name": "Tenant",
+      "Value": "租户"
+    },
+    {
+      "Name": "Company",
+      "Value": "公司"
+    },
+    {
+      "Name": "AssignedToUser",
+      "Value": "分配给"
+    },
+    {
+      "Name": "BackupData",
+      "Value": "备份数据"
+    },
+    {
+      "Name": "SupplierVatCharge",
+      "Value": "供应商VAT"
+    },
+    {
+      "Name": "ServiceCharge",
+      "Value": "服务费"
+    },
+    {
+      "Name": "ConcurrencyStamp",
+      "Value": "用户印章码"
+    },
+    {
+      "Name": "SecurityStamp",
+      "Value": "用户安全码"
+    },
+    {
+      "Name": "PasswordHash",
+      "Value": "用户加密密码"
+    },
+    {
+      "Name": "NormalizedEmail",
+      "Value": "大写邮箱"
+    },
+    {
+      "Name": "NormalizedUserName",
+      "Value": "大写用户名"
+    },
+    {
+      "Name": "SourceGridInParentDisplayName",
+      "Value": "源模块名"
+    },
+    {
+      "Name": "SourceGridIdInParent",
+      "Value": "源模块Id"
+    },
+    {
+      "Name": "SourceIdInParent",
+      "Value": "源数据Id"
+    },
+    {
+      "Name": "BackupId",
+      "Value": "备份数据Id"
+    },
+    {
+      "Name": "UserChangeAudit",
+      "Value": "数据复原点"
+    },
+    {
+      "Name": "UserChangeAuditId",
+      "Value": "数据复原点Id"
+    },
+    {
+      "Name": "WithChildrenDbChangeTracker",
+      "Value": "数据更改表"
+    },
+    {
+      "Name": "ChangeType",
+      "Value": "更改类型"
+    },
+    {
+      "Name": "WithChildrenStaffHoliday",
+      "Value": "员工假期表"
+    },
+    {
+      "Name": "HolidayType",
+      "Value": "假期类型"
+    },
+    {
+      "Name": "NameInEntryMachine",
+      "Value": "打卡机用户名"
+    },
+    {
+      "Name": "WithChildrenWorkingHours",
+      "Value": "工作时间表"
+    },
+    {
+      "Name": "LunchTime",
+      "Value": "午餐时间"
+    },
+    {
+      "Name": "AddressId",
+      "Value": "地址"
+    },
+    {
+      "Name": "Address",
+      "Value": "地址"
+    },
+    {
+      "Name": "WithChildrenDepartments",
+      "Value": "部门"
+    },
+    {
+      "Name": "DepartmentName",
+      "Value": "部门名"
+    },
+    {
+      "Name": "DepartmentId",
+      "Value": "部门Id"
+    },
+    {
+      "Name": "Department",
+      "Value": "部门"
+    },
+    {
+      "Name": "DepartmentRole",
+      "Value": "部门角色"
+    },
+    {
+      "Name": "ImportingCharge",
+      "Value": "进口关税"
+    },
+    {
+      "Name": "InvoicedShipmentVat",
+      "Value": "运费增值税"
+    },
+    {
+      "Name": "WithChildrenProfitStatements",
+      "Value": "核账表"
+    },
+    {
+      "Name": "WithChildrenProjects",
+      "Value": "项目表"
+    },
+    {
+      "Name": "ProfitStatementId",
+      "Value": "核账Id"
+    },
+    {
+      "Name": "ProfitStatement",
+      "Value": "核账"
+    },
+    {
+      "Name": "ProfitAfterTax",
+      "Value": "税后利润"
+    },
+    {
+      "Name": "ProfitBeforeTax",
+      "Value": "税前利润"
+    },
+    {
+      "Name": "StaffCost",
+      "Value": "员工花费"
+    },
+    {
+      "Name": "PayToSupplier",
+      "Value": "支付给供应商"
+    },
+    {
+      "Name": "Sales",
+      "Value": "销售"
+    },
+    {
+      "Name": "Month",
+      "Value": "月"
+    },
+    {
+      "Name": "Year",
+      "Value": "年"
+    }
+  ]
+}

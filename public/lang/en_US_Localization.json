@@ -1,0 +1,3536 @@
+﻿{
+  "ErrorCodes": [
+    {
+      "Name": "1",
+      "Value": "Unknown Error Code"
+    },
+    {
+      "Name": "2",
+      "Value": "System Error, Please contact system administrator"
+    },
+    {
+      "Name": "3",
+      "Value": "Null parameter"
+    },
+    {
+      "Name": "4",
+      "Value": "Grid does not exist"
+    },
+    {
+      "Name": "30",
+      "Value": "Access is not authorized"
+    },
+    {
+      "Name": "31",
+      "Value": "Credit is not enough, please pay to lift credit limit"
+    },
+    {
+      "Name": "32",
+      "Value": "Modification is not permitted"
+    },
+    {
+      "Name": "33",
+      "Value": "Viewing is not permitted"
+    },
+    {
+      "Name": "34",
+      "Value": "Copying is not permitted"
+    },
+    {
+      "Name": "35",
+      "Value": "Adding data is not permitted"
+    },
+    {
+      "Name": "36",
+      "Value": "Deleting is not permitted"
+    },
+    {
+      "Name": "37",
+      "Value": "Printing is not permitted"
+    },
+    {
+      "Name": "38",
+      "Value": "Downloading is not permitted"
+    },
+    {
+      "Name": "39",
+      "Value": "Uploading is not permitted"
+    },
+    {
+      "Name": "60",
+      "Value": "Collection address is not found or no permission to access"
+    },
+    {
+      "Name": "61",
+      "Value": "Service channel is not found or no permission to access"
+    },
+    {
+      "Name": "62",
+      "Value": "DHL integration provider is not initialized"
+    },
+    {
+      "Name": "63",
+      "Value": "DHL integration provider is not initialized"
+    },
+    {
+      "Name": "64",
+      "Value": "No record is selected"
+    },
+    {
+      "Name": "65",
+      "Value": "Tenant is not existing or no permission to access"
+    },
+    {
+      "Name": "66",
+      "Value": "Supplier is not existing or no permission to access"
+    },
+    {
+      "Name": "67",
+      "Value": "Company is not existing or no permission to access"
+    },
+    {
+      "Name": "68",
+      "Value": "Project is not existing or no permission to access"
+    },
+    {
+      "Name": "90",
+      "Value": "Parent folder does not exist in attachment directory tree"
+    },
+    {
+      "Name": "91",
+      "Value": "Attachment file does not exist"
+    },
+    {
+      "Name": "92",
+      "Value": "Attachment folder is already existing"
+    },
+    {
+      "Name": "93",
+      "Value": "Attachment file is already existing"
+    },
+    {
+      "Name": "94",
+      "Value": "Deleting non-existing attachment file"
+    },
+    {
+      "Name": "95",
+      "Value": "Attachment file name can not be empty on deletion"
+    },
+    {
+      "Name": "120",
+      "Value": "Id is not 0 as expected"
+    },
+    {
+      "Name": "121",
+      "Value": "Updating is failed"
+    },
+    {
+      "Name": "122",
+      "Value": "Deletion is failed"
+    },
+    {
+      "Name": "123",
+      "Value": "Field value is not valid"
+    },
+    {
+      "Name": "124",
+      "Value": "Failed to load data, it may be invisible to current user, or current user has not access right"
+    },
+    {
+      "Name": "125",
+      "Value": "Failed to add data to system, current user may have no right to add"
+    },
+    {
+      "Name": "126",
+      "Value": "The data is not existing in system yet, or the Id is expected to be none zero"
+    },
+    {
+      "Name": "127",
+      "Value": "Trying to delete data which is not existing"
+    },
+    {
+      "Name": "128",
+      "Value": "Failed to parse JSon string"
+    },
+    {
+      "Name": "129",
+      "Value": "Failed to query database"
+    },
+    {
+      "Name": "220",
+      "Value": "Field name is not recognised"
+    },
+    {
+      "Name": "5000",
+      "Value": "Unknown DHL code"
+    },
+    {
+      "Name": "5001",
+      "Value": "The requested product(s) not available based on your search criteria."
+    },
+    {
+      "Name": "5002",
+      "Value": "The account number is not found or invalid. Please check the account number and retry."
+    },
+    {
+      "Name": "5003",
+      "Value": "The account number is not allowed for PaperLessTrade. Please check the account number and retry."
+    },
+    {
+      "Name": "5004",
+      "Value": "The shipment date cannot be in the past or more than 10 days in future. Please check the shipment date and retry."
+    },
+    {
+      "Name": "5005",
+      "Value": "[ISC.0082.9464] Value is shorter than minimum length， please check！"
+    },
+    {
+      "Name": "5006",
+      "Value": "Process failure occurred. Please contact the Administrator with Error Sequence."
+    },
+    {
+      "Name": "5007",
+      "Value": "The requested product(s) not available based on your search criteria."
+    },
+    {
+      "Name": "5008",
+      "Value": "Pick-up service is not provided on this day."
+    },
+    {
+      "Name": "5009",
+      "Value": "Product not available between this origin and destination"
+    },
+    {
+      "Name": "5010",
+      "Value": "Piece weight value must be greater than customer profile level 0.001. Please update"
+    },
+    {
+      "Name": "5011",
+      "Value": "Customs Value must be greater than 'customer profile level' 0.01. Please update"
+    },
+    {
+      "Name": "5016",
+      "Value": "Net weight value must be greater than customer profile level 0.001. Please update"
+    },
+    {
+      "Name": "5017",
+      "Value": "Neither local nor Network Product Code is present"
+    },
+    {
+      "Name": "5018",
+      "Value": "Origin country code is absent"
+    },
+    {
+      "Name": "5019",
+      "Value": "Origin service area code is absent"
+    },
+    {
+      "Name": "5020",
+      "Value": "Destination country code is absent"
+    },
+    {
+      "Name": "5033",
+      "Value": "Neither destination postcode nor destination code is present"
+    },
+    {
+      "Name": "5034",
+      "Value": "Maximum length of local specific code exceeded"
+    },
+    {
+      "Name": "5035",
+      "Value": "Invalid postcode format"
+    },
+    {
+      "Name": "5036",
+      "Value": "Product short name is not found"
+    },
+    {
+      "Name": "5037",
+      "Value": "Product content code is not found"
+    },
+    {
+      "Name": "5039",
+      "Value": "Destination code is not found"
+    },
+    {
+      "Name": "5040",
+      "Value": "More than one destination service area codes are found"
+    },
+    {
+      "Name": "5041",
+      "Value": "Unclassified error"
+    },
+    {
+      "Name": "5042",
+      "Value": "Invalid XML"
+    },
+    {
+      "Name": "5043",
+      "Value": "Error while accessing the cache"
+    },
+    {
+      "Name": "5044",
+      "Value": "GLS servers are not reachable"
+    },
+    {
+      "Name": "5045",
+      "Value": "The Dangerous Goods Content ID requested is invalid. Please update and try again"
+    },
+    {
+      "Name": "5046",
+      "Value": "The Dry Ice Net Weight is missing in the request for the Dangerous Goods Content ID: 901. Please update and try again"
+    },
+    {
+      "Name": "5047",
+      "Value": "The UN code is missing in the request for the Dangerous Goods Content ID: E01. Please update and try again"
+    },
+    {
+      "Name": "5048",
+      "Value": "The origin country code could not be found. Please check the country code"
+    },
+    {
+      "Name": "5049",
+      "Value": "The destination country code could not be found. Please check the country code"
+    },
+    {
+      "Name": "5050",
+      "Value": "The payment country code could not be found"
+    },
+    {
+      "Name": "5051",
+      "Value": "The location information is missing. At least one attribute post code, city name or suburb name should be provided"
+    },
+    {
+      "Name": "5052",
+      "Value": "The pickup date is missing. The pickup date is a mandatory field"
+    },
+    {
+      "Name": "5053",
+      "Value": "The ready time is missing. This is a mandatory parameter"
+    },
+    {
+      "Name": "5054",
+      "Value": "The commodity code could not be found, please check the commodity code"
+    },
+    {
+      "Name": "5055",
+      "Value": "The piece weight is missing. This is mandatory information"
+    },
+    {
+      "Name": "5056",
+      "Value": "The number of pieces is missing"
+    },
+    {
+      "Name": "5057",
+      "Value": "The total shipment volume is missing"
+    },
+    {
+      "Name": "5058",
+      "Value": "The maximum piece weight is missing"
+    },
+    {
+      "Name": "5059",
+      "Value": "The maximum piece height is missing"
+    },
+    {
+      "Name": "5060",
+      "Value": "The maximum piece length is missing"
+    },
+    {
+      "Name": "5061",
+      "Value": "The maximum piece width/diameter is missing"
+    },
+    {
+      "Name": "5062",
+      "Value": "The declared value is missing"
+    },
+    {
+      "Name": "5063",
+      "Value": "The piece type is invalid"
+    },
+    {
+      "Name": "5064",
+      "Value": "The unit of weight is missing"
+    },
+    {
+      "Name": "5065",
+      "Value": "The declared value cannot exceed the limit set for the country"
+    },
+    {
+      "Name": "5066",
+      "Value": "Unknown unit of measure for weight"
+    },
+    {
+      "Name": "5067",
+      "Value": "Unknown unit of measure for dimensions"
+    },
+    {
+      "Name": "5068",
+      "Value": "The currency is missing"
+    },
+    {
+      "Name": "5069",
+      "Value": "The maximum piece weight is greater than the total shipment weight"
+    },
+    {
+      "Name": "5070",
+      "Value": "Unknown currency symbol"
+    },
+    {
+      "Name": "5071",
+      "Value": "The global or local product code(s) missing"
+    },
+    {
+      "Name": "5072",
+      "Value": "The global or local service code(s) missing"
+    },
+    {
+      "Name": "5073",
+      "Value": "Invalid combination of units of weight and dimension"
+    },
+    {
+      "Name": "5074",
+      "Value": "Invalid product service combination"
+    },
+    {
+      "Name": "5075",
+      "Value": "The unit of measure is missing"
+    },
+    {
+      "Name": "5076",
+      "Value": "UOM should be same for all dimensions"
+    },
+    {
+      "Name": "5077",
+      "Value": "Unknown Generic Criteria code"
+    },
+    {
+      "Name": "5078",
+      "Value": "The format of the dimensions is not correct. Please check the dimensions format"
+    },
+    {
+      "Name": "5079",
+      "Value": "The format of the weight is not correct. Please check the weight format"
+    },
+    {
+      "Name": "5080",
+      "Value": "DHL Error code 5080"
+    },
+    {
+      "Name": "5082",
+      "Value": "Invalid ready time format"
+    },
+    {
+      "Name": "5083",
+      "Value": "The unit of dimension is missing"
+    },
+    {
+      "Name": "5085",
+      "Value": "Outbound departure date should have format YYYY-MM-DD"
+    },
+    {
+      "Name": "5086",
+      "Value": "VLDPICKUP = N set in the request then Facility Departure Date should be part of request"
+    },
+    {
+      "Name": "5087",
+      "Value": "VLDPICKUP = Y set in the request then Facility Departure Date should NOT be part of request"
+    },
+    {
+      "Name": "5088",
+      "Value": "The only allowed operators are 'eq'- equal, 'ge' - greater than or equal, 'gt' - greater than"
+    },
+    {
+      "Name": "5089",
+      "Value": "Route Code not found for address;"
+    },
+    {
+      "Name": "5101",
+      "Value": "The shipment weight exceeds max"
+    },
+    {
+      "Name": "5102",
+      "Value": "The shipment height exceeds max"
+    },
+    {
+      "Name": "5103",
+      "Value": "The shipment length exceeds max"
+    },
+    {
+      "Name": "5104",
+      "Value": "The shipment width/diameter exceeds max"
+    },
+    {
+      "Name": "5105",
+      "Value": "The requested product(s) not available"
+    },
+    {
+      "Name": "5106",
+      "Value": "The piece weight exceeds max"
+    },
+    {
+      "Name": "5107",
+      "Value": "The piece height exceeds max"
+    },
+    {
+      "Name": "5108",
+      "Value": "The piece length exceeds max"
+    },
+    {
+      "Name": "5109",
+      "Value": "The piece width/diameter exceeds max"
+    },
+    {
+      "Name": "5110",
+      "Value": "The shipment weight exceeds min"
+    },
+    {
+      "Name": "5111",
+      "Value": "The shipment height exceeds min"
+    },
+    {
+      "Name": "5112",
+      "Value": "The shipment length is not within the restrictions"
+    },
+    {
+      "Name": "5113",
+      "Value": "The shipment width/diameter under min"
+    },
+    {
+      "Name": "5114",
+      "Value": "The min piece dimension not reached"
+    },
+    {
+      "Name": "5115",
+      "Value": "The mid piece dimension not reached"
+    },
+    {
+      "Name": "5116",
+      "Value": "The max piece dimension not reached"
+    },
+    {
+      "Name": "5117",
+      "Value": "The minimum piece weight not met"
+    },
+    {
+      "Name": "5118",
+      "Value": "Number of pieces exceeded"
+    },
+    {
+      "Name": "5119",
+      "Value": "The min shipment dimension not reached"
+    },
+    {
+      "Name": "5120",
+      "Value": "The mid shipment dimension not reached"
+    },
+    {
+      "Name": "5121",
+      "Value": "The max shipment dimension not reached"
+    },
+    {
+      "Name": "5122",
+      "Value": "The minimum shipment weight not met"
+    },
+    {
+      "Name": "5123",
+      "Value": "The max shipment declared value exceeded"
+    },
+    {
+      "Name": "5124",
+      "Value": "Geographical market rule applied"
+    },
+    {
+      "Name": "5125",
+      "Value": "Minimal inbound currency value not met"
+    },
+    {
+      "Name": "5126",
+      "Value": "Maximum inbound currency value exceeded"
+    },
+    {
+      "Name": "5127",
+      "Value": "Minimum number of pieces not met"
+    },
+    {
+      "Name": "5128",
+      "Value": "Minimal outbound currency value not met"
+    },
+    {
+      "Name": "5129",
+      "Value": "Maximum outbound currency value exceeds"
+    },
+    {
+      "Name": "5130",
+      "Value": "Minimal number of pallet not met"
+    },
+    {
+      "Name": "5131",
+      "Value": "Maximum number of pallet exceeds"
+    },
+    {
+      "Name": "5132",
+      "Value": "Minimal pallet weight not met"
+    },
+    {
+      "Name": "5133",
+      "Value": "Maximum pallet weight exceeds"
+    },
+    {
+      "Name": "5134",
+      "Value": "The max(length; width; height) piece exceeds max"
+    },
+    {
+      "Name": "5135",
+      "Value": "Requested product(s) not available at origin of products global/local separated by ;"
+    },
+    {
+      "Name": "5136",
+      "Value": "Requested product(s) not available at destination of products global/local separated by;"
+    },
+    {
+      "Name": "5137",
+      "Value": "Product filtered out on delivery side because actual delivery time configured in TTS is greater than marketed delivery time configured in GREF of products"
+    },
+    {
+      "Name": "5138",
+      "Value": "Requested product(s) not available at payer list of products global/local separated by;"
+    },
+    {
+      "Name": "5139",
+      "Value": "Requested product(s) available only with contractual agreement of products global/local separated by;"
+    },
+    {
+      "Name": "5140",
+      "Value": "Requested product(s) not available in required network of products global/local separated by;"
+    },
+    {
+      "Name": "5201",
+      "Value": "Pick-up service is not provided on this day"
+    },
+    {
+      "Name": "5202",
+      "Value": "The pickup date is outside of sliding window: dateFrom-dateTo"
+    },
+    {
+      "Name": "5203",
+      "Value": "Ready time is outside of pickup window"
+    },
+    {
+      "Name": "5301",
+      "Value": "Product not available between this origin and destination (network segment)"
+    },
+    {
+      "Name": "5302",
+      "Value": "Temporary network target change"
+    },
+    {
+      "Name": "5303",
+      "Value": "Available products removed by Marketed filtering"
+    },
+    {
+      "Name": "5304",
+      "Value": "No products available"
+    },
+    {
+      "Name": "5501",
+      "Value": "Pickup PL ambiguity rule applied. More than 1 PL is available for the given PL attributes"
+    },
+    {
+      "Name": "5502",
+      "Value": "Pickup PL fallback rule applied : PS-CP"
+    },
+    {
+      "Name": "5503",
+      "Value": "Pickup PL fallback rule applied : PS-CP-P"
+    },
+    {
+      "Name": "5504",
+      "Value": "Pickup PL fallback rule applied : PS-CP-P-C"
+    },
+    {
+      "Name": "5505",
+      "Value": "Pickup PL fallback rule applied : CP-P"
+    },
+    {
+      "Name": "5506",
+      "Value": "Pickup PL fallback rule applied : CP-P-C"
+    },
+    {
+      "Name": "5507",
+      "Value": "Pickup PL fallback rule applied : P-C"
+    },
+    {
+      "Name": "5508",
+      "Value": "Pickup PL fallback rule applied : S-C"
+    },
+    {
+      "Name": "5509",
+      "Value": "Delivery PL ambiguity rule applied. More than 1 PL is available for the given PL attributes"
+    },
+    {
+      "Name": "5510",
+      "Value": "Delivery PL fallback rule applied : PS-CP"
+    },
+    {
+      "Name": "5511",
+      "Value": "Delivery PL fallback rule applied : PS-CP-P"
+    },
+    {
+      "Name": "5512",
+      "Value": "Delivery PL fallback rule applied : PS-CP-P-C"
+    },
+    {
+      "Name": "5513",
+      "Value": "Delivery PL fallback rule applied : CP-P"
+    },
+    {
+      "Name": "5514",
+      "Value": "Delivery PL fallback rule applied : PS-CP-P"
+    },
+    {
+      "Name": "5515",
+      "Value": "Delivery PL fallback rule applied : P-C"
+    },
+    {
+      "Name": "5517",
+      "Value": "The origin facility is suspended"
+    },
+    {
+      "Name": "5518",
+      "Value": "The destination facility is suspended"
+    },
+    {
+      "Name": "5519",
+      "Value": "The origin country code could not be found. Please check the country code"
+    },
+    {
+      "Name": "5520",
+      "Value": "The destination country code could not be found. Please check the country code"
+    },
+    {
+      "Name": "5521",
+      "Value": "The payment country code could not be found"
+    },
+    {
+      "Name": "5522",
+      "Value": "The origin location is invalid. Please check the data"
+    },
+    {
+      "Name": "5523",
+      "Value": "The destination location is invalid. Please check the data"
+    },
+    {
+      "Name": "5524",
+      "Value": "Postcode not found，please check country specific post code format"
+    },
+    {
+      "Name": "5525",
+      "Value": "You/your tenant are going to exceed the maximum daily volume limit, allowed limit left"
+    },
+    {
+      "Name": "6000",
+      "Value": "Setting string is not valid"
+    },
+    {
+      "Name": "6001",
+      "Value": "Created status is only support for this grid"
+    },
+    {
+      "Name": "6002",
+      "Value": "The record cannot be deleted due to it has customer support case"
+    },
+    {
+      "Name": "6003",
+      "Value": "The record cannot be deleted due to it has bill with it"
+    },
+    {
+      "Name": "6004",
+      "Value": "There is no valid shipment date within next 10 days, please check weekday setting"
+    },
+    {
+      "Name": "6005",
+      "Value": "Balance is not configured for this grid, but it is expected"
+    },
+    {
+      "Name": "6006",
+      "Value": "Failed to convert string to boolean for field"
+    },
+    {
+      "Name": "6007",
+      "Value": "Failed to convert string to enum for field"
+    },
+    {
+      "Name": "6008",
+      "Value": "Failed to load from csv for field"
+    },
+    {
+      "Name": "6009",
+      "Value": "Unused"
+    },
+    {
+      "Name": "6010",
+      "Value": "There is no shipment integration for this shipment"
+    },
+    {
+      "Name": "6011",
+      "Value": "Failed to create dummy entity, possibly software issue due to incorrect setting"
+    },
+    {
+      "Name": "6012",
+      "Value": "The collection address or short name is already used"
+    },
+    {
+      "Name": "6013",
+      "Value": "GridEntity is not set, possibly due to software issue of incorrect initialization sequence"
+    },
+    {
+      "Name": "6014",
+      "Value": "DbContext is null"
+    },
+    {
+      "Name": "6015",
+      "Value": "Grid is not included in GridDrivers"
+    },
+    {
+      "Name": "6016",
+      "Value": "Grid Id should not be 0, might be software problem"
+    },
+    {
+      "Name": "6017",
+      "Value": "You cannot access other tenant's record"
+    },
+    {
+      "Name": "6018",
+      "Value": "You cannot access other company's record"
+    },
+    {
+      "Name": "6019",
+      "Value": "You cannot access other user’s data"
+    },
+    {
+      "Name": "6020",
+      "Value": "The shipping order cannot be delete as it is scanned"
+    },
+    {
+      "Name": "6021",
+      "Value": "The company id should not be zero while company is expected"
+    },
+    {
+      "Name": "6022",
+      "Value": "Bank account Id should not be zero which bank account is expected"
+    },
+    {
+      "Name": "6023",
+      "Value": "Invoice amount should not be 0"
+    },
+    {
+      "Name": "6024",
+      "Value": "The invoice has been uploaded already"
+    },
+    {
+      "Name": "6025",
+      "Value": "In development"
+    },
+    {
+      "Name": "6026",
+      "Value": "The customer support margin is not set"
+    },
+    {
+      "Name": "6027",
+      "Value": "Failed to verify data on one of the uploaded csv row"
+    },
+    {
+      "Name": "6028",
+      "Value": "No data has been uploaded, as there is no valid data found in csv file"
+    },
+    {
+      "Name": "6029",
+      "Value": "Audit interface in grid is not configured, please contact administrator"
+    },
+    {
+      "Name": "6030",
+      "Value": "Audit interface in data is not configured, please contact administrator"
+    },
+    {
+      "Name": "6031",
+      "Value": "Timer id is already in use"
+    },
+    {
+      "Name": "6032",
+      "Value": "The timer should have been stopped, but it did not"
+    },
+    {
+      "Name": "6033",
+      "Value": "The duty vat charge for the shipment has gone negative, this must be something wrong"
+    },
+    {
+      "Name": "6034",
+      "Value": "The shipment charge has gone negative, this must be something wrong"
+    },
+    {
+      "Name": "6035",
+      "Value": "Only add/update/delete are supported for audit"
+    },
+    {
+      "Name": "6036",
+      "Value": "There is nothing to undo"
+    },
+    {
+      "Name": "6037",
+      "Value": "Failed to create an object for paged dto"
+    },
+    {
+      "Name": "6038",
+      "Value": "Setting configuration name is not found for changing the setting"
+    },
+    {
+      "Name": "6039",
+      "Value": "Audit interface is expected for paged dto object"
+    },
+    {
+      "Name": "6040",
+      "Value": "Unknown current language setting"
+    },
+    {
+      "Name": "6041",
+      "Value": "Failed to send email"
+    },
+    {
+      "Name": "6042",
+      "Value": "Permission name is not valid"
+    },
+    {
+      "Name": "6043",
+      "Value": "Please check the error message below"
+    },
+    {
+      "Name": "6044",
+      "Value": "User is already in the system, same user name cannot be used again"
+    },
+    {
+      "Name": "6045",
+      "Value": "Tenant does not exist while it should do"
+    },
+    {
+      "Name": "6046",
+      "Value": "User password does not match"
+    },
+    {
+      "Name": "6047",
+      "Value": "User account has been locked"
+    },
+    {
+      "Name": "6048",
+      "Value": "User account has not been approved yet"
+    },
+    {
+      "Name": "6049",
+      "Value": "User account has been closed"
+    },
+    {
+      "Name": "6050",
+      "Value": "Tenant has been closed"
+    },
+    {
+      "Name": "6051",
+      "Value": "System error, grid type has more than one configuration"
+    },
+    {
+      "Name": "6052",
+      "Value": "User name should not be empty"
+    },
+    {
+      "Name": "6053",
+      "Value": "User password should not be empty"
+    },
+    {
+      "Name": "6054",
+      "Value": "Failed to create user"
+    },
+    {
+      "Name": "6055",
+      "Value": "Cannot find the user name in system"
+    },
+    {
+      "Name": "6056",
+      "Value": "Tenant name should not be empty"
+    },
+    {
+      "Name": "6057",
+      "Value": "User must login first"
+    },
+    {
+      "Name": "6058",
+      "Value": "Failed to create tenant"
+    },
+    {
+      "Name": "6059",
+      "Value": "System error, grid type does not exist in system"
+    },
+    {
+      "Name": "6060",
+      "Value": "Failed to change user password, please check previous password"
+    },
+    {
+      "Name": "6061",
+      "Value": "Permission name should not be null"
+    },
+    {
+      "Name": "6062",
+      "Value": "System error, permission are not available for the user"
+    },
+    {
+      "Name": "6063",
+      "Value": "User role should not be empty"
+    },
+    {
+      "Name": "6064",
+      "Value": "Role should contain at least one permission"
+    },
+    {
+      "Name": "6065",
+      "Value": "One or more permission in role is not in system"
+    },
+    {
+      "Name": "6066",
+      "Value": "Duplicated permission found in permission list"
+    },
+    {
+      "Name": "6067",
+      "Value": "Role name should not be empty"
+    },
+    {
+      "Name": "6068",
+      "Value": "One or more role in user is not in system"
+    },
+    {
+      "Name": "6069",
+      "Value": "Duplicated roles found in role list of user"
+    },
+    {
+      "Name": "6070",
+      "Value": "Login as host is not permitted"
+    },
+    {
+      "Name": "6071",
+      "Value": "Grid Name should not be empty or null"
+    },
+    {
+      "Name": "6072",
+      "Value": "Cannot parse Id, it seems not digital"
+    },
+    {
+      "Name": "6073",
+      "Value": "0 sized attachment file is not permitted"
+    },
+    {
+      "Name": "6074",
+      "Value": "System error, attachment interface should have been configurated"
+    },
+    {
+      "Name": "6075",
+      "Value": "System is expecting data field"
+    },
+    {
+      "Name": "6076",
+      "Value": "FormData is expected from API"
+    },
+    {
+      "Name": "6077",
+      "Value": "Company has been closed"
+    },
+    {
+      "Name": "6078",
+      "Value": "The includes name is not supported by the grid"
+    },
+    {
+      "Name": "6079",
+      "Value": "Api Create does not support includes"
+    },
+    {
+      "Name": "6080",
+      "Value": "Company name has been already used"
+    },
+    {
+      "Name": "6081",
+      "Value": "Tenant name has been already used"
+    },
+    {
+      "Name": "6082",
+      "Value": "User does not exist in system"
+    },
+    {
+      "Name": "6083",
+      "Value": "User email has not been confirmed yet"
+    },
+    {
+      "Name": "6084",
+      "Value": "User email does not exist"
+    },
+    {
+      "Name": "6085",
+      "Value": "User token is empty"
+    },
+    {
+      "Name": "6086",
+      "Value": "Grid does not support start api"
+    },
+    {
+      "Name": "6087",
+      "Value": "Span field is expected for finish api"
+    },
+    {
+      "Name": "6088",
+      "Value": "Grid does not support balance split"
+    },
+    {
+      "Name": "6089",
+      "Value": "New balance field is expected from Ui"
+    },
+    {
+      "Name": "6090",
+      "Value": "New balance field is 0, it does not make sense"
+    },
+    {
+      "Name": "6091",
+      "Value": "Digital number cannot be null"
+    },
+    {
+      "Name": "6092",
+      "Value": "Unrecognised include name"
+    },
+    {
+      "Name": "6093",
+      "Value": "Attachment mode should be one of FileOnly/FolderOnly/All"
+    },
+    {
+      "Name": "6094",
+      "Value": "The function is only for test harness, but current user is logged in as test harness"
+    },
+    {
+      "Name": "6095",
+      "Value": "The grid is not supporting work request"
+    },
+    {
+      "Name": "6096",
+      "Value": "The grid is not supporting approved by"
+    },
+    {
+      "Name": "6097",
+      "Value": "The work has been already approved."
+    },
+    {
+      "Name": "6098",
+      "Value": "System is expecting “AssignedTo” field from UI"
+    },
+    {
+      "Name": "6099",
+      "Value": "Receiver address should not be null"
+    },
+    {
+      "Name": "6100",
+      "Value": "Receiver address is expected to be null for creating shipping label"
+    },
+    {
+      "Name": "6101",
+      "Value": "Nothing to be printed"
+    },
+    {
+      "Name": "6102",
+      "Value": "Cannot load relation database due to unknown field index"
+    },
+    {
+      "Name": "6103",
+      "Value": "Duplicated collection address name has been used"
+    },
+    {
+      "Name": "6104",
+      "Value": "No data to be downloaded"
+    },
+    {
+      "Name": "6105",
+      "Value": "Address is not found in address book"
+    },
+    {
+      "Name": "6106",
+      "Value": "Data is locked, no change or delete is allowed"
+    },
+    {
+      "Name": "6107",
+      "Value": "Year or month is not valid in profit statement"
+    },
+    {
+      "Name": "6108",
+      "Value": "Profit statement is already existing"
+    },
+    {
+      "Name": "6109",
+      "Value": "Name/Chinese name has been used, please use different one"
+    },
+    {
+      "Name": "6110",
+      "Value": "Department is not found"
+    },
+    {
+      "Name": "6111",
+      "Value": "Host user must have department"
+    },
+    {
+      "Name": "6112",
+      "Value": "Model does not support name"
+    },
+    {
+      "Name": "6113",
+      "Value": "Working hour cannot be negative value"
+    },
+    {
+      "Name": "6114",
+      "Value": "User has been deleted"
+    },
+    {
+      "Name": "6115",
+      "Value": "Backup point cannot be restored, due to further change has been made, you need to restore backup point ID:"
+    },
+    {
+      "Name": "6116",
+      "Value": "Only invoices with ready status can be paid"
+    },
+    {
+      "Name": "6117",
+      "Value": "X field is expected, or it is not date time field  "
+    }
+  ],
+  "Enum": [
+    {
+      "Name": "PermissionAccess_NONE",
+      "Value": "None"
+    },
+    {
+      "Name": "PermissionAccess_READ",
+      "Value": "Read"
+    },
+    {
+      "Name": "PermissionAccess_WRITE",
+      "Value": "Write"
+    },
+    {
+      "Name": "PermissionAccess_CREATE",
+      "Value": "Create"
+    },
+    {
+      "Name": "PermissionAccess_DELETE",
+      "Value": "Delete"
+    },
+    {
+      "Name": "PermissionAccess_UPLOAD",
+      "Value": "Upload"
+    },
+    {
+      "Name": "PermissionAccess_DOWNLOAD",
+      "Value": "Download"
+    },
+    {
+      "Name": "PermissionAccess_GRIDATTACHMENTS",
+      "Value": "Attachment"
+    },
+    {
+      "Name": "TransactionStatus_None",
+      "Value": "None"
+    },
+    {
+      "Name": "TransactionStatus_Ready",
+      "Value": "Ready"
+    },
+    {
+      "Name": "TransactionStatus_Close",
+      "Value": "Close"
+    },
+    {
+      "Name": "TransactionStatus_Archived",
+      "Value": "Archived"
+    },
+    {
+      "Name": "TransactionStatus_Deleted",
+      "Value": "Deleted"
+    },
+    {
+      "Name": "TransactionStatus_Created",
+      "Value": "Created"
+    },
+    {
+      "Name": "TransactionStatus_TimeOut",
+      "Value": "TimeOut"
+    },
+    {
+      "Name": "TransactionStatus_Invoiced",
+      "Value": "Invoiced"
+    },
+    {
+      "Name": "TransactionStatus_Paid",
+      "Value": "Paid"
+    },
+    {
+      "Name": "TransactionStatus_Overdue",
+      "Value": "Overdue"
+    },
+    {
+      "Name": "TransactionStatus_UnknownRefund",
+      "Value": "UnknownRefund"
+    },
+    {
+      "Name": "TransactionStatus_ReadyToPay",
+      "Value": "ReadyToPay"
+    },
+    {
+      "Name": "TransactionStatus_Rejected",
+      "Value": "Rejected"
+    },
+    {
+      "Name": "TransactionStatus_Agreed",
+      "Value": "Agreed"
+    },
+    {
+      "Name": "TransactionStatus_Responded",
+      "Value": "Responded"
+    },
+    {
+      "Name": "TransactionStatus_Approved",
+      "Value": "Approved"
+    },
+    {
+      "Name": "TransactionStatus_Locked",
+      "Value": "Locked"
+    },
+    {
+      "Name": "SupplierInvType_Shipments",
+      "Value": "Shipments"
+    },
+    {
+      "Name": "SupplierInvType_DutyVat",
+      "Value": "DutyVat"
+    },
+    {
+      "Name": "UnAuthorizedShipmentDetectSource_All",
+      "Value": "All"
+    },
+    {
+      "Name": "UnAuthorizedShipmentDetectSource_EmailNotify",
+      "Value": "EmailNotify"
+    },
+    {
+      "Name": "UnAuthorizedShipmentDetectSource_FTP",
+      "Value": "FTP"
+    },
+    {
+      "Name": "UnAuthorizedShipmentDetectSource_Manual",
+      "Value": "Manual"
+    },
+    {
+      "Name": "UnAuthorizedShipmentDetectSource_SupplierInvoice",
+      "Value": "SupplierInvoice"
+    },
+    {
+      "Name": "UnAuthorizedShipmentDetectSource_DutyVatInvoice",
+      "Value": "DutyVatInvoice"
+    },
+    {
+      "Name": "UnAuthorizedShipmentDetectSource_IncorrectDutyVat",
+      "Value": "IncorrectDutyVat"
+    },
+    {
+      "Name": "DHLNotifyType_All",
+      "Value": "All"
+    },
+    {
+      "Name": "DHLNotifyType_Collection",
+      "Value": "Collection"
+    },
+    {
+      "Name": "DHLNotifyType_Exception",
+      "Value": "Exception"
+    },
+    {
+      "Name": "DHLNotifyType_Invoice",
+      "Value": "Invoice"
+    },
+    {
+      "Name": "ServiceChannelCharge_Shipments",
+      "Value": "Shipments"
+    },
+    {
+      "Name": "ServiceChannelCharge_DutyVat",
+      "Value": "DutyVat"
+    },
+    {
+      "Name": "ServiceChannelCharge_CustomerSupport",
+      "Value": "CustomerSupport"
+    },
+    {
+      "Name": "GridFlags_None",
+      "Value": "None"
+    },
+    {
+      "Name": "GridFlags_CanView",
+      "Value": "View"
+    },
+    {
+      "Name": "GridFlags_CanAdd",
+      "Value": "Add"
+    },
+    {
+      "Name": "GridFlags_CanDelete",
+      "Value": "Delete"
+    },
+    {
+      "Name": "GridFlags_CanUpload",
+      "Value": "Upload"
+    },
+    {
+      "Name": "GridFlags_CanDownload",
+      "Value": "Download"
+    },
+    {
+      "Name": "GridFlags_CanUpdate",
+      "Value": "Update"
+    },
+    {
+      "Name": "GridFlags_IncludeArchived",
+      "Value": "ludeArchived"
+    },
+    {
+      "Name": "GridFlags_CanUploadAttachment",
+      "Value": "UploadAttachment"
+    },
+    {
+      "Name": "GridFlags_CanGridAttachment",
+      "Value": "GridAttachment"
+    },
+    {
+      "Name": "GridFlags_CanCopyRecord",
+      "Value": "CopyRecord"
+    },
+    {
+      "Name": "GridFlags_CanPrint",
+      "Value": "Print"
+    },
+    {
+      "Name": "GridFlags_CanPrintAll",
+      "Value": "PrintAll"
+    },
+    {
+      "Name": "GridFlags_CustomerSupport",
+      "Value": "tomerSupport"
+    },
+    {
+      "Name": "GridFlags_CanUndo",
+      "Value": "Undo"
+    },
+    {
+      "Name": "GridFlags_CanCS",
+      "Value": "CS"
+    },
+    {
+      "Name": "GridFlags_CanUV",
+      "Value": "UV"
+    },
+    {
+      "Name": "GridFlags_CanTransfer",
+      "Value": "Transfer"
+    },
+    {
+      "Name": "GridFlags_CanStart",
+      "Value": "Start"
+    },
+    {
+      "Name": "GridFlags_CanFinish",
+      "Value": "Finish"
+    },
+    {
+      "Name": "GridFlags_CanApprove",
+      "Value": "Approve"
+    },
+    {
+      "Name": "CompanyType_Supplier",
+      "Value": "Supplier"
+    },
+    {
+      "Name": "CompanyType_Client",
+      "Value": "Client"
+    },
+    {
+      "Name": "HttpMethod_HTTP_None",
+      "Value": "None"
+    },
+    {
+      "Name": "HttpMethod_HTTP_Get",
+      "Value": "Get"
+    },
+    {
+      "Name": "HttpMethod_HTTP_Post",
+      "Value": "Post"
+    },
+    {
+      "Name": "HttpMethod_HTTP_Delete",
+      "Value": "Delete"
+    },
+    {
+      "Name": "UiActionType_DatabaseGrid",
+      "Value": "Grid"
+    },
+    {
+      "Name": "UiActionType_Controller",
+      "Value": "Controller"
+    },
+    {
+      "Name": "UiActionType_ParentMenu",
+      "Value": "Menu"
+    },
+    {
+      "Name": "DutyPayment_PayByReceiver",
+      "Value": "Receiver"
+    },
+    {
+      "Name": "DutyPayment_PayByAccountHolder",
+      "Value": "Account Holder"
+    },
+    {
+      "Name": "WorkRequestType_RequestDTP",
+      "Value": "Request DTP"
+    },
+    {
+      "Name": "WorkRequestType_ChangeAddress",
+      "Value": "Change Address"
+    },
+    {
+      "Name": "WorkRequestType_RedirectToOSB",
+      "Value": "Redirect to OSB"
+    },
+    {
+      "Name": "WorkRequestType_WarehouseStorage",
+      "Value": "Storage"
+    },
+    {
+      "Name": "WorkRequestType_DestroyShipment",
+      "Value": "Destory Shipment"
+    },
+    {
+      "Name": "WorkRequestType_ReturnToSender",
+      "Value": "Return to Sender"
+    },
+    {
+      "Name": "WorkRequestType_LossDamageClaim",
+      "Value": "Loss Damage"
+    },
+    {
+      "Name": "WorkRequestType_DeleteShippingLabel",
+      "Value": "Delete Shipping Label"
+    },
+    {
+      "Name": "WorkRequestType_ShipperMistake",
+      "Value": "Shipper Mistake"
+    },
+    {
+      "Name": "WorkRequestType_DHLAtFault",
+      "Value": "DHL At Fault"
+    },
+    {
+      "Name": "WorkRequestType_SystemHelp",
+      "Value": "System Help"
+    },
+    {
+      "Name": "Content2_DOCUMENTS",
+      "Value": "Document"
+    },
+    {
+      "Name": "Content2_NON_DOCUMENTS",
+      "Value": "Package"
+    },
+    {
+      "Name": "DeliveryStatus_BA",
+      "Value": "Delivery cannot be completed without better address information"
+    },
+    {
+      "Name": "DeliveryStatus_CA",
+      "Value": "Receiver's business premises were closed and delivery could not be completed"
+    },
+    {
+      "Name": "DeliveryStatus_CD",
+      "Value": "Shipment's process has been delayed because import, export or transit clearance processing requirements cannot be completed due to a reason that has been agreed to be within DHL's control"
+    },
+    {
+      "Name": "DeliveryStatus_CM",
+      "Value": "Consignee is no longer at the delivery address shown on the piece label or waybill"
+    },
+    {
+      "Name": "DeliveryStatus_DM",
+      "Value": "Damage to all or part of the shipment or packaging. May or may not result in a service failure"
+    },
+    {
+      "Name": "DeliveryStatus_HP",
+      "Value": "Shipment and its associated piece(s) are on hold at a DHL facility pending payment of any applicable fees, and that the outbound processing or the delivery has not as yet been attempted."
+    },
+    {
+      "Name": "DeliveryStatus_IA",
+      "Value": "Images of shipment paperwork have been made available to the network"
+    },
+    {
+      "Name": "DeliveryStatus_MC",
+      "Value": "A piece has been received at a DHL facility with an incorrect service area code shown on the piece label"
+    },
+    {
+      "Name": "DeliveryStatus_MD",
+      "Value": "A shipment has missed the current courier delivery cycle"
+    },
+    {
+      "Name": "DeliveryStatus_MS",
+      "Value": "A piece has been incorrectly sorted despite the correct destination service area code present on both the piece label and/or the package"
+    },
+    {
+      "Name": "DeliveryStatus_NA",
+      "Value": "A pre-alerted shipment has not physically arrived on the advised linehaul movement"
+    },
+    {
+      "Name": "DeliveryStatus_ND",
+      "Value": "A piece was with a delivery courier but delivery has not been attempted or completed and no other service incident applies"
+    },
+    {
+      "Name": "DeliveryStatus_OH",
+      "Value": "The progress of a piece has been suspended, and that the piece is being held securely at a DHL facility until progress can continue"
+    },
+    {
+      "Name": "DeliveryStatus_RD",
+      "Value": "The receiver has refused to accept delivery of the piece"
+    },
+    {
+      "Name": "DeliveryStatus_SC",
+      "Value": "A change in service has been made to a shipment in transit"
+    },
+    {
+      "Name": "DeliveryStatus_TD",
+      "Value": "A delay has occured to a piece, shipment or handling unit during transport between two DHL facilities. This may or may not affect the Service Commitment for each individual shipment"
+    },
+    {
+      "Name": "DeliveryStatus_TI",
+      "Value": "A trace has been initiated against a shipment or piece"
+    },
+    {
+      "Name": "DeliveryStatus_TT",
+      "Value": "A trace has been terminated against a shipment or piece"
+    },
+    {
+      "Name": "DeliveryStatus_UD",
+      "Value": "A shipment's progress has been delayed because import, export or transit clearance-processing requirements cannot be completed due to a reason that has been agreed to be outside DHL'S control"
+    },
+    {
+      "Name": "DeliveryStatus_BR",
+      "Value": "The transfer of responsibility for a shipment, all associated pieces and related documentation, to a customer nominated Broker"
+    },
+    {
+      "Name": "DeliveryStatus_CS",
+      "Value": "A shipment is missing after all standard efforts have been made to locate it, it may also denote that a shipment has never physically been collected or received or signify the closing of a mis-coded shipment"
+    },
+    {
+      "Name": "DeliveryStatus_DD",
+      "Value": "the receiver has accepted delivery of a piece but considers the piece damaged or contents missing at time of delivery"
+    },
+    {
+      "Name": "DeliveryStatus_DS",
+      "Value": "A piece has been destroyed or disposed of in accordance with the appropriate DHL global standard operating procedure"
+    },
+    {
+      "Name": "DeliveryStatus_OK",
+      "Value": "the successful delivery of a piece at the time of delivery handover"
+    },
+    {
+      "Name": "DeliveryStatus_RT",
+      "Value": "A piece is being returned for a specific reason to the sender or DHL origin"
+    },
+    {
+      "Name": "DeliveryStatus_SS",
+      "Value": "A shipment's progress has been stopped or seized by an official government authority and that the shipment will not be delivered or returned to DHL"
+    },
+    {
+      "Name": "DeliveryStatus_TP",
+      "Value": "A third party will deliver a piece. No delivery details are expected"
+    },
+    {
+      "Name": "DeliveryStatus_HK",
+      "Value": "The shipment has been collected from shipper and scanned by DHL"
+    },
+    {
+      "Name": "DeliveryStatus_AD",
+      "Value": "A piece is held at the destination service centre and is awaiting its expected and agreed delivery date, e.g. Public Holiday or for pieces where a pre-agreed delivery date or schedule has been made"
+    },
+    {
+      "Name": "DeliveryStatus_AF",
+      "Value": "The arrival of a piece at a DHL transit facility or combined (Hub/GTW and service centre) facility"
+    },
+    {
+      "Name": "DeliveryStatus_AR",
+      "Value": "The arrival of a piece at the destination delivery facility"
+    },
+    {
+      "Name": "DeliveryStatus_BL",
+      "Value": "The location of a piece as it is placed into a regulatory control bond"
+    },
+    {
+      "Name": "DeliveryStatus_BN",
+      "Value": "Customer's broker has been contacted to arrange for the clearance of the shipment"
+    },
+    {
+      "Name": "DeliveryStatus_CC",
+      "Value": "The piece is awaiting receiver collection at a DHL location as per customer request"
+    },
+    {
+      "Name": "DeliveryStatus_CI",
+      "Value": "A piece has been received into a facility or a specific point in the process"
+    },
+    {
+      "Name": "DeliveryStatus_CR",
+      "Value": "Shipment's release from clearance processing or from a bonded area"
+    },
+    {
+      "Name": "DeliveryStatus_CU",
+      "Value": "A piece or handling unit uplift  by a movement operator has been confirmed to DHL. This may or may not affect the service commitment for each shipment"
+    },
+    {
+      "Name": "DeliveryStatus_DF",
+      "Value": "the departure of a shipment from the control of a DHL Facility"
+    },
+    {
+      "Name": "DeliveryStatus_DI",
+      "Value": "A shipment has had a duty invoice raised against it during clearance and that fees (duties and / or taxes) will be payable on or before delivery"
+    },
+    {
+      "Name": "DeliveryStatus_ES",
+      "Value": "A customs entry has been submitted for clearance of a shipment"
+    },
+    {
+      "Name": "DeliveryStatus_FD",
+      "Value": "The hand over of a piece to a third party delivery agent where delivery details are expected. May also be used for regionally approved remote DHL service areas where deliveries will not be attempted until the next business day or greater"
+    },
+    {
+      "Name": "DeliveryStatus_HI",
+      "Value": "A piece has been lodged into the held inventory control area"
+    },
+    {
+      "Name": "DeliveryStatus_HO",
+      "Value": "A piece held in inventory status has been resolved and the piece is ready to be taken out for further processing"
+    },
+    {
+      "Name": "DeliveryStatus_IC",
+      "Value": "A declarable shipment is under routine clearance processing"
+    },
+    {
+      "Name": "DeliveryStatus_PD",
+      "Value": "A delivery has been made and signed for, but not for all pieces of a shipment"
+    },
+    {
+      "Name": "DeliveryStatus_PL",
+      "Value": "One of a number of processes: The containerisation of a piece, The assigning of one handling unit to another, The assigning of a handling unit to a movement or the reporting of piece/shipment/handling unit handover between couriers."
+    },
+    {
+      "Name": "DeliveryStatus_PU",
+      "Value": "The physical receipt of a shipment from a shipper"
+    },
+    {
+      "Name": "DeliveryStatus_RR",
+      "Value": "Customs has provided or updated a status for a house waybill declaration which has been submitted to customs"
+    },
+    {
+      "Name": "DeliveryStatus_RW",
+      "Value": "A piece has had its weight and/or dimensions captured"
+    },
+    {
+      "Name": "DeliveryStatus_SA",
+      "Value": "The physical acceptance of a piece by an agent or when dropped off by a customer to a service point"
+    },
+    {
+      "Name": "DeliveryStatus_SD",
+      "Value": "Shipment data has been received into the tracking system"
+    },
+    {
+      "Name": "DeliveryStatus_SI",
+      "Value": "A shipment inspection (content and/or security) related event has been conducted by DHL or an assigned agent for shipment acceptability and/or security purposes"
+    },
+    {
+      "Name": "DeliveryStatus_SM",
+      "Value": "A piece is now scheduled to move on a specified date and time"
+    },
+    {
+      "Name": "DeliveryStatus_ST",
+      "Value": "A special handling instruction has been raised against a piece, shipment or handling unit"
+    },
+    {
+      "Name": "DeliveryStatus_TR",
+      "Value": "The tranfer of a piece outside a DHL facility in an unopened positively containerised handling unit."
+    },
+    {
+      "Name": "DeliveryStatus_WC",
+      "Value": "A piece has been allocated to a delivery route and that a delivery attempt will soon be made with delivery details expected on the same day"
+    },
+    {
+      "Name": "DeliveryStatus_YY",
+      "Value": "A shipment has been passed directly to a sorting hub, without receiving a scan"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_BOX",
+      "Value": "Boxes"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item2GM",
+      "Value": "Centigram"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item2M",
+      "Value": "Centimeters"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item2M3",
+      "Value": "Cubic Centimeters"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item3M3",
+      "Value": "Cubic Feet"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_M3",
+      "Value": "Cubic Meters"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_DPR",
+      "Value": "Dozen Pairs"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_DOZ",
+      "Value": "Dozen"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item2NO",
+      "Value": "Each"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_PCS",
+      "Value": "Pieces"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_GM",
+      "Value": "Grams"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_GRS",
+      "Value": "Gross"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_KG",
+      "Value": "Kilograms"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_L",
+      "Value": "Liters"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_M",
+      "Value": "Meters"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item3GM",
+      "Value": "Milligrams"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item3L",
+      "Value": "Millimeters"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_X",
+      "Value": "No Uint Required"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_NO",
+      "Value": "Number"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item2KG",
+      "Value": "Ounces"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_PRS",
+      "Value": "Pairs"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item2L",
+      "Value": "Gallons"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item3KG",
+      "Value": "Pounds"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_CM2",
+      "Value": "Square Centimeters"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item2M2",
+      "Value": "Square Feet"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item3M2",
+      "Value": "Square Inches"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_M2",
+      "Value": "Square Meters"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item4M2",
+      "Value": "Square Yards"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_Item3M",
+      "Value": "Yards"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_UOM",
+      "Value": "UOM"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_CM",
+      "Value": "CM"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_CONE",
+      "Value": "CONE"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_CT",
+      "Value": "CT"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_EA",
+      "Value": "EA"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_LBS",
+      "Value": "LBS"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_RILL",
+      "Value": "RILL"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_ROLL",
+      "Value": "ROLL"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_SET",
+      "Value": "SET"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_TU",
+      "Value": "TU"
+    },
+    {
+      "Name": "QuantityUnitOfMeasurement_YDS",
+      "Value": "YDS"
+    },
+    {
+      "Name": "DropOffType2_REGULAR_PICKUP",
+      "Value": "Regular Pickup"
+    },
+    {
+      "Name": "DropOffType2_REQUEST_COURIER",
+      "Value": "Request Courier"
+    },
+    {
+      "Name": "PaymentInfo2_CFR",
+      "Value": "CFR - Cost And Freight"
+    },
+    {
+      "Name": "PaymentInfo2_CIF",
+      "Value": "CIF - Cost, Insurance and Freight"
+    },
+    {
+      "Name": "PaymentInfo2_CIP",
+      "Value": "CIP - Carriage And Insurance Paid To"
+    },
+    {
+      "Name": "PaymentInfo2_CPT",
+      "Value": "CPT - Carriage Paid To"
+    },
+    {
+      "Name": "PaymentInfo2_DAF",
+      "Value": "DAF - Delivered At Frontier"
+    },
+    {
+      "Name": "PaymentInfo2_DDP",
+      "Value": "DDP - Delivery Duty Paid"
+    },
+    {
+      "Name": "PaymentInfo2_DDU",
+      "Value": "DDU - Delivery Duty Unpaid"
+    },
+    {
+      "Name": "PaymentInfo2_DAP",
+      "Value": "DAP - Delivered At Place"
+    },
+    {
+      "Name": "PaymentInfo2_DEQ",
+      "Value": "DEQ - Delivered Ex Quay (Duty Paid)"
+    },
+    {
+      "Name": "PaymentInfo2_DES",
+      "Value": "DES - Delivered Ex Ship"
+    },
+    {
+      "Name": "PaymentInfo2_EXW",
+      "Value": "EXW - Ex Works"
+    },
+    {
+      "Name": "PaymentInfo2_FAS",
+      "Value": "FAS - Free Alongside Ship"
+    },
+    {
+      "Name": "PaymentInfo2_FCA",
+      "Value": "FCA - Free Carrier"
+    },
+    {
+      "Name": "PaymentInfo2_FOB",
+      "Value": "FOB - Free On Board"
+    },
+    {
+      "Name": "DayOfWeek_Sunday",
+      "Value": "Sunday"
+    },
+    {
+      "Name": "DayOfWeek_Monday",
+      "Value": "Monday"
+    },
+    {
+      "Name": "DayOfWeek_Tuesday",
+      "Value": "Tuesday"
+    },
+    {
+      "Name": "DayOfWeek_Wednesday",
+      "Value": "Wednesday"
+    },
+    {
+      "Name": "DayOfWeek_Thursday",
+      "Value": "Thursday"
+    },
+    {
+      "Name": "DayOfWeek_Friday",
+      "Value": "Friday"
+    },
+    {
+      "Name": "DayOfWeek_Saturday",
+      "Value": "Saturday"
+    },
+    {
+      "Name": "ShipmentPurpose2_PERSONAL",
+      "Value": "Personal"
+    },
+    {
+      "Name": "ShipmentPurpose2_COMMERCIAL",
+      "Value": "Commercial"
+    },
+    {
+      "Name": "Country_GB",
+      "Value": "United Kingdom"
+    },
+    {
+      "Name": "Country_CN",
+      "Value": "China"
+    },
+    {
+      "Name": "Country_US",
+      "Value": "United States"
+    },
+    {
+      "Name": "Country_DE",
+      "Value": "Germany"
+    },
+    {
+      "Name": "Country_HK",
+      "Value": "Hong Kong"
+    },
+    {
+      "Name": "Currency_USD",
+      "Value": "US Dollar"
+    },
+    {
+      "Name": "Currency_EUR",
+      "Value": "Euro"
+    },
+    {
+      "Name": "Currency_CNY",
+      "Value": "Yuan Renminbi"
+    },
+    {
+      "Name": "Currency_GBP",
+      "Value": "Pound Sterling"
+    },
+    {
+      "Name": "Currency_HKD",
+      "Value": "Hong Kong Dollar"
+    },
+    {
+      "Name": "ScopeType_User",
+      "Value": "User"
+    },
+    {
+      "Name": "ScopeType_Company",
+      "Value": "Company"
+    },
+    {
+      "Name": "ScopeType_Tenant",
+      "Value": "Tenant"
+    },
+    {
+      "Name": "ScopeType_Host",
+      "Value": "Host"
+    },
+    {
+      "Name": "EXPRESS WORLDWIDE DOCUMENTS",
+      "Value": "EXPRESS WORLDWIDE DOCUMENTS"
+    },
+    {
+      "Name": "EXPRESS 12:00 DOCUMENTS",
+      "Value": "EXPRESS 12:00 DOCUMENTS"
+    },
+    {
+      "Name": "EXPRESS WORLDWIDE",
+      "Value": "EXPRESS WORLDWIDE"
+    },
+    {
+      "Name": "EXPRESS 12:00",
+      "Value": "EXPRESS 12:00"
+    }
+  ],
+  "Common": [
+    {
+      "Name": "PrevPassword",
+      "Value": "Previous Password"
+    },
+    {
+      "Name": "Permissions",
+      "Value": "Permissions"
+    },
+    {
+      "Name": "LockoutEnd",
+      "Value": "Lockout End Date"
+    },
+    {
+      "Name": "TwoFactorEnabled",
+      "Value": "Two Factor Enabled"
+    },
+    {
+      "Name": "EmailConfirmed",
+      "Value": "Email Confirmed"
+    },
+    {
+      "Name": "PhoneNumberConfirmed",
+      "Value": "Phone Number Confirmed"
+    },
+    {
+      "Name": "LockoutEnabled",
+      "Value": "Lockout Enabled"
+    },
+    {
+      "Name": "PhoneNumber",
+      "Value": "Phone Number"
+    },
+    {
+      "Name": "WithChildrenTrackingHistory",
+      "Value": "Tracking History"
+    },
+    {
+      "Name": "DutyVatCharged",
+      "Value": "Importing Charge"
+    },
+    {
+      "Name": "ServiceChannelName",
+      "Value": "Service Account Number"
+    },
+    {
+      "Name": "ServiceChannelId",
+      "Value": "Service Account Id"
+    },
+    {
+      "Name": "ApprovedTime",
+      "Value": "Approved Time"
+    },
+    {
+      "Name": "AssignedToName",
+      "Value": "Staff Assigned To"
+    },
+    {
+      "Name": "AssignedTo",
+      "Value": "Staff Id Assigned to"
+    },
+    {
+      "Name": "SourceId",
+      "Value": "Source Id"
+    },
+    {
+      "Name": "SourceGridNameDisplay",
+      "Value": "Source Grid Name"
+    },
+    {
+      "Name": "SourceGridId",
+      "Value": "Source Grid Id"
+    },
+    {
+      "Name": "FullUserName",
+      "Value": "Full User Name"
+    },
+    {
+      "Name": "Priority",
+      "Value": "Priority"
+    },
+    {
+      "Name": "OriginInvoiceId",
+      "Value": "Origin Invoice Id"
+    },
+    {
+      "Name": "FullBalance",
+      "Value": "Full Balance"
+    },
+    {
+      "Name": "WithChildrenPaymentToSupplier",
+      "Value": "Payments To Supplier"
+    },
+    {
+      "Name": "ReceiverAddresses",
+      "Value": "Receiver Addresses"
+    },
+    {
+      "Name": "SenderAddresses",
+      "Value": "Sender Addresses"
+    },
+    {
+      "Name": "CollectionAddresses",
+      "Value": "Collection Addresses"
+    },
+    {
+      "Name": "WithChildrenServiceChannels",
+      "Value": "Service Account Numbers"
+    },
+    {
+      "Name": "InvoiceTo",
+      "Value": "Invoiced Company"
+    },
+    {
+      "Name": "CompletionTime",
+      "Value": "Completion Time"
+    },
+    {
+      "Name": "StartTime",
+      "Value": "Start Time"
+    },
+    {
+      "Name": "PaymentToSupplier",
+      "Value": "Payment To Supplier"
+    },
+    {
+      "Name": "PaymentToSupplierId",
+      "Value": "Payment To Supplier Id"
+    },
+    {
+      "Name": "ApprovedByUserName",
+      "Value": "Approved By"
+    },
+    {
+      "Name": "ApprovedByUserId",
+      "Value": "Approved By User Id"
+    },
+    {
+      "Name": "ExtraChargeMonth",
+      "Value": "Charge Month"
+    },
+    {
+      "Name": "SupplierInvoiceId",
+      "Value": "Supplier Invoice Id"
+    },
+    {
+      "Name": "CustomerInvoice",
+      "Value": "Customer Invoices"
+    },
+    {
+      "Name": "SupplierInvoice",
+      "Value": "Supplier Invoices"
+    },
+    {
+      "Name": "WithChildrenEmails",
+      "Value": "Emails"
+    },
+    {
+      "Name": "UserName",
+      "Value": "User name"
+    },
+    {
+      "Name": "InvoiceTotal",
+      "Value": "Invoice Total"
+    },
+    {
+      "Name": "WorkRequestMapId",
+      "Value": "Work Request Map Id"
+    },
+    {
+      "Name": "WorkRequestMap",
+      "Value": "Work Request Map"
+    },
+    {
+      "Name": "WithChildrenCustomerPayments",
+      "Value": "Customer Payments"
+    },
+    {
+      "Name": "ShippingLabelId",
+      "Value": "Shipping Label Id"
+    },
+    {
+      "Name": "ShippingLabel",
+      "Value": "Shipping Label"
+    },
+    {
+      "Name": "WithChildrenPackageList",
+      "Value": "Package List"
+    },
+    {
+      "Name": "ReceiverAddress",
+      "Value": "Receiver Address"
+    },
+    {
+      "Name": "ReceiverAddressId",
+      "Value": "Receiver Address Id"
+    },
+    {
+      "Name": "WithChildrenWorkRequests",
+      "Value": "Work Requests"
+    },
+    {
+      "Name": "WithChildrenDutyVatCharges",
+      "Value": "Importing Charges"
+    },
+    {
+      "Name": "WithChildrenInvoicedShipments",
+      "Value": "Invoice Shipments"
+    },
+    {
+      "Name": "TrackingHistory",
+      "Value": "Tracking History"
+    },
+    {
+      "Name": "TrackingHistoryId",
+      "Value": "Tracking History Id"
+    },
+    {
+      "Name": "CollectionAddress",
+      "Value": "Collection Addresses"
+    },
+    {
+      "Name": "Supplier",
+      "Value": "Supplier"
+    },
+    {
+      "Name": "BankTransId",
+      "Value": "Bank Transfer Id"
+    },
+    {
+      "Name": "BankTrans",
+      "Value": "Bank Transfer"
+    },
+    {
+      "Name": "CustomerPaymentId",
+      "Value": "Customer Payment Id"
+    },
+    {
+      "Name": "CustomerPayment",
+      "Value": "Customer Payment"
+    },
+    {
+      "Name": "Project",
+      "Value": "Project"
+    },
+    {
+      "Name": "WithChildrenCustomDeclarations",
+      "Value": "Custom Declarations"
+    },
+    {
+      "Name": "WithChildrenCustomerInvoices",
+      "Value": "Customer Invoices"
+    },
+    {
+      "Name": "WithChildrenSupplierInvoices",
+      "Value": "Supplier Invoices"
+    },
+    {
+      "Name": "WithChildrenAddressEntities",
+      "Value": "Addresses"
+    },
+    {
+      "Name": "Payments",
+      "Value": "Payments"
+    },
+    {
+      "Name": "WithChidrenBankPayments",
+      "Value": "Bank Payments"
+    },
+    {
+      "Name": "Deleted",
+      "Value": "Deleted"
+    },
+    {
+      "Name": "IsDefault",
+      "Value": "Default"
+    },
+    {
+      "Name": "IsStatic",
+      "Value": "Static"
+    },
+    {
+      "Name": "DisplayName",
+      "Value": "Display Name"
+    },
+    {
+      "Name": "UiRouter",
+      "Value": "URL"
+    },
+    {
+      "Name": "ParentId",
+      "Value": "Parent Id"
+    },
+    {
+      "Name": "HttpMethod",
+      "Value": "Http Method"
+    },
+    {
+      "Name": "UiActionType",
+      "Value": "Ui Action Type"
+    },
+    {
+      "Name": "AccessModeForCompany",
+      "Value": "Company Access"
+    },
+    {
+      "Name": "AccessModeForTenant",
+      "Value": "Tenant Access"
+    },
+    {
+      "Name": "AccessModeForHost",
+      "Value": "Host Access"
+    },
+    {
+      "Name": "Roles",
+      "Value": "Roles"
+    },
+    {
+      "Name": "AccessMode",
+      "Value": "Access Mode"
+    },
+    {
+      "Name": "UserId",
+      "Value": "User Id"
+    },
+    {
+      "Name": "Value",
+      "Value": "Value"
+    },
+    {
+      "Name": "LastModifierUser",
+      "Value": "Last Modifier User"
+    },
+    {
+      "Name": "IsLockEnabled",
+      "Value": "Lock Enabled"
+    },
+    {
+      "Name": "LockoutEndDate",
+      "Value": "Lockout End Date"
+    },
+    {
+      "Name": "PasswordResetCode",
+      "Value": "Password Reset Code"
+    },
+    {
+      "Name": "IsEmailConfirmed",
+      "Value": "Email Confirmed"
+    },
+    {
+      "Name": "CreationTime",
+      "Value": "Creation Time"
+    },
+    {
+      "Name": "UnitName",
+      "Value": "Unit"
+    },
+    {
+      "Name": "Description",
+      "Value": "Description"
+    },
+    {
+      "Name": "Balance",
+      "Value": "Balance"
+    },
+    {
+      "Name": "CreatedUser",
+      "Value": "Created User"
+    },
+    {
+      "Name": "CreatorUserId",
+      "Value": "Creator User"
+    },
+    {
+      "Name": "ViewDetail",
+      "Value": "View Detail"
+    },
+    {
+      "Name": "Id",
+      "Value": "ID"
+    },
+    {
+      "Name": "Parent",
+      "Value": "Parent"
+    },
+    {
+      "Name": "WithChildrenAttachments",
+      "Value": "Attachments"
+    },
+    {
+      "Name": "Status",
+      "Value": "Status"
+    },
+    {
+      "Name": "CompanyName",
+      "Value": "Company name"
+    },
+    {
+      "Name": "CompanyInvoiceShortName",
+      "Value": "INV Pre Name"
+    },
+    {
+      "Name": "CompanyId",
+      "Value": "Company Name"
+    },
+    {
+      "Name": "TenantId",
+      "Value": "Tenant Id"
+    },
+    {
+      "Name": "TenantName",
+      "Value": "Tenant Name"
+    },
+    {
+      "Name": "Operation",
+      "Value": "Operation"
+    },
+    {
+      "Name": "ExecutedEngineIDs",
+      "Value": "Executed Engine IDs"
+    },
+    {
+      "Name": "PaidTotal",
+      "Value": "Paid Total"
+    },
+    {
+      "Name": "DbGridName",
+      "Value": "Grid Name"
+    },
+    {
+      "Name": "DbGridId",
+      "Value": "Grid Id"
+    },
+    {
+      "Name": "DbGridNameDisplay",
+      "Value": "Grid Display Name"
+    },
+    {
+      "Name": "LastModifierUserId",
+      "Value": "Modified By"
+    },
+    {
+      "Name": "LastModificationTime",
+      "Value": "Last Modification Time"
+    },
+    {
+      "Name": "CustomerName",
+      "Value": "Customer Name"
+    },
+    {
+      "Name": "ProjectName",
+      "Value": "Project Name"
+    },
+    {
+      "Name": "ProjectNameCn",
+      "Value": "Project Name(CN)"
+    },
+    {
+      "Name": "ContactFullName",
+      "Value": "Contanct Full Name"
+    },
+    {
+      "Name": "ContactCnName",
+      "Value": "Contact Chinese Name"
+    },
+    {
+      "Name": "EmailAddress",
+      "Value": "Email Address"
+    },
+    {
+      "Name": "InternalProject",
+      "Value": "Internal Project"
+    },
+    {
+      "Name": "ProjectId",
+      "Value": "Project Id"
+    },
+    {
+      "Name": "SupplierId",
+      "Value": "Supplier Id"
+    },
+    {
+      "Name": "VirtualBankAccount",
+      "Value": "Virtual Bank Account"
+    },
+    {
+      "Name": "ShipperCompanyName",
+      "Value": "Shipper Company Name"
+    },
+    {
+      "Name": "InvoiceNo",
+      "Value": "Invoice No"
+    },
+    {
+      "Name": "InvoiceDate",
+      "Value": "Invoice Date"
+    },
+    {
+      "Name": "AccountNumber",
+      "Value": "Account Number"
+    },
+    {
+      "Name": "LabelAccountNumber",
+      "Value": "Label Account Number"
+    },
+    {
+      "Name": "LabelAccount",
+      "Value": "Other Company Account"
+    },
+    {
+      "Name": "Vat",
+      "Value": "VAT"
+    },
+    {
+      "Name": "Boxes",
+      "Value": "Box Number"
+    },
+    {
+      "Name": "ShipmentDate",
+      "Value": "Shipment Date"
+    },
+    {
+      "Name": "Weight",
+      "Value": "Weight(KG)"
+    },
+    {
+      "Name": "TrackingNum",
+      "Value": "Tracking Number"
+    },
+    {
+      "Name": "EstimatedRate",
+      "Value": "Estimated Price"
+    },
+    {
+      "Name": "ActualRate",
+      "Value": "Actual Rate"
+    },
+    {
+      "Name": "CustomerRef",
+      "Value": "Customer Reference"
+    },
+    {
+      "Name": "SupplierInvInfo",
+      "Value": "Supplier Invoice"
+    },
+    {
+      "Name": "NettCharge",
+      "Value": "Net Charge"
+    },
+    {
+      "Name": "TaxCode",
+      "Value": "Tax Code"
+    },
+    {
+      "Name": "LineNumber",
+      "Value": "Line Number"
+    },
+    {
+      "Name": "DeclaredWeight",
+      "Value": "Declared Weight"
+    },
+    {
+      "Name": "CollectionAddressName",
+      "Value": "Authorized Collection Address"
+    },
+    {
+      "Name": "CollectionAddressId",
+      "Value": "Authorized Collection Address Id"
+    },
+    {
+      "Name": "DeclaredValue",
+      "Value": "Declared Value"
+    },
+    {
+      "Name": "Currency",
+      "Value": "Declared Currency"
+    },
+    {
+      "Name": "DutyPaymentInfo",
+      "Value": "Payment Info"
+    },
+    {
+      "Name": "DropoffType",
+      "Value": "Dropoff Type"
+    },
+    {
+      "Name": "Content",
+      "Value": "Content"
+    },
+    {
+      "Name": "ServiceType",
+      "Value": "Service Type"
+    },
+    {
+      "Name": "InvoiceFileName",
+      "Value": "Invoice File"
+    },
+    {
+      "Name": "ShipperName",
+      "Value": "Shipper Name"
+    },
+    {
+      "Name": "Length",
+      "Value": "Length(CM)"
+    },
+    {
+      "Name": "Width",
+      "Value": "Width(CM)"
+    },
+    {
+      "Name": "Height",
+      "Value": "Height(CM)"
+    },
+    {
+      "Name": "AuthorizedStatus",
+      "Value": "Authorized Status"
+    },
+    {
+      "Name": "ContactName",
+      "Value": "Contact Name"
+    },
+    {
+      "Name": "ContactCompanyName",
+      "Value": "Contact Company"
+    },
+    {
+      "Name": "AddressLine1",
+      "Value": "Address Line 1"
+    },
+    {
+      "Name": "AddressLine2",
+      "Value": "Address Line 2"
+    },
+    {
+      "Name": "AddressLine3",
+      "Value": "Address Line 3"
+    },
+    {
+      "Name": "PostCode",
+      "Value": "Post Code"
+    },
+    {
+      "Name": "Country",
+      "Value": "Country"
+    },
+    {
+      "Name": "Email",
+      "Value": "Email address"
+    },
+    {
+      "Name": "Phone",
+      "Value": "Phone Number"
+    },
+    {
+      "Name": "Mobile",
+      "Value": "Mobile Phone"
+    },
+    {
+      "Name": "ShortName",
+      "Value": "Short Name"
+    },
+    {
+      "Name": "From",
+      "Value": "From"
+    },
+    {
+      "Name": "To",
+      "Value": "To"
+    },
+    {
+      "Name": "CC",
+      "Value": "CC"
+    },
+    {
+      "Name": "DateSent",
+      "Value": "Date Sent"
+    },
+    {
+      "Name": "DateReceived",
+      "Value": "Date Received"
+    },
+    {
+      "Name": "Subject",
+      "Value": "Subject"
+    },
+    {
+      "Name": "Body",
+      "Value": "Body"
+    },
+    {
+      "Name": "Html",
+      "Value": "Html"
+    },
+    {
+      "Name": "ThreadId",
+      "Value": "Thread Id"
+    },
+    {
+      "Name": "AssignedFolder",
+      "Value": "Assigned Folder"
+    },
+    {
+      "Name": "MyEmail",
+      "Value": "System Email"
+    },
+    {
+      "Name": "ShipFrom",
+      "Value": "Ship From"
+    },
+    {
+      "Name": "ShipTo",
+      "Value": "Ship To"
+    },
+    {
+      "Name": "Service",
+      "Value": "Service"
+    },
+    {
+      "Name": "DHLNotifyType",
+      "Value": "DHL Notification Type"
+    },
+    {
+      "Name": "EventTime",
+      "Value": "Event Time"
+    },
+    {
+      "Name": "Source",
+      "Value": "Source"
+    },
+    {
+      "Name": "Finished",
+      "Value": "Finished"
+    },
+    {
+      "Name": "StartDate",
+      "Value": "start Date"
+    },
+    {
+      "Name": "CompletionDate",
+      "Value": "Completion Date"
+    },
+    {
+      "Name": "CompanyType",
+      "Value": "Company Type"
+    },
+    {
+      "Name": "Website",
+      "Value": "Website"
+    },
+    {
+      "Name": "CustomerCompanyName",
+      "Value": "Customer Company Name"
+    },
+    {
+      "Name": "MyCompanyName",
+      "Value": "Company Name"
+    },
+    {
+      "Name": "CustomerCompanyId",
+      "Value": "Customer Company Name"
+    },
+    {
+      "Name": "BankAccountId",
+      "Value": "Bank Account Id"
+    },
+    {
+      "Name": "CustomerInvoiceId",
+      "Value": "Customer Invoice"
+    },
+    {
+      "Name": "BankAccountName",
+      "Value": "Bank Account Name"
+    },
+    {
+      "Name": "SupplierName",
+      "Value": "Supplier Name"
+    },
+    {
+      "Name": "SupplierAccountNumber",
+      "Value": "Account Number"
+    },
+    {
+      "Name": "JsonMarginTable",
+      "Value": "Margin Settins"
+    },
+    {
+      "Name": "MarginKeywords",
+      "Value": "Margin Keyword"
+    },
+    {
+      "Name": "MarginSetting",
+      "Value": "Margin Setting"
+    },
+    {
+      "Name": "BalanceIndicator",
+      "Value": "Remain Balance"
+    },
+    {
+      "Name": "ProjectDescription",
+      "Value": "Project Description"
+    },
+    {
+      "Name": "ForeignBalance",
+      "Value": "Amount In Foreign Currency"
+    },
+    {
+      "Name": "ExchangeRate",
+      "Value": "FX Exchange Rate"
+    },
+    {
+      "Name": "DutyVatSurcharge",
+      "Value": "Duty/Vat Invoice Surcharge"
+    },
+    {
+      "Name": "VatNumber",
+      "Value": "Vat Number"
+    },
+    {
+      "Name": "DeclarationNumber",
+      "Value": "Declaration"
+    },
+    {
+      "Name": "Commission",
+      "Value": "Commission"
+    },
+    {
+      "Name": "DutyCharge",
+      "Value": "Duty Charge"
+    },
+    {
+      "Name": "TotalNetCharge",
+      "Value": "Net Charge"
+    },
+    {
+      "Name": "VatCharge",
+      "Value": "Vat Charge"
+    },
+    {
+      "Name": "InvoiceType",
+      "Value": "Invoice Type"
+    },
+    {
+      "Name": "CustomerSupportSurcharge",
+      "Value": "Customer Support charge"
+    },
+    {
+      "Name": "WorkType",
+      "Value": "Work Type"
+    },
+    {
+      "Name": "RefundTotal",
+      "Value": "Refund Total"
+    },
+    {
+      "Name": "ShipmentCharged",
+      "Value": "Shipment Charged"
+    },
+    {
+      "Name": "ShipmentChargeRefund",
+      "Value": "Shipment Charge Refunded"
+    },
+    {
+      "Name": "DutyVatRefunded",
+      "Value": "DutyVat Refunded"
+    },
+    {
+      "Name": "Index",
+      "Value": "Index"
+    },
+    {
+      "Name": "FileName",
+      "Value": "File Name"
+    },
+    {
+      "Name": "FolderName",
+      "Value": "Folder Name"
+    },
+    {
+      "Name": "FileContent",
+      "Value": "File Content"
+    },
+    {
+      "Name": "IsDirectory",
+      "Value": "Directory"
+    },
+    {
+      "Name": "TransactionId",
+      "Value": "Transaction Id"
+    },
+    {
+      "Name": "FileLength",
+      "Value": "File Size"
+    },
+    {
+      "Name": "RelatedGridId",
+      "Value": "Related Grid Id"
+    },
+    {
+      "Name": "ShipmentPurpose",
+      "Value": "Shipment Purpose"
+    },
+    {
+      "Name": "SequenceNumber",
+      "Value": "Sequence Number"
+    },
+    {
+      "Name": "Quantity",
+      "Value": "Quantity"
+    },
+    {
+      "Name": "ItemValue",
+      "Value": "Value"
+    },
+    {
+      "Name": "GrossWeight",
+      "Value": "Gross Weight"
+    },
+    {
+      "Name": "NetWeight",
+      "Value": "Net Weight"
+    },
+    {
+      "Name": "CommodityCode",
+      "Value": "Commodity Code"
+    },
+    {
+      "Name": "DHLUnitName",
+      "Value": "Unit Name"
+    },
+    {
+      "Name": "InvoiceNumber",
+      "Value": "Invoice Number"
+    },
+    {
+      "Name": "MadeInCountry",
+      "Value": "Made In"
+    },
+    {
+      "Name": "ScopeType",
+      "Value": "Scope Type"
+    },
+    {
+      "Name": "ImportVATNo",
+      "Value": "VAT Number"
+    },
+    {
+      "Name": "EORI",
+      "Value": "EORI"
+    },
+    {
+      "Name": "DutyPaidBy",
+      "Value": "Duty Paid By"
+    },
+    {
+      "Name": "Printed",
+      "Value": "Printed"
+    },
+    {
+      "Name": "PI967_Des",
+      "Value": "PI967 Description"
+    },
+    {
+      "Name": "PI967_2_Des",
+      "Value": "PI967_2 Description"
+    },
+    {
+      "Name": "BTN_BATTERY_Des",
+      "Value": "Button Battery Description"
+    },
+    {
+      "Name": "EmailConfirmationCode",
+      "Value": "Email Confirmation Code"
+    },
+    {
+      "Name": "BuildingName",
+      "Value": "Building Name"
+    },
+    {
+      "Name": "CityDistrict",
+      "Value": "City District"
+    },
+    {
+      "Name": "City",
+      "Value": "City"
+    },
+    {
+      "Name": "ScanWeight",
+      "Value": "Scan Weight"
+    },
+    {
+      "Name": "ScanRate",
+      "Value": "Scan Rate"
+    },
+    {
+      "Name": "TrackingHistoryList",
+      "Value": "Tracking Details"
+    },
+    {
+      "Name": "DeliveryDate",
+      "Value": "Delivery Date"
+    },
+    {
+      "Name": "ReportStationCode",
+      "Value": "Shipment Location"
+    },
+    {
+      "Name": "Signatory",
+      "Value": "Signed By"
+    },
+    {
+      "Name": "OriStation",
+      "Value": "Origin Area"
+    },
+    {
+      "Name": "DesStation",
+      "Value": "Destination Area"
+    },
+    {
+      "Name": "DeliveryStatus",
+      "Value": "Order Status"
+    },
+    {
+      "Name": "ShippingLabelBalance",
+      "Value": "Order Balance"
+    },
+    {
+      "Name": "CustomerSupportBalance",
+      "Value": "Support Balance"
+    },
+    {
+      "Name": "InvoicedShipmentBalance",
+      "Value": "Invoiced Balance"
+    },
+    {
+      "Name": "DutyVatBalance",
+      "Value": "DutyVat Balance"
+    },
+    {
+      "Name": "ServiceRequestBalance",
+      "Value": "Service Balance"
+    },
+    {
+      "Name": "CustomerInvoiceBalance",
+      "Value": "Customer Invoice Balance"
+    },
+    {
+      "Name": "CustomerCreditBalance",
+      "Value": "Customer Payment Balance"
+    },
+    {
+      "Name": "SupplierInvBalance",
+      "Value": "Supplier Invoice Balance"
+    },
+    {
+      "Name": "PaymentInBalance",
+      "Value": "Customer Payment Balance"
+    },
+    {
+      "Name": "PaymentOutBalance",
+      "Value": "Payment To Supplier Balance"
+    },
+    {
+      "Name": "ForTest",
+      "Value": "For Test"
+    },
+    {
+      "Name": "Counterfeit",
+      "Value": "Counterfeit"
+    },
+    {
+      "Name": "UnderValuation",
+      "Value": "Under Valuation"
+    },
+    {
+      "Name": "MaximumDHLDailyVolume",
+      "Value": "DHL Daily Limit"
+    },
+    {
+      "Name": "JsonWeeklySettings",
+      "Value": "Weekly Settings"
+    },
+    {
+      "Name": "Day",
+      "Value": "Day"
+    },
+    {
+      "Name": "Enabled",
+      "Value": "Enabled"
+    },
+    {
+      "Name": "HostSurchargeSettings",
+      "Value": "Host Surcharge Settings"
+    },
+    {
+      "Name": "TenantSurchargeSettings",
+      "Value": "Tenant Surcharge Settings"
+    },
+    {
+      "Name": "HostExtraCharge",
+      "Value": "Host Surcharge"
+    },
+    {
+      "Name": "TenantExtraCharge",
+      "Value": "Tenant Surcharge"
+    },
+    {
+      "Name": "ExtraChargeSetting",
+      "Value": "Extra Surcharge"
+    },
+    {
+      "Name": "TenantSurchargeBalance",
+      "Value": "Tenant Surcharge"
+    },
+    {
+      "Name": "HostSurchargeBalance",
+      "Value": "Host Surcharge"
+    },
+    {
+      "Name": "OtherGridId",
+      "Value": "Related Grid"
+    },
+    {
+      "Name": "RemainingCredit",
+      "Value": "Remaining Credit"
+    },
+    {
+      "Name": "YearlyRateDifference",
+      "Value": "Yearly Rate Difference"
+    },
+    {
+      "Name": "ExtraChargeForRateRequest",
+      "Value": "Rate request surcharge"
+    },
+    {
+      "Name": "InvoiceNoList",
+      "Value": "Invoice List"
+    },
+    {
+      "Name": "PickupTimestamp",
+      "Value": "Pickup Time"
+    },
+    {
+      "Name": "PickupLocationCloseTime",
+      "Value": "Pickup Close Time"
+    },
+    {
+      "Name": "Location",
+      "Value": "Location"
+    },
+    {
+      "Name": "PickupLocationType",
+      "Value": "Pickup Location Type"
+    },
+    {
+      "Name": "Instruction",
+      "Value": "Instruction"
+    },
+    {
+      "Name": "InstructionTypeCode",
+      "Value": "Instruction Type Code"
+    },
+    {
+      "Name": "LocalServiceType",
+      "Value": "Local Service Type"
+    },
+    {
+      "Name": "UnitOfMeasurement",
+      "Value": "Unit"
+    },
+    {
+      "Name": "InsuranceServiceType",
+      "Value": "Insurance Service"
+    },
+    {
+      "Name": "InsuranceValue",
+      "Value": "Insurance Value"
+    },
+    {
+      "Name": "InsuranceCurrency",
+      "Value": "Insurance Currency"
+    },
+    {
+      "Name": "TimeOutDateTime",
+      "Value": "Timeout"
+    },
+    {
+      "Name": "AccessFailedCount",
+      "Value": "Access Failed Count"
+    },
+    {
+      "Name": "AttachmentMapId",
+      "Value": "Attachment Map Id"
+    },
+    {
+      "Name": "Name",
+      "Value": "Name"
+    },
+    {
+      "Name": "CnName",
+      "Value": "Chinese Name"
+    },
+    {
+      "Name": "Password",
+      "Value": "Password"
+    },
+    {
+      "Name": "WithChildrenCompanies",
+      "Value": "Companies"
+    },
+    {
+      "Name": "AttachmentMap",
+      "Value": "Attachment Map"
+    },
+    {
+      "Name": "WithChidrenSurchargeSettings",
+      "Value": "Surcharge Settings"
+    },
+    {
+      "Name": "FileData",
+      "Value": "File Data"
+    },
+    {
+      "Name": "WithChildrenUsers",
+      "Value": "Users"
+    },
+    {
+      "Name": "NormalizedName",
+      "Value": "Normalized Name"
+    },
+    {
+      "Name": "FamilyName",
+      "Value": "Family Name"
+    },
+    {
+      "Name": "SurnName",
+      "Value": "Surn Name"
+    },
+    {
+      "Name": "MiddleName",
+      "Value": "Middle Name"
+    },
+    {
+      "Name": "PayDay",
+      "Value": "Transaction Date"
+    },
+    {
+      "Name": "User",
+      "Value": "User"
+    },
+    {
+      "Name": "Tenant",
+      "Value": "Tenant"
+    },
+    {
+      "Name": "Company",
+      "Value": "Company"
+    },
+    {
+      "Name": "AssignedToUser",
+      "Value": "Assigned To"
+    },
+    {
+      "Name": "BackupData",
+      "Value": "Backup Data"
+    },
+    {
+      "Name": "SupplierVatCharge",
+      "Value": "Supplier Vat"
+    },
+    {
+      "Name": "ServiceCharge",
+      "Value": "Service Charge"
+    },
+    {
+      "Name": "ConcurrencyStamp",
+      "Value": "Concurrency Stamp"
+    },
+    {
+      "Name": "SecurityStamp",
+      "Value": "Security Stamp"
+    },
+    {
+      "Name": "PasswordHash",
+      "Value": "Password Hash"
+    },
+    {
+      "Name": "NormalizedEmail",
+      "Value": "Normalized Email"
+    },
+    {
+      "Name": "NormalizedUserName",
+      "Value": "Normalized UserName"
+    },
+    {
+      "Name": "SourceGridInParentDisplayName",
+      "Value": "Source Grid  Name"
+    },
+    {
+      "Name": "SourceGridIdInParent",
+      "Value": "Source Grid Id"
+    },
+    {
+      "Name": "SourceIdInParent",
+      "Value": "Source Id"
+    },
+    {
+      "Name": "BackupId",
+      "Value": "Backup Id"
+    },
+    {
+      "Name": "UserChangeAudit",
+      "Value": "Restore Point"
+    },
+    {
+      "Name": "UserChangeAuditId",
+      "Value": "Restore Point Id"
+    },
+    {
+      "Name": "WithChildrenDbChangeTracker",
+      "Value": "DB Change List"
+    },
+    {
+      "Name": "ChangeType",
+      "Value": "Change Type"
+    },
+    {
+      "Name": "WithChildrenStaffHoliday",
+      "Value": "Staff Holiday History"
+    },
+    {
+      "Name": "HolidayType",
+      "Value": "Holiday Type"
+    },
+    {
+      "Name": "NameInEntryMachine",
+      "Value": "Registration Name"
+    },
+    {
+      "Name": "WithChildrenWorkingHours",
+      "Value": "Working Hours"
+    },
+    {
+      "Name": "LunchTime",
+      "Value": "Lunch Time"
+    },
+    {
+      "Name": "AddressId",
+      "Value": "Address Id"
+    },
+    {
+      "Name": "Address",
+      "Value": "Address"
+    },
+    {
+      "Name": "WithChildrenDepartments",
+      "Value": "Departments"
+    },
+    {
+      "Name": "DepartmentName",
+      "Value": "Department Name"
+    },
+    {
+      "Name": "DepartmentId",
+      "Value": "Department Id"
+    },
+    {
+      "Name": "Department",
+      "Value": "Department"
+    },
+    {
+      "Name": "DepartmentRole",
+      "Value": "Department Role"
+    },
+    {
+      "Name": "ImportingCharge",
+      "Value": "Importing Charge"
+    },
+    {
+      "Name": "InvoicedShipmentVat",
+      "Value": "Shipment Vat"
+    },
+    {
+      "Name": "WithChildrenProfitStatements",
+      "Value": "Profit Statements"
+    },
+    {
+      "Name": "WithChildrenProjects",
+      "Value": "Projects"
+    },
+    {
+      "Name": "ProfitStatementId",
+      "Value": "Profit Statement Id"
+    },
+    {
+      "Name": "ProfitStatement",
+      "Value": "Profit Statement"
+    },
+    {
+      "Name": "ProfitAfterTax",
+      "Value": "Profit After Tax"
+    },
+    {
+      "Name": "ProfitBeforeTax",
+      "Value": "Profit Before Tax"
+    },
+    {
+      "Name": "StaffCost",
+      "Value": "Staff Cost"
+    },
+    {
+      "Name": "PayToSupplier",
+      "Value": "Pay To Supplier"
+    },
+    {
+      "Name": "Sales",
+      "Value": "Sales"
+    },
+    {
+      "Name": "Month",
+      "Value": "Month"
+    },
+    {
+      "Name": "Year",
+      "Value": "Year"
+    }
+  ]
+}
