@@ -1,5 +1,5 @@
 import theme from 'src/theme.less';
-import {DownOutlined, BlockOutlined} from '@ant-design/icons';
+import {DownOutlined, BlockOutlined,SwapOutlined} from '@ant-design/icons';
 import {Dropdown, Menu} from 'antd';
 import {useState} from 'react';
 import {getLange, setLange} from "../../commons";
@@ -47,14 +47,14 @@ export default function Lanage(props) {
                         width: 24,
                         height: 24,
                         borderRadius: '50%',
-                        border: '1px solid ' + theme.primaryColor,
+                       // border: '1px solid ' + theme.primaryColor,
                         color: theme.primaryColor,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}
                 >
-                    <BlockOutlined/>
+                    <SwapOutlined />
                 </div>
 
                 <span style={{marginLeft: 4, marginRight: 4}}>

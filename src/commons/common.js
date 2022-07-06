@@ -244,12 +244,14 @@ export function handleGridDataTypeColumn(columns, isModalVisible, setIsModalVisi
         if ((value.access & authority.view) > 0) {
             //不显示在表格字段的类型
             if (value.type != 24 && value.type != 25 && value.type != 28) {
+                let width = value.type == 1 || value.type == 11 || value.type == 12 ? 100 : 200;
+
                 //封装表格字段集合
                 let table_column = {
                     key: value.name,
                     title: <FormattedMessage id={value.header} defaultMessage=""/>,
                     dataIndex: value.name,
-                    width: 200,
+                    width: width,
                     align: "center",
                     render: function (text, record, index) {
                         return renderTableColumns(value, text, record, index, isModalVisible, setIsModalVisible, setSubTableHeader, setSubTable, setModalTitle, setSubTableType, setIsListVisible);
@@ -1006,4 +1008,7 @@ export function GetDateNow() {
     }
     var str = year + mouth + day + hours + minutes + seconds
     return str
+}
+export function formatPrice(price) {
+    return String(price).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }

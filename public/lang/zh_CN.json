@@ -3,6 +3,8 @@
   "RegisterUser": "注册用户",
   "LoginSystem": "登录系统",
   "Register": "注册",
+  "Split": "拆分",
+  "NewBalance": "新额度",
   "SelectIdentity": "请选择身份",
   "AdminIdentity": "主机身份",
   "TenantIdentity": "代理身份",
