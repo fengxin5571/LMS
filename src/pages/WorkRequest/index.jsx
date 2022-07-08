@@ -151,7 +151,7 @@ export default config({
                 //判断是否有授权权限
                 if ((resault.BtnFlags & BtnFlags.CanApprove) > 0) {
                     let disabled = true;
-                    if (record?.ApprovedBy != undefined && !record?.ApprovedBy && record?.Status == 16) {
+                    if (record?.ApprovedByUserId != undefined && !record?.ApprovedByUserId && record?.Status == 16) {
                         disabled = false;
                     }
                     items.push({
@@ -163,7 +163,7 @@ export default config({
                 //判断是否有开始工作权限
                 if ((resault.BtnFlags & BtnFlags.CanStart) > 0) {
                     let disabled = true;
-                    if (record?.ApprovedBy != undefined && record?.ApprovedBy && record?.Status == 16384 && (!record?.StartTime || !record?.StartDate)) {
+                    if (record?.ApprovedByUserId != undefined && record?.ApprovedByUserId && record?.Status == 16384 && (!record?.StartTime || !record?.StartDate)) {
                         disabled = false;
                     }
                     items.push({
@@ -175,7 +175,7 @@ export default config({
                 //判断是否有结束工作权限
                 if ((resault.BtnFlags & BtnFlags.CanFinish) > 0) {
                     let disabled = true;
-                    if (record?.ApprovedBy != undefined && record?.ApprovedBy && record?.Status == 16384 && (record?.StartTime || record?.StartDate)) {
+                    if (record?.ApprovedByUserId != undefined && record?.ApprovedByUserId && record?.Status == 16384 && (record?.StartTime || record?.StartDate)) {
                         disabled = false;
                     }
                     items.push({

@@ -27,6 +27,7 @@ export default {
         const origin_menus = getLoginUser().Menus;
         //处理LMS拿到的菜单
         const menus = formatLmsMenus(origin_menus);
+        //console.log(menus);
         // 前端硬编码菜单
         // return [
         //     {id: 1, title: '系统管理', order: 900, type: 1},

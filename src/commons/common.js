@@ -7,7 +7,7 @@ import {Button, Card, Form, Input, Space, Tag, List} from "antd";
 import {getLange} from "./index";
 import moment from "moment";
 import BraftEditor from "braft-editor";
-import {MinusCircleOutlined, PlusOutlined, StarOutlined, PaperClipOutlined} from "@ant-design/icons";
+import {MinusCircleOutlined, PlusOutlined, StarFilled, PaperClipOutlined} from "@ant-design/icons";
 
 import SelectTable from "src/components/form/SelectTable";
 
@@ -176,7 +176,7 @@ export function formatLmsMenus(values) {
                     'order': values[key].DisplayOrder,
                     'parentId': values[key].ParentName,
                     'UiRouter': values[key].UiRouter,
-                    'ActionType': values[key].ActionType,
+                    'ActionType': values[key].Name == "BusinessManagement" ? 0 : values[key].ActionType,
                     'Access': values[key].Access,
                     'ActionHttpMethod': values[key].ActionHttpMethod,
                     //'path': values[key].UiRouter ? values[key].UiRouter : bigCamel(values[key].Name)
@@ -186,8 +186,6 @@ export function formatLmsMenus(values) {
 
         }
         menus[key] = menu;
-
-
     })
     Object.keys(menus).forEach(key => {
         if (menus[key].parentId !== undefined) {
@@ -197,8 +195,6 @@ export function formatLmsMenus(values) {
             }
 
         }
-
-
     });
     return menus;
 }
@@ -823,7 +819,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                 />);
             } else if (item.type == 28) { //字符串列表
                 return (
-                    <Card title={<>{required ? <StarOutlined style={{color: '#ff4d4f'}}/> : null} <FormattedMessage
+                    <Card title={<>{required ? <StarFilled style={{color: '#ff4d4f'}}/> : null} <FormattedMessage
                         id={item.header}/></>}
                           bodyStyle={{padding: 0}}>
                         <FormItem shouldUpdate noStyle>
@@ -846,7 +842,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                         </FormItem>
                     </Card>
                 )
-            } else if (item.type == 29) { //文件管理器
+            }  else if (item.type == 29) { //文件管理器
                 var fileType;
                 var filePaths = [];
                 var viewFilePath = [];
@@ -1009,6 +1005,7 @@ export function GetDateNow() {
     var str = year + mouth + day + hours + minutes + seconds
     return str
 }
+
 export function formatPrice(price) {
     return String(price).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }

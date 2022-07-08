@@ -1,13 +1,8 @@
 [
-  {
-    "name": "张三",
-    "disabled": false,
-    "baseUrl": "/zhangsan",
-    "target": "http://127.0.0.1:8080"
-  },
+
   {
     "name": "测试环境",
     "baseUrl": "/api",
-    "target": "https://192.168.3.160:44357"
+    "target": "http://81.143.237.34:5000/"
   }
 ]

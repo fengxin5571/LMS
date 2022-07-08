@@ -1,5 +1,5 @@
 import React, {useState, useMemo, useCallback, useEffect} from 'react';
-import {Button, Form, Space, ConfigProvider, Modal, Upload, Col, Row, Statistic} from 'antd';
+import {Button, Form, Space, ConfigProvider, Modal, Upload, Col, Row, Dropdown, Menu, Popconfirm} from 'antd';
 import {
     PageContent,
     QueryBar,
@@ -9,13 +9,20 @@ import {
     Operator,
     ToolBar,
     getLoginUser,
-    Content
+    Content,
 } from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
 import {DRAW} from 'src/config';
 import EditModal from 'src/components/edit/EditModal';
-import {handleGridDataTypeColumn, BtnFlags, asyncConfigData, convertToFormData, GetDateNow} from "src/commons/common";
-import {getLange} from 'src/commons';
+import {
+    handleGridDataTypeColumn,
+    BtnFlags,
+    asyncConfigData,
+    convertToFormData,
+    GetDateNow,
+    formatPrice
+} from "src/commons/common";
+import {getLange, setLange} from 'src/commons';
 import {FormattedMessage, IntlProvider} from 'react-intl'; /* react-intl imports */
 import zhCN from 'antd/lib/locale/zh_CN';
 import enUS from 'antd/lib/locale/en_US';
@@ -23,13 +30,27 @@ import {useLocation} from "react-router-dom";
 import {DbGridNames} from "src/commons/dbgridconfig";
 import TableModal from "src/pages/GridTools/TableModal";
 import TableList from "src/pages/GridTools/TableList";
-import {UploadOutlined} from "@ant-design/icons";
+import {confirm} from '@ra-lib/components';
+import {
+    UploadOutlined,
+    PlusOutlined,
+    DownloadOutlined,
+    PrinterOutlined,
+    DeleteOutlined,
+    FileSearchOutlined,
+    EllipsisOutlined,
+    BlockOutlined,
+    EditOutlined,
+    UserAddOutlined,
+    PoweroffOutlined,
+    PlayCircleOutlined
+} from "@ant-design/icons";
 
 export default config({
     path: '/AppSettings',
 })(function AppSettings(props) {
     const dbGridName = DbGridNames.AppSettings;
-    let resault;
+    let resault = null;
     const loginUser = getLoginUser();
     const [lang, setLang] = useState(getLange(loginUser?.id))
     const [modalTitle, setModalTitle] = useState("");
@@ -62,7 +83,6 @@ export default config({
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [selectedRows, setSelectedRows] = useState();
     const [btnDisabled, setBtnDisabled] = useState(true);
-    const [balance, setBalance] = useState(0);
     const [form] = Form.useForm();
     const [balanceForm] = Form.useForm();
     const useQuery = () => {
@@ -88,7 +108,7 @@ export default config({
             setBtnDisabled(true);
         }
 
-    }, [lang, fileList, selectedRowKeys]);
+    }, [lang, fileList, selectedRowKeys, isEdit, isDetail]);
     //表格排序
     const handleTableChange = (newPagination, filters, sorter) => {
         setOrder([
@@ -99,104 +119,120 @@ export default config({
         ])
     };
     const params = useMemo(() => {
-        //获取表格配置信息
-        asyncConfigData(dbGridName);
         resault = JSON.parse(window.sessionStorage.getItem(dbGridName + '-config-' + loginUser?.id));
+        if (!resault) {
+            //获取表格配置信息
+            asyncConfigData(dbGridName);
+            resault = JSON.parse(window.sessionStorage.getItem(dbGridName + '-config-' + loginUser?.id));
+        }
         //处理表格显示的字段
         const resColums = handleGridDataTypeColumn(resault.ColumnConfigs, isModalVisible, setIsModalVisible, setSubTableHeader, setSubTable, setModalTitle, setSubTableType, setIsListVisible);
         console.log(resColums);
         let apiIncludes = resault.Includes.map((item) => item.Name);
         setIncludes(apiIncludes);
-        setBalance(resault.Balance);
         resColums.table_colums.push({
             title: <FormattedMessage id="Operation"/>,
             key: 'operator',
-            width: 350,
+            width: 80,
             fixed: 'right',
+            align: "center",
             render: (value, record) => {
                 const id = record.Id;
                 const name = record.Name
                 const items = [];
-                //判断是否有查看权限
-                if ((resault.BtnFlags & BtnFlags.CanView) > 0) {
-                    items.push({
-                        label: <FormattedMessage id="View"/>,
-                        onClick: () => setRecord({
-                            ...record,
-                            isDetail: true
-                        }) || setVisible(true) || setIsDetail(true) || setIsEdit(false),
-                    });
-                }
-                //判断是否有编辑权限
-                if ((resault.BtnFlags & BtnFlags.CanUpload) > 0) {
-                    items.push({
-                        label: <FormattedMessage id="Edit"/>,
-                        onClick: () => setRecord(record) || setVisible(true) || setIsDetail(false) || setIsEdit(true),
-                    });
-                }
-                //判断是否有打印权限
-                if ((resault.BtnFlags & BtnFlags.CanPrint) > 0) {
-                    items.push({
-                        label: <FormattedMessage id="GridFlags_CanPrint" defaultMessage="Print"/>,
-                        onClick: () => dbGridPrint(id),
-                    })
-                }
-                //判断是否有拆分权限
-                if (resault.Balance != 9999.99 && resault.Balance != 0) {
-                    items.push({
-                        label: <FormattedMessage id="Split" defaultMessage="Split"/>,
-                        onClick: () => setSplitVisible(true) || setRecord(record),
-                    })
-                }
-                //判断是否有授权权限
-                if ((resault.BtnFlags & BtnFlags.CanApprove) > 0) {
-                    let disabled = true;
-                    if (record?.ApprovedBy != undefined && !record?.ApprovedBy && record?.Status == 16) {
-                        disabled = false;
-                    }
-                    items.push({
-                        label: <FormattedMessage id="GridFlags_CanApprove" defaultMessage="Approve"/>,
-                        disabled: disabled,
-                        onClick: () => dbGridApprove(record?.Id),
-                    })
-                }
-                //判断是否有开始工作权限
-                if ((resault.BtnFlags & BtnFlags.CanStart) > 0) {
-                    let disabled = true;
-                    if (record?.ApprovedBy != undefined && record?.ApprovedBy && record?.Status == 16384 && (!record?.StartTime || !record?.StartDate)) {
-                        disabled = false;
-                    }
-                    items.push({
-                        label: <FormattedMessage id="GridFlags_CanStart" defaultMessage="Start"/>,
-                        disabled: disabled,
-                        onClick: () => dbGridStart(record?.Id),
-                    })
-                }
-                //判断是否有结束工作权限
-                if ((resault.BtnFlags & BtnFlags.CanFinish) > 0) {
-                    let disabled = true;
-                    if (record?.ApprovedBy != undefined && record?.ApprovedBy && record?.Status == 16384 && (record?.StartTime || record?.StartDate)) {
-                        disabled = false;
-                    }
-                    items.push({
-                        label: <FormattedMessage id="GridFlags_CanFinish" defaultMessage="Finish"/>,
-                        disabled: disabled,
-                        onClick: () => dbGridFinish(record?.Id),
-                    })
-                }
-                //判断是否有删除权限
-                if ((resault.BtnFlags & BtnFlags.CanDelete) > 0) {
-                    items.push({
-                        label: <FormattedMessage id="Delete"/>,
-                        color: 'red',
-                        confirm: {
-                            title: <FormattedMessage id="DeleteConfirmMsg" values={{name: `${name}`}}/>,
-                            onConfirm: () => handleDelete(id),
-                        },
-                    });
-                }
+                const serverMenu = (
+                    <Menu>
+                        {((resault.BtnFlags & BtnFlags.CanView) > 0) ? <Menu.Item
+                            icon={<FileSearchOutlined/>}
+                            style={{color:"#1991FF"}}
+                            onClick={() => setRecord({
+                                ...record,
+                                isDetail: true
+                            }) || setVisible(true) || setIsDetail(true) || setIsEdit(false)}
+                        >
+                            <FormattedMessage id="View"/>
+                        </Menu.Item> : null}
+                        {((resault.BtnFlags & BtnFlags.CanUpdate) > 0) ? <Menu.Item
+                            icon={<EditOutlined/>}
+                            style={{color:"#FF9F54"}}
+                            onClick={() => setRecord(record) || setVisible(true) || setIsDetail(false) || setIsEdit(true)}
+                        >
+                            <FormattedMessage id="Edit"/>
+                        </Menu.Item> : null}
+                        {((resault.BtnFlags & BtnFlags.CanPrint) > 0) ? <Menu.Item
+                            icon={<PrinterOutlined/>}
+                            style={{color:"#47BC69"}}
+                            onClick={() => dbGridPrint(id)}
+                        >
+                            <FormattedMessage
+                                id="GridFlags_CanPrint" defaultMessage="Print"/>
+                        </Menu.Item> : null}
+                        {(resault.Balance != 9999.99 && resault.Balance != 0) ? <Menu.Item
+                            icon={<BlockOutlined/>}
+                            style={{color:"#FFBF10"}}
+                            onClick={() => setSplitVisible(true) || setRecord(record)}
+                        >
+                            <FormattedMessage
+                                id="Split" defaultMessage="Split"/>
+                        </Menu.Item> : null}
+                        {((resault.BtnFlags & BtnFlags.CanApprove) > 0) ? <Menu.Item
+                            icon={<UserAddOutlined/>}
+                            style={{color:"#CDCDCD"}}
+                            onClick={() => dbGridApprove(record?.Id)}
+                            disabled={record?.ApprovedByUserId != undefined && !record?.ApprovedByUserId && record?.Status == 16 ? false : true}
+                        >
+                            <FormattedMessage
+                                id="GridFlags_CanApprove"
+                                defaultMessage="Approve"/>
+                        </Menu.Item> : null}
+                        {((resault.BtnFlags & BtnFlags.CanStart) > 0) ? <Menu.Item
+                            icon={<PlayCircleOutlined/>}
+                            style={{color:"#3CC9C1"}}
+                            onClick={() => dbGridStart(record?.Id)}
+                            disabled={record?.ApprovedByUserId != undefined && record?.ApprovedByUserId && record?.Status == 16384 && (!record?.StartTime || !record?.StartDate) ? false : true}
+                        >
+                            <FormattedMessage id="GridFlags_CanStart" defaultMessage="Start"/>
+                        </Menu.Item> : null}
+                        {((resault.BtnFlags & BtnFlags.CanFinish) > 0) ? <Menu.Item
+                            icon={<PoweroffOutlined/>}
+                            style={{color:"#23B258"}}
+                            onClick={() => dbGridFinish(record?.Id)}
+                            disabled={record?.ApprovedByUserId != undefined && record?.ApprovedByUserId && record?.Status == 16384 && (record?.StartTime || record?.StartDate) ? false : true}
+                        >
+                            <FormattedMessage id="GridFlags_CanFinish" defaultMessage="Finish"/>
+                        </Menu.Item> : null}
+                        {((resault.BtnFlags & BtnFlags.CanDelete) > 0) ? <Menu.Item
+                            icon={<DeleteOutlined/>}
+                            style={{color:"#FF6565"}}
+                            onClick={() => handleDelete(id, record?.Name)}
+                        >
+                            <FormattedMessage id="Delete"/>
+                        </Menu.Item> : null}
+                    </Menu>
+                )
+                // //判断是否有删除权限
+                // if ((resault.BtnFlags & BtnFlags.CanDelete) > 0) {
+                //     items.push({
+                //         label: <FormattedMessage id="Delete"/>,
+                //         color: 'red',
+                //         confirm: {
+                //             title: <FormattedMessage id="DeleteConfirmMsg" values={{name: `${name}`}}/>,
+                //             onConfirm: () => handleDelete(id),
+                //         },
+                //     });
+                // }
 
-                return <Operator items={items}/>;
+                return (
+                    <>
+                        <Dropdown overlay={serverMenu} placement="bottomRight">
+                            <a onClick={(e) => e.preventDefault()}>
+                                <Space>
+                                    <EllipsisOutlined style={{fontSize: "1.5rem", fontWeight: "bold"}}/>
+                                </Space>
+                            </a>
+                        </Dropdown>
+                    </>
+                );
             },
         });
         setResBtnFlags(resault.BtnFlags);
@@ -233,18 +269,24 @@ export default config({
         setConditions(form.getFieldsValue());
     }, [form]);
     // 获取列表
-    const {data: {dataSource, total} = {}} = props.ajax.usePost('DbGrid/Page', params, [params], {
+    const {data: {dataSource, total, balance} = {}} = props.ajax.usePost('DbGrid/Page', params, [params], {
         headers: {'Content-Type': 'multipart/form-data'},
         setLoading,
         formatResult: (res) => {
             return {
                 dataSource: res?.data || [],
                 total: res?.recordsTotal || 0,
+                balance: res?.Balance || 9999.99
             };
         },
     });
     const handleDelete = useCallback(
-        async (id) => {
+        async (id, name) => {
+            await confirm({
+                title: getLange(loginUser?.id) == "zh_CN" ? "提示" : "Tips",
+                content: getLange(loginUser?.id) == "zh_CN" ? "您确定删除「" + name + "」吗？" : "Are you sure you want to delete [{" + name + "}]?",
+
+            });
             await props.ajax.post(`DbGrid/Delete`, {
                 "DbGridName": dbGridName,
                 'Id': id,
@@ -603,60 +645,77 @@ export default config({
 
                     </QueryBar>
                     <Row style={{marginBottom: 15}}>
-                        <Col flex="300px">
-                            {balance != 9999.99 ? <span style={{fontSize: 20}}><FormattedMessage
-                                id="FullBalance"/> {balance}</span> : null}
-
+                        <Col flex="14rem">
+                            {balance != undefined && balance != 9999.99 ?
+                                <span style={{fontSize: 18, fontWeight: "bold"}}><FormattedMessage
+                                    id="FullBalance"/>： <span style={{color: "#FF6060"}}>$ {formatPrice(balance)}</span></span> : null}
                         </Col>
                         <Col flex="auto">
                             {
-                                (resBtnFlags & BtnFlags.CanStart) > 0 ?
-                                    <Button type="primary" style={{float: "right", marginRight: 10}}
-                                            onClick="">
-                                        <FormattedMessage id="GridFlags_CanStart" defaultMessage=""/>
-                                    </Button>
-                                    : null
-                            }
-                            {
                                 (resBtnFlags & BtnFlags.CanDelete) > 0 ?
-                                    <Button type="primary" style={{float: "right", marginRight: 10}}
-                                            onClick={() => handleDeleteBatch(selectedRowKeys)} disabled={btnDisabled}>
-                                        <FormattedMessage id="Delete" defaultMessage=""/>
+                                    <Button size="small" type="primary" style={!btnDisabled ? {
+                                        float: "right",
+                                        marginRight: 10,
+                                        background: "#FF6060",
+                                        borderColor: '#FF6060'
+                                    } : {float: "right", marginRight: 10}}
+                                            onClick={() => handleDeleteBatch(selectedRowKeys)}
+                                            disabled={btnDisabled}>
+                                        <DeleteOutlined/> <FormattedMessage id="Delete" defaultMessage=""/>
                                     </Button>
                                     : null
                             }
+
                             {
                                 (resBtnFlags & BtnFlags.CanPrintAll) > 0 ?
-                                    <Button type="primary" style={{float: "right", marginRight: 10}}
+                                    <Button size="small" type="primary" style={{
+                                        float: "right",
+                                        marginRight: 10,
+                                        background: "#47BC69",
+                                        borderColor: '#47BC69'
+                                    }}
                                             onClick={() => dbGridPrintAll()}>
-                                        <FormattedMessage id="GridFlags_CanPrintAll" defaultMessage="PrintAll"/>
+                                        <PrinterOutlined/> <FormattedMessage id="GridFlags_CanPrintAll"
+                                                                             defaultMessage="PrintAll"/>
                                     </Button>
 
                                     : null
                             }
                             {
                                 ((resBtnFlags & BtnFlags.CanUpload) > 0) ?
-                                    <Button type="primary" style={{float: "right", marginRight: 10}}
+                                    <Button size="small" type="primary" style={{
+                                        float: "right",
+                                        marginRight: 10,
+                                        background: "#3ABFB7",
+                                        borderColor: '#3ABFB7'
+                                    }}
                                             onClick={() => setUploadVisible(true)}>
-                                        <FormattedMessage id="GridFlags_CanUpload" defaultMessage="Upload"/>
+                                        <UploadOutlined/> <FormattedMessage id="GridFlags_CanUpload"
+                                                                            defaultMessage="Upload"/>
                                     </Button>
 
                                     : null
                             }
                             {
                                 (resBtnFlags & BtnFlags.CanDownload) > 0 ?
-                                    <Button type="primary" style={{float: "right", marginRight: 10}}
+                                    <Button size="small" type="primary" style={{
+                                        float: "right",
+                                        marginRight: 10,
+                                        background: "#FF9F54",
+                                        borderColor: '#FF9F54'
+                                    }}
                                             onClick={() => dbGridDownload()}>
-                                        <FormattedMessage id="GridFlags_CanDownload" defaultMessage="Download"/>
+                                        <DownloadOutlined/> <FormattedMessage id="GridFlags_CanDownload"
+                                                                              defaultMessage="Download"/>
                                     </Button>
 
                                     : null
                             }
                             {
                                 (resBtnFlags & BtnFlags.CanAdd) > 0 ?
-                                    <Button type="primary" style={{float: "right", marginRight: 10}}
+                                    <Button size="small" type="primary" style={{float: "right", marginRight: 10}}
                                             onClick={() => setRecord(null) || setVisible(true) || setIsCreate(true) || setIsDetail(false) || setIsEdit(false)}>
-                                        <FormattedMessage id="Create" defaultMessage=""/>
+                                        <PlusOutlined/> <FormattedMessage id="Create" defaultMessage=""/>
                                     </Button>
                                     : null
                             }
@@ -669,6 +728,14 @@ export default config({
 
                     </ToolBar>
                     <Table
+                        onRow={record => {
+                            return {
+                                onDoubleClick: (e) => e.stopPropagation() || setRecord({
+                                    ...record,
+                                    isDetail: true
+                                }) || setVisible(true) || setIsDetail(true) || setIsEdit(false),
+                            };
+                        }}
                         rowSelection={rowSelection}
                         pageNum={pageNum}
                         pageSize={pageSize}

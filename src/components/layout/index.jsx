@@ -133,7 +133,9 @@ export default function Layout(props) {
                 ref={(current) => (layoutRef.current = {...current, refresh: () => setRefresh({})})}
                 logo={logo}
                 title={APP_NAME}
-                menus={menus}
+                menus={menus.sort((a, b) => {
+                    return a["order"] - b["order"];
+                })}
                 collectedMenus={collectedMenus}
                 onMenuCollect={onMenuCollect}
                 headerExtra={<Header/>}

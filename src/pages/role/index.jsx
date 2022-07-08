@@ -38,7 +38,12 @@ import {
     PrinterOutlined,
     DeleteOutlined,
     FileSearchOutlined,
-    EllipsisOutlined, BlockOutlined
+    EllipsisOutlined,
+    BlockOutlined,
+    EditOutlined,
+    UserAddOutlined,
+    PoweroffOutlined,
+    PlayCircleOutlined
 } from "@ant-design/icons";
 
 export default config({
@@ -83,7 +88,7 @@ export default config({
     const useQuery = () => {
         return new URLSearchParams(useLocation().search);
     }
-    // console.log(useQuery().get("Access"));
+    console.log(useQuery().get("Access"));
     useEffect(async () => {
         const resp = await fetch(`./lang/${lang}.json`)
         const data = await resp.json();
@@ -128,7 +133,7 @@ export default config({
         resColums.table_colums.push({
             title: <FormattedMessage id="Operation"/>,
             key: 'operator',
-            width: 120,
+            width: 80,
             fixed: 'right',
             align: "center",
             render: (value, record) => {
@@ -137,14 +142,26 @@ export default config({
                 const items = [];
                 const serverMenu = (
                     <Menu>
-                        {(resault.BtnFlags & BtnFlags.CanUpdate) > 0 ? <Menu.Item
-                            icon={<BlockOutlined/>}
+                        {((resault.BtnFlags & BtnFlags.CanView) > 0) ? <Menu.Item
+                            icon={<FileSearchOutlined/>}
+                            style={{color:"#1991FF"}}
+                            onClick={() => setRecord({
+                                ...record,
+                                isDetail: true
+                            }) || setVisible(true) || setIsDetail(true) || setIsEdit(false)}
+                        >
+                            <FormattedMessage id="View"/>
+                        </Menu.Item> : null}
+                        {((resault.BtnFlags & BtnFlags.CanUpdate) > 0) ? <Menu.Item
+                            icon={<EditOutlined/>}
+                            style={{color:"#FF9F54"}}
                             onClick={() => setRecord(record) || setVisible(true) || setIsDetail(false) || setIsEdit(true)}
                         >
                             <FormattedMessage id="Edit"/>
                         </Menu.Item> : null}
-                        {(resault.BtnFlags & BtnFlags.CanPrint) > 0 ? <Menu.Item
-                            icon={<BlockOutlined/>}
+                        {((resault.BtnFlags & BtnFlags.CanPrint) > 0) ? <Menu.Item
+                            icon={<PrinterOutlined/>}
+                            style={{color:"#47BC69"}}
                             onClick={() => dbGridPrint(id)}
                         >
                             <FormattedMessage
@@ -152,43 +169,41 @@ export default config({
                         </Menu.Item> : null}
                         {(resault.Balance != 9999.99 && resault.Balance != 0) ? <Menu.Item
                             icon={<BlockOutlined/>}
+                            style={{color:"#FFBF10"}}
                             onClick={() => setSplitVisible(true) || setRecord(record)}
                         >
                             <FormattedMessage
                                 id="Split" defaultMessage="Split"/>
                         </Menu.Item> : null}
-                        {(resault.BtnFlags & BtnFlags.CanApprove) > 0 ? <Menu.Item
-                            icon={<BlockOutlined/>}
+                        {((resault.BtnFlags & BtnFlags.CanApprove) > 0) ? <Menu.Item
+                            icon={<UserAddOutlined/>}
+                            style={{color:"#CDCDCD"}}
                             onClick={() => dbGridApprove(record?.Id)}
-                            disabled={record?.ApprovedBy != undefined && !record?.ApprovedBy && record?.Status == 16 ? false : true}
+                            disabled={record?.ApprovedByUserId != undefined && !record?.ApprovedByUserId && record?.Status == 16 ? false : true}
                         >
                             <FormattedMessage
                                 id="GridFlags_CanApprove"
                                 defaultMessage="Approve"/>
                         </Menu.Item> : null}
-                        {(resault.BtnFlags & BtnFlags.CanStart) > 0 ? <Menu.Item
-                            icon={<BlockOutlined/>}
+                        {((resault.BtnFlags & BtnFlags.CanStart) > 0) ? <Menu.Item
+                            icon={<PlayCircleOutlined/>}
+                            style={{color:"#3CC9C1"}}
                             onClick={() => dbGridStart(record?.Id)}
-                            disabled={record?.ApprovedBy != undefined && record?.ApprovedBy && record?.Status == 16384 && (!record?.StartTime || !record?.StartDate) ? false : true}
+                            disabled={record?.ApprovedByUserId != undefined && record?.ApprovedByUserId && record?.Status == 16384 && (!record?.StartTime || !record?.StartDate) ? false : true}
                         >
                             <FormattedMessage id="GridFlags_CanStart" defaultMessage="Start"/>
                         </Menu.Item> : null}
-                        {(resault.BtnFlags & BtnFlags.CanStart) > 0 ? <Menu.Item
-                            icon={<BlockOutlined/>}
-                            onClick={() => dbGridStart(record?.Id)}
-                            disabled={record?.ApprovedBy != undefined && record?.ApprovedBy && record?.Status == 16384 && (!record?.StartTime || !record?.StartDate) ? false : true}
-                        >
-                            <FormattedMessage id="GridFlags_CanStart" defaultMessage="Start"/>
-                        </Menu.Item> : null}
-                        {(resault.BtnFlags & BtnFlags.CanFinish) > 0 ? <Menu.Item
-                            icon={<BlockOutlined/>}
+                        {((resault.BtnFlags & BtnFlags.CanFinish) > 0) ? <Menu.Item
+                            icon={<PoweroffOutlined/>}
+                            style={{color:"#23B258"}}
                             onClick={() => dbGridFinish(record?.Id)}
-                            disabled={record?.ApprovedBy != undefined && record?.ApprovedBy && record?.Status == 16384 && (record?.StartTime || record?.StartDate) ? false : true}
+                            disabled={record?.ApprovedByUserId != undefined && record?.ApprovedByUserId && record?.Status == 16384 && (record?.StartTime || record?.StartDate) ? false : true}
                         >
                             <FormattedMessage id="GridFlags_CanFinish" defaultMessage="Finish"/>
                         </Menu.Item> : null}
-                        {(resault.BtnFlags & BtnFlags.CanDelete) > 0 ? <Menu.Item
-                            icon={<BlockOutlined/>}
+                        {((resault.BtnFlags & BtnFlags.CanDelete) > 0) ? <Menu.Item
+                            icon={<DeleteOutlined/>}
+                            style={{color:"#FF6565"}}
                             onClick={() => handleDelete(id, record?.Name)}
                         >
                             <FormattedMessage id="Delete"/>
@@ -209,28 +224,13 @@ export default config({
 
                 return (
                     <>
-                        <Row gutter={10}>
-                            <Col>
-                                <Button size="small" type="primary"
-                                        style={{display: ((resault.BtnFlags & BtnFlags.CanView) > 0) ? "block" : "none"}}
-                                        onClick={() => setRecord({
-                                            ...record,
-                                            isDetail: true
-                                        }) || setVisible(true) || setIsDetail(true) || setIsEdit(false)}
-                                >
-                                    <FileSearchOutlined/> <FormattedMessage id="View"/>
-                                </Button>
-                            </Col>
-                            <Col>
-                                <Dropdown overlay={serverMenu} placement="bottomRight">
-                                    <a onClick={(e) => e.preventDefault()}>
-                                        <Space>
-                                            <EllipsisOutlined style={{fontSize: "1.5rem", fontWeight: "bold"}}/>
-                                        </Space>
-                                    </a>
-                                </Dropdown>
-                            </Col>
-                        </Row>
+                        <Dropdown overlay={serverMenu} placement="bottomRight">
+                            <a onClick={(e) => e.preventDefault()}>
+                                <Space>
+                                    <EllipsisOutlined style={{fontSize: "1.5rem", fontWeight: "bold"}}/>
+                                </Space>
+                            </a>
+                        </Dropdown>
                     </>
                 );
             },
@@ -646,9 +646,9 @@ export default config({
                     </QueryBar>
                     <Row style={{marginBottom: 15}}>
                         <Col flex="14rem">
-                            {balance != undefined && balance != 9999.991 ?
-                                <span style={{fontSize: 18,fontWeight:"bold"}}><FormattedMessage
-                                    id="FullBalance"/>： <span style={{color:"#FF6060"}}>$ {formatPrice(balance)}</span></span> : null}
+                            {balance != undefined && balance != 9999.99 ?
+                                <span style={{fontSize: 18, fontWeight: "bold"}}><FormattedMessage
+                                    id="FullBalance"/>： <span style={{color: "#FF6060"}}>$ {formatPrice(balance)}</span></span> : null}
                         </Col>
                         <Col flex="auto">
                             {

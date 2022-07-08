@@ -5,6 +5,8 @@
   "Register": "注册",
   "Split": "拆分",
   "NewBalance": "新额度",
+  "BusinessManagement": "业务管理",
+  "TableConfiguration": "表格配置",
   "SelectIdentity": "请选择身份",
   "AdminIdentity": "主机身份",
   "TenantIdentity": "代理身份",

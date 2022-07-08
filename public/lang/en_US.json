@@ -5,6 +5,8 @@
   "Register": "Register",
   "Split": "Split",
   "NewBalance": "NewBalance",
+  "BusinessManagement": "Business Management",
+  "TableConfiguration": "Table Configuration",
   "SelectIdentity": "Please select identity",
   "AdminIdentity": "Admin Identity",
   "TenantIdentity": "Tenant Identity",
