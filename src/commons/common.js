@@ -16,7 +16,7 @@ import SelectTable from "src/components/form/SelectTable";
  * @type {{All: number, CanUpload: number, CanGridAttachment: number, CanPrint: number, CanApprove: number, CanDelete: number, CanUndo: number, CanView: number, CanUploadAttachment: number, CanUV: number, CanAdd: number, CanPrintAll: number, CanCopyRecord: number, CanTransfer: number, CanDownload: number, CanUpdate: number, IncludeArchived: number, CustomerSupport: number, CanFinish: number, CanStart: number, CanCS: number}}
  */
 export const BtnFlags = {
-    All: 0xffffffff,
+    //All: 0xffffffff,
     CanView: 0x1,
     CanAdd: 0x2,
     CanDelete: 0x4,
@@ -38,6 +38,23 @@ export const BtnFlags = {
     CanFinish: 0x40000,
     CanApprove: 0x80000,
 };
+export const GridStatus = {
+    Ready: 0x1,
+    Close: 0x2,
+    Archived: 0x4,
+    Deleted: 0x8,
+    Created: 0x10,
+    TimeOut: 0x20,
+    Invoiced: 0x40,
+    Paid: 0x80,
+    Overdue: 0x100,
+    UnknownRefund: 0x200,
+    ReadyToPay: 0x400,
+    Rejected: 0x800,
+    Agreed: 0x1000,
+    Responded: 0x2000,
+    Approved: 0x4000,
+}
 /**
  * 字段权限
  * @type {{view: number, change: number, create: number, readOnly: number}}
@@ -152,7 +169,7 @@ export function formatLmsMenus(values) {
                     'Access': values[key].Access,
                     'ActionHttpMethod': values[key].ActionHttpMethod,
                     //"path": "/" + bigCamel(values[key].Name),
-                    "path": values[key].Name == "BusinessManagement"?"/BusinessManagement": "/Dynamic?dbGridName=" + values[key].Name,
+                    "path": values[key].Name == "BusinessManagement" ? "/BusinessManagement" : "/Dynamic?dbGridName=" + values[key].Name,
                 };
             }
 
@@ -186,7 +203,7 @@ export function formatLmsMenus(values) {
                     'ActionHttpMethod': values[key].ActionHttpMethod,
                     //'path': values[key].UiRouter ? values[key].UiRouter : bigCamel(values[key].Name)
                     //"path": "/" + bigCamel(values[key].Name),
-                    "path":values[key].Name == "BusinessManagement"?"/BusinessManagement": "/Dynamic?dbGridName=" + values[key].Name,
+                    "path": values[key].Name == "BusinessManagement" ? "/BusinessManagement" : "/Dynamic?dbGridName=" + values[key].Name,
                 };
             }
 
