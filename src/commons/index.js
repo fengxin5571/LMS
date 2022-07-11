@@ -3,9 +3,10 @@ import moment from 'moment';
 import {isActiveApp} from '../qiankun';
 import api from 'src/api';
 import {BASE_NAME, HASH_ROUTER, IS_SUB, NO_AUTH_ROUTES} from '../config';
-import {getMainApp, isLoginPage, getParentOrigin,getLoginUser} from '@ra-lib/admin';
+import {getMainApp, isLoginPage, getParentOrigin, getLoginUser} from '@ra-lib/admin';
 import pageConfigs from 'src/pages/page-configs';
 import {bigCamel} from "./common";
+import {useLocation} from "react-router-dom";
 
 /**
  * 浏览器跳转，携带baseName hash等
@@ -21,28 +22,29 @@ export function locationHref(href) {
 
     return (window.location.href = `${BASE_NAME}${hash}${href}`);
 }
-export function setLange(userId,lang){
-    window.sessionStorage.setItem('Lange-'+userId, lang);
+
+export function setLange(userId, lang) {
+    window.sessionStorage.setItem('Lange-' + userId, lang);
 }
-export function getLange(userId){
-    return window.sessionStorage.getItem('Lange-'+userId);
+
+export function getLange(userId) {
+    return window.sessionStorage.getItem('Lange-' + userId);
 }
+
 /**
  * 进入首页
  */
 export function toHome() {
+
     // 跳转页面，优先跳转上次登出页面
     let lastHref = window.sessionStorage.getItem('last-href') || '/';
 
     const url = lastHref.startsWith('http') ? new URL(lastHref) : {pathname: '/'};
-    console.log(url.pathname);
-    const menus=getLoginUser()?.Menus;
-    console.log(menus);
-    console.log(menus.filter(item=>(url.pathname==("/"+bigCamel(item.Name)))));
+    const menus = getLoginUser()?.Menus;
     // 上次是非登录页面，直接跳转首页
     if (isNoAuthPage(url.pathname)) lastHref = '/';
-    if(menus.filter(item=>(url.pathname==("/"+bigCamel(item.Name)))).length==0){
-        lastHref="/"
+    if (url.searchParams != undefined && menus.filter(item => (url.searchParams.get('dbGridName') == (item.Name))).length == 0 && url.pathname != "/BusinessManagement") {
+        lastHref = "/"
     }
     locationHref(lastHref);
 
@@ -86,7 +88,6 @@ export function toLogin() {
  */
 export async function checkPath(result) {
     const subApps = await api.getSubApps();
-
     const hasHome = result.some(({path}) => path === '/');
     if (!hasHome) throw Error(`必须含有首页路由，path: '/'， 如果需要其他页面做首页，可以进行 Redirect`);
 

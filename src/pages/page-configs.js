@@ -9,5 +9,4 @@ export default [
     //     filePath: '/../src/pages/home/user/index.jsx', // 文件绝对路径
     //     // ... 其他config高级组件参数
     // },
-
 ];

@@ -32,7 +32,7 @@ export default function AppRouter(props) {
                 <Switch>
                     {routes.map((item) => {
                         const { path, component } = item;
-                        return <Route key={path} exact path={path} component={component} />;
+                        return <Route key={path} exact path={path} component={component} addHandlerKey={true}/>;
                     })}
                     <Route component={Error404} />
                 </Switch>

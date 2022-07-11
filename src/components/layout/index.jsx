@@ -80,9 +80,8 @@ function getOptions(options) {
 export const layoutRef = {current: null};
 
 export default function Layout(props) {
-    const {menus, collectedMenus, onMenuCollect} = props;
+    const {menus, collectedMenus, onMenuCollect,onClick} = props;
     const {auth, ...nextState} = getOptions();
-
     if (auth && !isLogin()) toLogin();
     const loginUser = getLoginUser();
     const [lang, setLang] = useState(getLange(loginUser?.id));
@@ -91,7 +90,6 @@ export default function Layout(props) {
     useEffect(async () => {
         // Layout有可能不渲染，layoutRef.current 有可能是null
         if (!layoutRef?.current?.setState) return;
-
         // 过滤掉函数，函数由layoutHoc处理
         const state = Object.entries(nextState).reduce((prev, curr) => {
             const [key, value] = curr;
@@ -141,6 +139,7 @@ export default function Layout(props) {
                 headerExtra={<Header/>}
                 keepPageAlive={CONFIG_HOC.keepAlive}
                 hashRouter={HASH_ROUTER}
+
                 {...nextState}
                 {...props}
             />

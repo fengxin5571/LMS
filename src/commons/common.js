@@ -132,6 +132,7 @@ export function formatLmsMenus(values) {
                     'type': 1,
                     'title': <FormattedMessage id={values[key].Name}/>,
                     'sourceTitle': values[key].Name,
+                    "history": "Global",
                     'order': values[key].DisplayOrder,
                     'UiRouter': values[key].UiRouter,
                     'ActionType': values[key].ActionType,
@@ -144,12 +145,14 @@ export function formatLmsMenus(values) {
                     'type': 1,
                     'title': <FormattedMessage id={values[key].Name}/>,
                     'sourceTitle': values[key].Name,
+                    "history": "Global",
                     'order': values[key].DisplayOrder,
                     'UiRouter': values[key].UiRouter,
                     'ActionType': values[key].ActionType,
                     'Access': values[key].Access,
                     'ActionHttpMethod': values[key].ActionHttpMethod,
-                    "path": "/" + bigCamel(values[key].Name),
+                    //"path": "/" + bigCamel(values[key].Name),
+                    "path": values[key].Name == "BusinessManagement"?"/BusinessManagement": "/Dynamic?dbGridName=" + values[key].Name,
                 };
             }
 
@@ -160,6 +163,7 @@ export function formatLmsMenus(values) {
                     'type': 1,
                     'title': <FormattedMessage id={values[key].Name}/>,
                     'sourceTitle': values[key].Name,
+                    "history": "Global",
                     'order': values[key].DisplayOrder,
                     'parentId': values[key].ParentName,
                     'UiRouter': values[key].UiRouter,
@@ -173,6 +177,7 @@ export function formatLmsMenus(values) {
                     'type': 1,
                     'title': <FormattedMessage id={values[key].Name}/>,
                     'sourceTitle': values[key].Name,
+                    "history": "Global",
                     'order': values[key].DisplayOrder,
                     'parentId': values[key].ParentName,
                     'UiRouter': values[key].UiRouter,
@@ -180,7 +185,8 @@ export function formatLmsMenus(values) {
                     'Access': values[key].Access,
                     'ActionHttpMethod': values[key].ActionHttpMethod,
                     //'path': values[key].UiRouter ? values[key].UiRouter : bigCamel(values[key].Name)
-                    "path": "/" + bigCamel(values[key].Name),
+                    //"path": "/" + bigCamel(values[key].Name),
+                    "path":values[key].Name == "BusinessManagement"?"/BusinessManagement": "/Dynamic?dbGridName=" + values[key].Name,
                 };
             }
 
@@ -312,6 +318,7 @@ export function handleGridDataTypeColumn(columns, isModalVisible, setIsModalVisi
  * @returns {string}
  */
 export function formatDate(timestamp) {
+    if (!timestamp) return;
     let date = new Date(timestamp);
     let formatData = date.getFullYear() +
         "-" + date.getDate() +
@@ -673,6 +680,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                     </FormItem>
                 );
             } else if (item.type == 15 || item.type == 17 || item.type == 20) { //Enum 要翻译
+
                 return (<FormItem
                     {...layout}
                     label={item.label}
@@ -842,7 +850,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                         </FormItem>
                     </Card>
                 )
-            }  else if (item.type == 29) { //文件管理器
+            } else if (item.type == 29) { //文件管理器
                 var fileType;
                 var filePaths = [];
                 var viewFilePath = [];
