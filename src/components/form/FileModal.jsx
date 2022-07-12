@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useImperativeHandle, useRef} from 'react';
 import config from 'src/commons/config-hoc';
 import {Content, FormItem, getLoginUser, ModalContent, Table} from '@ra-lib/admin';
-import {Breadcrumb, Button, Col, Form, message, Modal, Progress, Row, Upload, List} from "antd";
+import {Breadcrumb, Button, Col, Form, message, Modal, Progress, Row, Upload, List, ConfigProvider} from "antd";
 import {
     DeleteOutlined,
     FolderOpenOutlined,
@@ -30,6 +30,7 @@ export default config({
         isEdit,
         uploadItemName,
         viewFilePath,
+        antLocale,
         viewFile
     } = props;
     const [dataSource, setDataSource] = useState([]);
@@ -177,7 +178,7 @@ export default config({
             draw: DRAW,
             FolderName: handlePath,
             FileName: records?.FileName
-        }),{ responseType: "blob" });
+        }), {responseType: "blob"});
         let blob = new Blob([res]);
         if (typeof window.navigator.msSaveBlob !== "undefined") {
             // 兼容IE，window.navigator.msSaveBlob：以本地方式保存文件
@@ -336,85 +337,89 @@ export default config({
         fileList,
     };
     return (
-        <ModalContent
-            onOk={onOk}
-            onCancel={onCancel}
-        >
-            <>
-                <Row style={{marginBottom: 15}}>
-                    <Col span={14}>
-                        <Breadcrumb style={{"padding-left": '20px'}}>
-                            {
-                                path.length === 1 ?
-                                    path.map((v, i) => (
-                                        <Breadcrumb.Item key={v} href="" onClick={e => onClickPathFolder(e, v)}>
-                                            <HomeOutlined/>
-                                        </Breadcrumb.Item>)) :
-                                    path.map((v, i) => {
-                                        if (i === 0) {
-                                            return (
-                                                <Breadcrumb.Item key={v} href=""
-                                                                 onClick={e => onClickPathFolder(e, v)}>
-                                                    <HomeOutlined/>
-                                                </Breadcrumb.Item>
-                                            );
-                                        } else {
-                                            return (
-                                                <Breadcrumb.Item key={v} href=""
-                                                                 onClick={e => onClickPathFolder(e, v)}>
-                                                    <span>{v}</span>
-                                                </Breadcrumb.Item>
-                                            );
-                                        }
-                                    })
-                            }
-                        </Breadcrumb>
-                    </Col>
-                    <Col span={5}>
-                        <Upload {...uploadConfig} multiple>
-                            <Button type="primary" icon={<UploadOutlined/>}>
-                                <FormattedMessage id="UploadFile"/>
+        <ConfigProvider locale={antLocale}>
+            <ModalContent
+                onOk={onOk}
+                onCancel={onCancel}
+                okText={getLange(props.loginUser?.id) == "zh_CN"?"确定":"Confirm"}
+                cancelText={getLange(props.loginUser?.id) == "zh_CN"?"取消":"Cancel"}
+            >
+                <>
+                    <Row style={{marginBottom: 15}}>
+                        <Col span={14}>
+                            <Breadcrumb style={{"padding-left": '20px'}}>
+                                {
+                                    path.length === 1 ?
+                                        path.map((v, i) => (
+                                            <Breadcrumb.Item key={v} href="" onClick={e => onClickPathFolder(e, v)}>
+                                                <HomeOutlined/>
+                                            </Breadcrumb.Item>)) :
+                                        path.map((v, i) => {
+                                            if (i === 0) {
+                                                return (
+                                                    <Breadcrumb.Item key={v} href=""
+                                                                     onClick={e => onClickPathFolder(e, v)}>
+                                                        <HomeOutlined/>
+                                                    </Breadcrumb.Item>
+                                                );
+                                            } else {
+                                                return (
+                                                    <Breadcrumb.Item key={v} href=""
+                                                                     onClick={e => onClickPathFolder(e, v)}>
+                                                        <span>{v}</span>
+                                                    </Breadcrumb.Item>
+                                                );
+                                            }
+                                        })
+                                }
+                            </Breadcrumb>
+                        </Col>
+                        <Col span={5}>
+                            <Upload {...uploadConfig} multiple>
+                                <Button type="primary" icon={<UploadOutlined/>}>
+                                    <FormattedMessage id="UploadFile"/>
+                                </Button>
+                            </Upload>
+                        </Col>
+                        <Col span={5} style={{textAlign: 'right'}}>
+                            <Button type="primary" onClick={() => setVisible(true)}>
+                                <FormattedMessage id="CreateFileFolder"/>
                             </Button>
-                        </Upload>
-                    </Col>
-                    <Col span={5} style={{textAlign: 'right'}}>
-                        <Button type="primary" onClick={() => setVisible(true)}>
-                            <FormattedMessage id="CreateFileFolder"/>
-                        </Button>
-                    </Col>
-                </Row>
+                        </Col>
+                    </Row>
 
-                <Row>
-                    {/*<Col span={24}>*/}
-                    {/*    {this.state.processVisible ? <Progress percent={this.state.percent}/> : <></>}*/}
-                    {/*</Col>*/}
-                </Row>
-                <Content otherHeight={150} fitHeight>
-                    <Table
-                        rowKey="Id"
-                        loading={loading}
-                        columns={colums}
-                        dataSource={dataSource}
-                        pagination={false}
-                        scroll={{y: document.documentElement.clientHeight - 190}}
-                    />
-                </Content>
-                <Modal
-                    visible={visible}
-                    top={50}
-                    onOk={() => {
-                        setVisible(false) || handleSubmit() || form.resetFields()
-                    }}
-                    onCancel={() => setVisible(false)}
-                >
-                    <Content otherHeight={600} fitHeight style={{padding: 20}}>
-                        <Form autoComplete="off" form={form}>
-                            <FormItem name="fileName" label={<FormattedMessage id="UploadFolderName"/>}
-                                      placeholder="Folder Name" noSpace/>
-                        </Form>
+                    <Row>
+                        {/*<Col span={24}>*/}
+                        {/*    {this.state.processVisible ? <Progress percent={this.state.percent}/> : <></>}*/}
+                        {/*</Col>*/}
+                    </Row>
+                    <Content otherHeight={150} fitHeight>
+                        <Table
+                            rowKey="Id"
+                            loading={loading}
+                            columns={colums}
+                            dataSource={dataSource}
+                            pagination={false}
+                            scroll={{y: document.documentElement.clientHeight - 190}}
+                        />
                     </Content>
-                </Modal>
-            </>
-        </ModalContent>
+                    <Modal
+                        visible={visible}
+                        top={50}
+                        onOk={() => {
+                            setVisible(false) || handleSubmit() || form.resetFields()
+                        }}
+                        onCancel={() => setVisible(false)}
+                    >
+                        <Content otherHeight={600} fitHeight style={{padding: 20}}>
+                            <Form autoComplete="off" form={form}>
+                                <FormItem name="fileName" label={<FormattedMessage id="UploadFolderName"/>}
+                                          placeholder="Folder Name" noSpace/>
+                            </Form>
+                        </Content>
+                    </Modal>
+                </>
+            </ModalContent>
+        </ConfigProvider>
     );
 });

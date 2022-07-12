@@ -138,8 +138,8 @@ export default config({
             <ConfigProvider locale={antLocale}>
                 <PageContent fitHeight loading={loading}>
                     <Tabs defaultActiveKey="1" onChange={onChange}>
-                        <TabPane tab={<FormattedMessage id="BusinessManagement"/>} key="1">
-                            <Content otherHeight={50} fitHeight style={{paddingLeft: 20}} >
+                        <TabPane tab={<>&nbsp;&nbsp;<FormattedMessage id="BusinessManagement"/></>} key="1">
+                            <Content otherHeight={50} fitHeight style={{paddingLeft: 20}}>
                                 <List
                                     header={
                                         <>
@@ -161,9 +161,13 @@ export default config({
                                     dataSource={dataSource}
                                     renderItem={(item) => (
                                         <List.Item
-                                            actions={[<Button type="primary"
-                                                              onClick={() => setVisible(true) || setIsEdit(true) || setRefresh(false) || GetGrid(item.Name, 1)}><FormattedMessage
-                                                id="Settings"/></Button>, <Button type="primary" style={{
+                                            actions={[<Button type="primary" size={"small"}
+                                                              onClick={() => setVisible(true) || setIsEdit(true) || setRefresh(false) || GetGrid(item.Name, 1)}
+                                                              style={{
+                                                                  background: "#FF9F54",
+                                                                  borderColor: "#FF9F54"
+                                                              }}><FormattedMessage
+                                                id="Settings"/></Button>, <Button type="primary" size={"small"} style={{
                                                 background: "#FF6060",
                                                 borderColor: '#FF6060'
                                             }}
@@ -230,12 +234,12 @@ export default config({
                                 </Modal>
                             </Content>
                         </TabPane>
-                        <TabPane tab="Tab 2" key="2">
-                            Content of Tab Pane 2
-                        </TabPane>
-                        <TabPane tab="Tab 3" key="3">
-                            Content of Tab Pane 3
-                        </TabPane>
+                        {/*<TabPane tab="Tab 2" key="2">*/}
+                        {/*    Content of Tab Pane 2*/}
+                        {/*</TabPane>*/}
+                        {/*<TabPane tab="Tab 3" key="3">*/}
+                        {/*    Content of Tab Pane 3*/}
+                        {/*</TabPane>*/}
                     </Tabs>
                 </PageContent>
             </ConfigProvider>

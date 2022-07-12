@@ -3,7 +3,7 @@ import React, {useCallback, useEffect, useState, useRef} from 'react';
 import BraftEditor, {EditorState} from 'braft-editor'
 // 引入编辑器样式
 import 'braft-editor/dist/index.css'
-import {Card, Form, ConfigProvider,Row} from 'antd';
+import {Card, Form, ConfigProvider, Row} from 'antd';
 import {ModalContent, FormItem, Content, useDebounceValidator, getLoginUser} from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
 import {WITH_SYSTEMS, DRAW} from 'src/config';
@@ -11,6 +11,7 @@ import {convertToFormData, handleFormItem} from "src/commons/common";
 import {FormattedMessage, IntlProvider} from 'react-intl'
 import {getLange} from "src/commons";
 import FileModal from "../form/FileModal";
+import {CodeSandboxOutlined} from "@ant-design/icons";
 
 export default config({
     modal: {
@@ -152,18 +153,26 @@ export default config({
                         onCancel={() => form.resetFields()}
                         footer={isDetail ? true : null}
                     >
-                        <Content fitHeight otherHeight={200} style={{backgroundColor:"#f0f2f5"}}>
+                        <Content fitHeight otherHeight={200} style={{backgroundColor: "#f0f2f5"}}>
                             {isEdit ? <FormItem hidden name="Id" value={record?.Id}/> : null}
-                            <Card title={<FormattedMessage id="BasicInformation"/>}>
+                            <Card title={<><span style={{color: "#1890ff", fontSize: 18}}><CodeSandboxOutlined/> </span>
+                                <FormattedMessage id="BasicInformation"/></>}
+                            >
                                 <Content otherHeight={0}>
                                     <Row gutter={16}>
                                         {
-                                            handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [28,21,24], {}, locale)
+                                            handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [28, 21, 24, 29], {}, locale)
                                         }
                                     </Row>
                                 </Content>
                             </Card>
-                            {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 25, 26, 27, 28,29, 30], {
+
+                            {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 30], {
+                                fitHeight: false,
+                                otherHeight: 0
+                            }, locale)}
+
+                            {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 25, 26, 27, 28, 29, 30], {
                                 fitHeight: false,
                                 otherHeight: 0
                             }, locale)}
@@ -242,6 +251,7 @@ export default config({
                         uploadItemName={uploadItemName}
                         viewFilePath={viewFilePath}
                         viewFile={viewFile}
+                        antLocale={antLocale}
                     />
                 </Form>
             </ConfigProvider>

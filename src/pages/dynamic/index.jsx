@@ -136,7 +136,7 @@ export default config({
         resColums.table_colums.push({
             title: <FormattedMessage id="Operation"/>,
             key: 'operator',
-            width: 80,
+            width: getLange(loginUser?.id) == "zh_CN" ?80:100,
             fixed: 'right',
             align: "center",
             render: (value, record) => {

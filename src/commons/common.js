@@ -1,13 +1,13 @@
 import $ from "jquery";
 import {DRAW, WITH_SYSTEMS} from "../config";
-import {FormItem, getLoginUser, getToken} from "@ra-lib/admin";
+import {FormItem, getLoginUser, getToken, Content} from "@ra-lib/admin";
 import {FormattedMessage} from "react-intl";
 import React from "react";
-import {Button, Card, Form, Input, Space, Tag, List, Col} from "antd";
+import {Button, Card, Form, Input, Space, Tag, List, Col, Row} from "antd";
 import {getLange} from "./index";
 import moment from "moment";
 import BraftEditor from "braft-editor";
-import {MinusCircleOutlined, PlusOutlined, StarFilled, PaperClipOutlined} from "@ant-design/icons";
+import {MinusCircleOutlined, BarsOutlined, PlusOutlined, StarFilled, PaperClipOutlined} from "@ant-design/icons";
 
 import SelectTable from "src/components/form/SelectTable";
 
@@ -231,7 +231,7 @@ export function asyncConfigData(dbGridName) {
         type: "POST",
         url: "/api/DbGrid/Config",
         async: false,
-        data: {DbGridName: dbGridName, draw: DRAW},
+        data: {DbGridName: dbGridName, draw: DRAW, Customised: true},
         beforeSend: function (request) {
             request.setRequestHeader("Authorization", "Bearer " + getToken());
         },
@@ -451,7 +451,6 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
             return order.indexOf(a.type) - order.indexOf(b.type);
         });
         var elementItem = formColums.map((item, index) => {
-
                 const find = filter_type.findIndex((element) => element == item.type)
                 if (!(find < 0)) {
                     return;
@@ -475,7 +474,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                 }
                 if (item.type == 1) { //boolean 类型
                     return (
-                        <Col span={5}>
+                        <Col span={4} style={!is_style ? {marginRight: "2rem"} : {}}>
                             <FormItem
                                 {...layout}
                                 label={item.label}
@@ -528,7 +527,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                         })
                     }
                     return (
-                        <Col span={5}>
+                        <Col span={4} style={!is_style ? {marginRight: "2rem"} : {}}>
                             <FormItem
                                 {...layout}
                                 label={item.label}
@@ -578,7 +577,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                         })
                     }
                     return (
-                        <Col span={5}>
+                        <Col span={4} style={!is_style ? {marginRight: "2rem"} : {}}>
                             <FormItem
                                 {...layout}
                                 label={item.label}
@@ -619,7 +618,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                         message: <FormattedMessage id="RulesEmailMsg"/>
                     })
                     return (
-                        <Col span={5}>
+                        <Col span={4} style={!is_style ? {marginRight: "2rem"} : {}}>
                             <FormItem
                                 {...layout}
                                 label={item.label}
@@ -645,7 +644,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                         }
                     }
                     return (
-                        <Col span={5}>
+                        <Col span={4} style={!is_style ? {marginRight: "2rem"} : {}}>
                             <FormItem
                                 {...layout}
                                 label={item.label}
@@ -673,7 +672,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                         }
                     }
                     return (
-                        <Col span={5}>
+                        <Col span={4} style={!is_style ? {marginRight: "2rem"} : {}}>
                             <FormItem
                                 {...layout}
                                 label={item.label}
@@ -692,7 +691,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                     );
                 } else if (item.type == 9) { //文本
                     return (
-                        <Col span={5}>
+                        <Col span={4} style={!is_style ? {marginRight: "2rem"} : {}}>
                             <FormItem
                                 {...layout}
                                 label={item.label}
@@ -719,7 +718,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                 } else if (item.type == 15 || item.type == 17 || item.type == 20) { //Enum 要翻译
 
                     return (
-                        <Col span={5}>
+                        <Col span={4} style={!is_style ? {marginRight: "2rem"} : {}}>
                             <FormItem
                                 {...layout}
                                 label={item.label}
@@ -742,7 +741,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                     );
                 } else if (item.type == 23) { //密码
                     return (
-                        <Col span={5}>
+                        <Col span={4} style={!is_style ? {marginRight: "2rem"} : {}}>
                             <FormItem
                                 {...layout}
                                 label={item.label}
@@ -760,7 +759,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                     )
                 } else if (item.type == 16 || item.type == 18 || item.type == 19 || item.type == 26) { //Enum
                     return (
-                        <Col span={5}>
+                        <Col span={4} style={!is_style ? {marginRight: "2rem"} : {}}>
                             <FormItem
                                 {...layout}
                                 label={item.label}
@@ -782,90 +781,247 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                         </Col>
                     );
                 } else if (item.type == 21) { //json子表格
-                    console.log(item.type);
-                    return (
-                        <Card title={<FormattedMessage id={item.header}/>}
-                              bodyStyle={{padding: 10}} style={{marginTop: 10}}>
-                            <Form.List name={field != undefined ? [field?.name, item.name] : item.name}>
-                                {(fields, {add, remove}) => (
-                                    <>
-                                        {fields.map((subfield) => (
-                                            <Space
-                                                key={subfield.key}
-                                                style={{
-                                                    display: 'flex',
-                                                    marginBottom: 8,
-                                                }}
-                                                align="baseline"
-                                            >
+                    let formartColumns = [];
+                    item.ColumnConfigs.map(subItem => {
+                        if ((!isEdit && !isDetail) && !((subItem.access & authority.create) > 0)) {
+                            return;
+                        } else if (isEdit && !((subItem.access & authority.change) > 0)) {
+                            return;
+                        } else if (isDetail && !((subItem.access & authority.view) > 0)) {
+                            return;
+                        }
+                        formartColumns.push(subItem);
+                    });
+                    if(!is_style){
+                        return (
+                            <Card
+                                title={<><span style={{color: "#1890ff", fontSize: 18}}><BarsOutlined/> </span>
+                                    <FormattedMessage
+                                        id={item.header}/></>}
+                                bodyStyle={{padding: 10}} style={{marginTop: 10}}
+                            >
+                                <Form.List name={field != undefined ? [field?.name, item.name] : item.name}>
+                                    {(fields, {add, remove}) => (
+                                        <>
+                                            <Content style={{overflowY: 'auto', marginBottom: 10}}>
+                                                <Space
+                                                    style={{
+                                                        display: 'flex',
+                                                        marginBottom: 12,
+                                                        paddingBottom: "5",
+                                                        textAlign: "center",
+                                                        lineHeight: 3,
+                                                        fontWeight: "bold"
+                                                    }}
+                                                    direction="horizontal"
+                                                >
+                                                    {formartColumns.map(sub => (
+                                                        <div style={{width: '11rem',}}><FormattedMessage id={sub.header}/>
+                                                        </div>
+                                                    ))}
+                                                </Space>
+                                                {console.log(item.ColumnConfigs)}
+                                                {fields.map((subfield) => (
+                                                    <Space
+                                                        key={subfield.key}
+                                                        style={{
+                                                            display: 'flex',
+                                                            paddingBottom: "5"
+                                                        }}
+                                                        direction="horizontal"
+                                                    >
+                                                        {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
+                                                        {!isDetail ? <Button type="primary" size="small" style={{
+                                                                background: "#FF6060",
+                                                                borderColor: '#FF6060',
+                                                                marginBottom: 24,
+                                                            }} onClick={() => remove(subfield.name)}><FormattedMessage
+                                                                id="Delete"/></Button>
+                                                            : null}
 
-                                                {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.subcolumns, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
-                                                {!isDetail ? <Button type="primary" size="small" style={{
-                                                        background: "#FF6060",
-                                                        borderColor: '#FF6060',
-                                                        marginBottom: 24,
-                                                    }} onClick={() => remove(subfield.name)}><FormattedMessage
-                                                        id="Delete"/></Button>
-                                                    : null}
-                                            </Space>
-                                        ))}
-                                        <Form.Item>
-                                            <Button type="dashed" onClick={() => add()}
-                                                    disabled={isDetail}
-                                                    block icon={<PlusOutlined/>}>
-                                                <FormattedMessage id="Create"/>
-                                            </Button>
-                                        </Form.Item>
-                                    </>
-                                )}
-                            </Form.List>
-                        </Card>
-                    );
+                                                    </Space>
+                                                ))}
+                                            </Content>
+                                            <Form.Item>
+
+                                                <Button type="dashed" onClick={() => add()}
+                                                        disabled={isDetail || item.related_type == 1 ? (fields.length > 1 ? true : false) : false}
+                                                        block icon={<PlusOutlined/>}>
+                                                    <FormattedMessage id="Create"/>
+                                                </Button>
+                                            </Form.Item>
+                                        </>
+                                    )}
+                                </Form.List>
+                            </Card>
+                        );
+                    }else {
+                        return (
+                            <Card
+                                title={<><span style={{color: "#1890ff", fontSize: 18}}><BarsOutlined/> </span><FormattedMessage
+                                    id={item.header}/></>}
+                                bodyStyle={{padding: 10}} style={{marginTop: 10}}>
+                                <Form.List name={field != undefined ? [field?.name, item.name] : item.name}>
+                                    {(fields, {add, remove}) => (
+                                        <>
+                                            {fields.map((subfield) => (
+                                                <Space
+                                                    key={subfield.key}
+                                                    style={{
+                                                        display: 'flex',
+                                                        marginBottom: 8,
+                                                    }}
+                                                    align="baseline"
+                                                >
+
+                                                    {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.subcolumns, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
+                                                    {!isDetail ? <Button type="primary" size="small" style={{
+                                                            background: "#FF6060",
+                                                            borderColor: '#FF6060',
+                                                            marginBottom: 24,
+                                                        }} onClick={() => remove(subfield.name)}><FormattedMessage
+                                                            id="Delete"/></Button>
+                                                        : null}
+                                                </Space>
+                                            ))}
+                                            <Form.Item>
+                                                <Button type="dashed" onClick={() => add()}
+                                                        disabled={isDetail}
+                                                        block icon={<PlusOutlined/>}>
+                                                    <FormattedMessage id="Create"/>
+                                                </Button>
+                                            </Form.Item>
+                                        </>
+                                    )}
+                                </Form.List>
+                            </Card>
+                        );
+                    }
                 } else if (item.type == 24) { //关联字段
-                    return (
-                        <Card title={<FormattedMessage id={item.header}/>}
-                              bodyStyle={{padding: 10}} style={{marginTop: 10}}
-                        >
-                            <Form.List name={field != undefined ? [field?.name, item.name] : item.name}>
-                                {(fields, {add, remove}) => (
-                                    <>
-                                        {fields.map((subfield) => (
-                                            <Space
-                                                key={subfield.key}
-                                                wrap
-                                                style={{
-                                                    display: 'flex',
-                                                    marginBottom: 8,
-                                                }}
-                                                direction="horizontal"
-                                            >
-                                                {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
-                                                {!isDetail ? <Button type="primary" size="small" style={{
-                                                        background: "#FF6060",
-                                                        borderColor: '#FF6060',
-                                                        marginBottom: 24,
-                                                    }} onClick={() => remove(subfield.name)}><FormattedMessage
-                                                        id="Delete"/></Button>
-                                                    : null}
+                    let formartColumns = [];
+                    item.ColumnConfigs.map(subItem => {
+                        if ((!isEdit && !isDetail) && !((subItem.access & authority.create) > 0)) {
+                            return;
+                        } else if (isEdit && !((subItem.access & authority.change) > 0)) {
+                            return;
+                        } else if (isDetail && !((subItem.access & authority.view) > 0)) {
+                            return;
+                        }
+                        formartColumns.push(subItem);
+                    });
+                    if (!is_style) {
+                        return (
+                            <Card
+                                title={<><span style={{color: "#1890ff", fontSize: 18}}><BarsOutlined/> </span>
+                                    <FormattedMessage
+                                        id={item.header}/></>}
+                                bodyStyle={{padding: 10}} style={{marginTop: 10}}
+                            >
+                                <Form.List name={field != undefined ? [field?.name, item.name] : item.name}>
+                                    {(fields, {add, remove}) => (
+                                        <>
+                                            <Content style={{overflowY: 'auto', marginBottom: 10}}>
+                                                <Space
+                                                    style={{
+                                                        display: 'flex',
+                                                        marginBottom: 12,
+                                                        paddingBottom: "5",
+                                                        textAlign: "center",
+                                                        lineHeight: 3,
+                                                        fontWeight: "bold"
+                                                    }}
+                                                    direction="horizontal"
+                                                >
+                                                    {formartColumns.map(sub => (
+                                                        <div style={{width: '11rem',}}><FormattedMessage id={sub.header}/>
+                                                        </div>
+                                                    ))}
+                                                </Space>
+                                                {console.log(item.ColumnConfigs)}
+                                                {fields.map((subfield) => (
+                                                    <Space
+                                                        key={subfield.key}
+                                                        style={{
+                                                            display: 'flex',
+                                                            paddingBottom: "5"
+                                                        }}
+                                                        direction="horizontal"
+                                                    >
+                                                        {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
+                                                        {!isDetail ? <Button type="primary" size="small" style={{
+                                                                background: "#FF6060",
+                                                                borderColor: '#FF6060',
+                                                                marginBottom: 24,
+                                                            }} onClick={() => remove(subfield.name)}><FormattedMessage
+                                                                id="Delete"/></Button>
+                                                            : null}
 
-                                            </Space>
-                                        ))}
-                                        <Form.Item>
+                                                    </Space>
+                                                ))}
+                                            </Content>
+                                            <Form.Item>
 
-                                            <Button type="dashed" onClick={() => add()}
-                                                    disabled={isDetail || item.related_type == 1 ? (fields.length > 1 ? true : false) : false}
-                                                    block icon={<PlusOutlined/>}>
-                                                <FormattedMessage id="Create"/>
-                                            </Button>
-                                        </Form.Item>
-                                    </>
-                                )}
-                            </Form.List>
-                        </Card>
-                    );
+                                                <Button type="dashed" onClick={() => add()}
+                                                        disabled={isDetail || item.related_type == 1 ? (fields.length > 1 ? true : false) : false}
+                                                        block icon={<PlusOutlined/>}>
+                                                    <FormattedMessage id="Create"/>
+                                                </Button>
+                                            </Form.Item>
+                                        </>
+                                    )}
+                                </Form.List>
+                            </Card>
+                        );
+                    } else { //子表格里的字段
+                        return (
+                            <Card
+                                title={<><span style={{color: "#1890ff", fontSize: 18}}><BarsOutlined/></span>
+                                    <FormattedMessage
+                                        id={item.header}/></>}
+                                bodyStyle={{padding: 10}} style={{marginTop: 10}}
+                            >
+                                <Form.List name={field != undefined ? [field?.name, item.name] : item.name}>
+                                    {(fields, {add, remove}) => (
+                                        <>
+                                            {fields.map((subfield) => (
+                                                <Space
+                                                    key={subfield.key}
+                                                    wrap
+                                                    style={{
+                                                        display: 'flex',
+                                                        marginBottom: 8,
+                                                    }}
+                                                    direction="horizontal"
+                                                >
+                                                    {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
+                                                    {!isDetail ? <Button type="primary" size="small" style={{
+                                                            background: "#FF6060",
+                                                            borderColor: '#FF6060',
+                                                            marginBottom: 24,
+                                                        }} onClick={() => remove(subfield.name)}><FormattedMessage
+                                                            id="Delete"/></Button>
+                                                        : null}
+
+                                                </Space>
+                                            ))}
+                                            <Form.Item>
+
+                                                <Button type="dashed" onClick={() => add()}
+                                                        disabled={isDetail || item.related_type == 1 ? (fields.length > 1 ? true : false) : false}
+                                                        block icon={<PlusOutlined/>}>
+                                                    <FormattedMessage id="Create"/>
+                                                </Button>
+                                            </Form.Item>
+                                        </>
+                                    )}
+                                </Form.List>
+                            </Card>
+                        );
+                    }
+
                 } else if (item.type == 27) { //带null的Enum
                     return (
-                        <Col span={5}>
+                        <Col span={4} style={!is_style ? {marginRight: "2rem"} : {}}>
                             <FormItem
                                 {...layout}
                                 label={item.label}
@@ -888,7 +1044,8 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                     );
                 } else if (item.type == 28) { //字符串列表
                     return (
-                        <Card title={<>{required ? <StarFilled style={{color: '#ff4d4f'}}/> : null} <FormattedMessage
+                        <Card title={<>{required ? <span style={{color: "#ff4d4f"}}>*</span> :
+                            <span style={{color: "#1890ff", fontSize: 18}}><BarsOutlined/></span>} <FormattedMessage
                             id={item.header}/></>}
                               bodyStyle={{padding: 0}} style={{marginTop: 10}}>
                             <FormItem shouldUpdate noStyle>
@@ -931,12 +1088,46 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                         var loadFilePaths = form.getFieldValue(item.name) ? form.getFieldValue(item.name)?.WithChildrenAttachments : [];
                         filePaths = loadFilePaths.filter(v => (v.IsDirectory == false));
                     }
-                    return (
-                        <>
-                            <Col span={5}>
-                                <FormItem {...layout}
-                                          label={item.label}
-                                >
+                    if (is_style) {
+                        return (
+                            <>
+                                <Col span={4} style={!is_style ? {marginRight: "2rem"} : {}}>
+                                    <FormItem {...layout}
+                                              label={item.label}
+                                    >
+                                        <Button type="primary" onClick={() => {
+                                            setUploadItemName(item.name);
+                                            setFileType(fileType);
+                                            setIsModalVisible(true);
+                                            if (fileType == 3) {
+                                                setRefreshLoad(false);
+                                            }
+                                            setModalTitle(<FormattedMessage id={item.header}/>);
+                                        }} disabled={isDetail}>
+                                            <FormattedMessage id="ClickFileView"/>
+                                        </Button>
+                                        <List
+                                            size="small"
+                                            header={<div><FormattedMessage id="AttachmentList"/></div>}
+                                            bordered
+                                            dataSource={filePaths}
+                                            renderItem={(item) => <List.Item><PaperClipOutlined
+                                                style={{paddingRight: "15px"}}/>{item?.FolderName || ''}{item.FileName}
+                                            </List.Item>}
+                                            style={{display: filePaths.length > 0 ? "block" : "none", marginTop: "20px"}}
+                                        />
+                                    </FormItem>
+                                    <FormItem name={item.name} hidden></FormItem>
+                                    <FormItem name="Files" hidden></FormItem>
+                                </Col>
+                            </>
+                        );
+                    } else {
+                        return (
+                            <>
+                                <Card title={<><span style={{color: "#1890ff", fontSize: 18}}><PaperClipOutlined/> </span>
+                                    <FormattedMessage id={item.header}/></>}
+                                      style={{marginTop: 10}} extra={
                                     <Button type="primary" onClick={() => {
                                         setUploadItemName(item.name);
                                         setFileType(fileType);
@@ -948,22 +1139,27 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                                     }} disabled={isDetail}>
                                         <FormattedMessage id="ClickFileView"/>
                                     </Button>
-                                    <List
-                                        size="small"
-                                        header={<div><FormattedMessage id="AttachmentList"/></div>}
-                                        bordered
-                                        dataSource={filePaths}
-                                        renderItem={(item) => <List.Item><PaperClipOutlined
-                                            style={{paddingRight: "15px"}}/>{item?.FolderName || ''}{item.FileName}
-                                        </List.Item>}
-                                        style={{display: filePaths.length > 0 ? "block" : "none", marginTop: "20px"}}
-                                    />
-                                </FormItem>
-                                <FormItem name={item.name} hidden></FormItem>
-                                <FormItem name="Files" hidden></FormItem>
-                            </Col>
-                        </>
-                    );
+                                }>
+                                    <FormItem {...layout}
+                                    >
+
+                                        <List
+                                            size="small"
+                                            header={<div><FormattedMessage id="AttachmentList"/></div>}
+                                            bordered
+                                            dataSource={filePaths}
+                                            renderItem={(item) => <List.Item><PaperClipOutlined
+                                                style={{paddingRight: "15px"}}/>{item?.FolderName || ''}{item.FileName}
+                                            </List.Item>}
+                                            style={{display: filePaths.length > 0 ? "block" : "none", marginTop: "20px"}}
+                                        />
+                                    </FormItem>
+                                    <FormItem name={item.name} hidden></FormItem>
+                                    <FormItem name="Files" hidden></FormItem>
+                                </Card>
+                            </>
+                        );
+                    }
 
                 } else {
                     if (item.min != undefined) {
@@ -986,7 +1182,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                     }
 
                     return (
-                        <Col span={5}>
+                        <Col span={4} style={!is_style ? {marginRight: "2rem"} : {}}>
                             <FormItem
                                 {...layout}
                                 label={item.label}
