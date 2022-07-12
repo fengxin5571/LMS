@@ -6,7 +6,6 @@ import {Content, FormItem, getLoginUser, PageContent} from "@ra-lib/admin";
 import {getLange} from "../../commons";
 import zhCN from "antd/lib/locale/zh_CN";
 import enUS from "antd/lib/locale/en_US";
-import {DbGridNames} from "../../commons/dbgridconfig";
 import {convertToFormData, BtnFlags, GridStatus} from "src/commons/common";
 
 const {TabPane} = Tabs;
@@ -41,7 +40,7 @@ export default config({
         } else {
             setAntLocale(enUS);
         }
-        const res = await props.ajax.get("/Setting/LoadAllGrids");
+        const res = await props.ajax.get("/Setting/LoadAllGrids", {}, {setLoading});
         res.forEach((item) => {
             if (item?.Grids) {
                 items = items.concat(item?.Grids);
@@ -51,10 +50,10 @@ export default config({
             }
         });
         for (const resKey in BtnFlags) {
-            options.push({label: resKey, value: BtnFlags[resKey].toString(10)});
+            options.push({label: resKey, value: BtnFlags[resKey]});
         }
         for (const resKey in GridStatus) {
-            statusOptions.push({label: resKey, value: GridStatus[resKey].toString(10)});
+            statusOptions.push({label: resKey, value: GridStatus[resKey]});
         }
         setDataGridType(selectOptions);
         setBtnFlagsOptions(options);
@@ -62,57 +61,74 @@ export default config({
         setDataSource(items);
         setLocale(data);
 
-    }, [lang, refresh]);
-    const GetGrid = useCallback(async (dbgridName) => {
-        if (isEdit) {
-            const res = await props.ajax.get(`Setting/GetGrid?gridName=` + dbgridName, {}, {
-                //successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!"
-            });
-            dbgridForm.setFieldsValue(res);
-        } else {
+    }, [lang, refresh, isEdit]);
+    const GetGrid = useCallback(async (dbgridName, type) => {
+        if (type == 1) {
+            let checkedFlags = [];
+            let checkedStatus = [];
+            let visableStatus = [];
+            const res = await props.ajax.get(`Setting/GetGrid?gridName=` + dbgridName, {}, {});
+            checkedFlags = btnFlagsOptions.filter(item => (res.Flags & item.value) > 0)?.map(item => item.value);
+            checkedStatus = statusOptions.filter(item => (res.Status & item.value) > 0)?.map(item => item.value);
+            visableStatus = statusOptions.filter(item => (res.VisableStatus & item.value) > 0)?.map(item => item.value);
+            const values = {
+                Id: res?.Id,
+                DbGridName: res?.DbGridName,
+                DbGridNameCn: res?.DbGridNameCn,
+                DisableGridNameFilter: res?.DisableGridNameFilter,
+                GridReadonly: res?.GridReadonly,
+                Flags: checkedFlags,
+                Status: checkedStatus,
+                VisableStatus: visableStatus
+            }
+            console.log(values);
+            dbgridForm.setFieldsValue(values);
+        } else if (type == 2) {
             await props.ajax.post(`/Setting/RemoveGrid`, convertToFormData({
                 gridName: dbgridName
             }), {
                 successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!"
             });
-            setRefresh(refresh ? false : true);
+            setRefresh(true);
         }
-    }, []);
+    }, [btnFlagsOptions, statusOptions]);
 
     const UpdateGrid = useCallback(async () => {
         const flags = dbgridForm.getFieldValue("Flags") || [];
         const visableStatus = dbgridForm.getFieldValue("VisableStatus") || [];
         const status = dbgridForm.getFieldValue("Status") || [];
+        let sumFlags = 0;
+        let sumVisableStatus = 0;
+        let sumStatus = 0;
+        flags.map(item => sumFlags = sumFlags | item.toString(10));
+        visableStatus.map(item => sumVisableStatus = sumVisableStatus | item.toString(10));
+        status.map(item => sumStatus = sumStatus | item.toString(10));
+        const params = {
+            DbGridName: dbgridForm.getFieldValue("DbGridName"),
+            DbGridNameCn: dbgridForm.getFieldValue("DbGridNameCn"),
+            Flags: sumFlags,
+            DisableGridNameFilter: dbgridForm.getFieldValue("DisableGridNameFilter") == undefined ? false : dbgridForm.getFieldValue("DisableGridNameFilter"),
+            VisableStatus: sumVisableStatus,
+            GridReadonly: dbgridForm.getFieldValue("GridReadonly") == undefined ? false : dbgridForm.getFieldValue("GridReadonly"),
+            Status: sumStatus,
+            DataGridType: dbgridForm.getFieldValue("DataGridType")
+        }
         if (isEdit) { //编辑
-            await props.ajax.post(`Setting/UpdateGrid`, convertToFormData(dbgridForm.getFieldsValue(true)), {
+            params.Id = dbgridForm.getFieldValue('Id');
+            await props.ajax.post(`Setting/UpdateGrid`, convertToFormData(params), {
                 successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!"
             });
         } else {
-            let sumFlags = 0;
-            let sumVisableStatus = 0;
-            let sumStatus = 0;
-            flags.map(item => sumFlags = sumFlags | item);
-            visableStatus.map(item => sumVisableStatus = sumVisableStatus | item);
-            status.map(item => sumStatus = sumStatus | item);
-            const params = {
-                DbGridName: dbgridForm.getFieldValue("DbGridName"),
-                DbGridNameCn: dbgridForm.getFieldValue("DbGridNameCn"),
-                Flags: sumFlags,
-                DisableGridNameFilter: dbgridForm.getFieldValue("DisableGridNameFilter") == undefined ? false : dbgridForm.getFieldValue("DisableGridNameFilter"),
-                VisableStatus: sumVisableStatus,
-                GridReadonly: dbgridForm.getFieldValue("GridReadonly") == undefined ? false : dbgridForm.getFieldValue("GridReadonly"),
-                Status: sumStatus,
-                DataGridType: dbgridForm.getFieldValue("DataGridType")
-            }
+
             await props.ajax.post(`/Setting/AddGrid`, convertToFormData(params), {
                 successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!"
             })
         }
-        setRefresh(refresh ? false : true);
+        setRefresh(true);
         const name = dbgridForm.getFieldValue('DbGridName')
         dbgridForm.resetFields();
         window.sessionStorage.removeItem(name + '-config-' + loginUser?.id);
-    }, []);
+    }, [isEdit]);
     const onChange = (key) => {
         console.log(key);
     };
@@ -123,7 +139,7 @@ export default config({
                 <PageContent fitHeight loading={loading}>
                     <Tabs defaultActiveKey="1" onChange={onChange}>
                         <TabPane tab={<FormattedMessage id="BusinessManagement"/>} key="1">
-                            <Content otherHeight={50} fitHeight style={{paddingLeft: 20}}>
+                            <Content otherHeight={50} fitHeight style={{paddingLeft: 20}} >
                                 <List
                                     header={
                                         <>
@@ -134,7 +150,7 @@ export default config({
                                                 </Col>
                                                 <Col flex="auto">
                                                     <Button type="primary" style={{float: "right"}}
-                                                            onClick={() => setVisible(true) || setIsEdit(false)}><FormattedMessage
+                                                            onClick={() => setVisible(true) || setIsEdit(false) || setRefresh(false)}><FormattedMessage
                                                         id="Create"/></Button>
                                                 </Col>
                                             </Row>
@@ -146,16 +162,17 @@ export default config({
                                     renderItem={(item) => (
                                         <List.Item
                                             actions={[<Button type="primary"
-                                                              onClick={() => setVisible(true) || setIsEdit(true) || GetGrid(item)}><FormattedMessage
+                                                              onClick={() => setVisible(true) || setIsEdit(true) || setRefresh(false) || GetGrid(item.Name, 1)}><FormattedMessage
                                                 id="Settings"/></Button>, <Button type="primary" style={{
                                                 background: "#FF6060",
                                                 borderColor: '#FF6060'
                                             }}
-                                                                                  onClick={() => setIsEdit(false) || GetGrid(item)}><FormattedMessage
+                                                                                  onClick={() => setIsEdit(false) || setRefresh(false) || GetGrid(item.Name, 2)}><FormattedMessage
                                                 id="Delete"/></Button>]}>
-                                            {item}
+                                            {getLange(loginUser?.id) == "zh_CN" ? item.CnName : item.Name}
                                         </List.Item>
                                     )}
+
                                 />
                                 <Modal
                                     visible={visible}

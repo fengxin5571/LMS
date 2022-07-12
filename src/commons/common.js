@@ -3,7 +3,7 @@ import {DRAW, WITH_SYSTEMS} from "../config";
 import {FormItem, getLoginUser, getToken} from "@ra-lib/admin";
 import {FormattedMessage} from "react-intl";
 import React from "react";
-import {Button, Card, Form, Input, Space, Tag, List} from "antd";
+import {Button, Card, Form, Input, Space, Tag, List, Col} from "antd";
 import {getLange} from "./index";
 import moment from "moment";
 import BraftEditor from "braft-editor";
@@ -452,510 +452,558 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
         });
         var elementItem = formColums.map((item, index) => {
 
-            const find = filter_type.findIndex((element) => element == item.type)
-            if (!(find < 0)) {
-                return;
-            }
-            if ((!isEdit && !isDetail) && !((item.access & authority.create) > 0)) {
-                return;
-            } else if (isEdit && !((item.access & authority.change) > 0)) {
-                return;
-            } else if (isDetail && !((item.access & authority.view) > 0)) {
-                return;
-            }
-            let required = false;
-            let rules = [];
-            if (item.min != undefined || item.max != undefined) {
-                required = true;
-                rules.push({
-                    required: true,
-                    message: <FormattedMessage id="RulesRequiredMsg"
-                                               values={{name: item.header}}/>
-                })
-            }
-            if (item.type == 1) { //boolean 类型
-                return (
-                    <FormItem
-                        {...layout}
-                        label={item.label}
-                        name={field != undefined ? [field?.name, item.name] : item.name}
-                        fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
-                        type="select"
-                        required={required}
-                        disabled={isDetail}
-                        placeholder={item.header}
-                        style={is_style ? {width: '11rem'} : {}}
-                        options={[
-                            {value: true, label: <FormattedMessage id="True"/>},
-                            {value: false, label: <FormattedMessage id="False"/>}
-                        ]}
-                        rules={rules}
-                    />
-                );
-            } else if (item.type == 2) { // 整数
-                if (item.min != undefined) {
-                    rules.push({
-                        validator: (rule, value, callback) => {
-                            let minPrice = item.min;
-                            if (value < minPrice) {
-                                callback(<FormattedMessage id="RulesNumberMinMsg"
-                                                           values={{
-                                                               name: item.header,
-                                                               num: item.min
-                                                           }}/>);
-                            } else {
-                                callback();
-                            }
-                        },
-                    },)
+                const find = filter_type.findIndex((element) => element == item.type)
+                if (!(find < 0)) {
+                    return;
                 }
-                if (item.max != undefined) {
-                    rules.push({
-                        validator: (rule, value, callback) => {
-                            let maxPrice = item.max;
-                            if (value > maxPrice) {
-                                callback(<FormattedMessage id="RulesNumberMaxMsg"
-                                                           values={{
-                                                               name: item.header,
-                                                               num: item.max
-                                                           }}/>);
-                            } else {
-                                callback();
-                            }
-                        },
-                    })
+                if ((!isEdit && !isDetail) && !((item.access & authority.create) > 0)) {
+                    return;
+                } else if (isEdit && !((item.access & authority.change) > 0)) {
+                    return;
+                } else if (isDetail && !((item.access & authority.view) > 0)) {
+                    return;
                 }
-                return (
-                    <FormItem
-                        {...layout}
-                        label={item.label}
-                        name={field != undefined ? [field?.name, item.name] : item.name}
-                        fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
-                        type="number"
-                        required={required}
-                        disabled={isDetail}
-                        stringMode
-                        style={is_style ? {width: '11rem'} : {}}
-                        placeholder={item.header}
-                        rules={rules}
-                    />
-                );
-            } else if (item.type == 4) { //浮点
-                if (item.min != undefined) {
-                    rules.push({
-                        validator: (rule, value, callback) => {
-                            let minPrice = item.min;
-                            if (value < minPrice) {
-                                callback(<FormattedMessage id="RulesNumberMinMsg"
-                                                           values={{
-                                                               name: item.header,
-                                                               num: item.min
-                                                           }}/>);
-                            } else {
-                                callback();
-                            }
-                        },
-                    },)
-                }
-                if (item.max != undefined) {
-                    rules.push({
-                        validator: (rule, value, callback) => {
-                            let maxPrice = item.max;
-                            if (value > maxPrice) {
-                                callback(<FormattedMessage id="RulesNumberMaxMsg"
-                                                           values={{
-                                                               name: item.header,
-                                                               num: item.max
-                                                           }}/>);
-                            } else {
-                                callback();
-                            }
-                        },
-                    })
-                }
-                return (
-                    <FormItem
-                        {...layout}
-                        label={item.label}
-                        name={field != undefined ? [field?.name, item.name] : item.name}
-                        fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
-                        type="number"
-                        required={required}
-                        disabled={isDetail}
-                        stringMode
-                        step="0.1"
-                        style={is_style ? {width: '11rem'} : {}}
-                        placeholder={item.header}
-                        rules={rules}
-                    />
-                );
-            } else if (item.type == 5) { //邮箱
-                if (item.min != undefined) {
-                    rules.push({
-                        min: item.min,
-                        message: <FormattedMessage id="RulesMinMsg" values={{
-                            name: item.header,
-                            num: item.min
-                        }}/>
-                    })
-                }
-                if (item.max != undefined) {
-                    rules.push({
-                        max: item.max,
-                        message: <FormattedMessage id="RulesMaxMsg" values={{
-                            name: item.header,
-                            num: item.max
-                        }}/>
-                    })
-                }
-                rules.push({
-                    pattern: new RegExp(/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/, "g"),
-                    message: <FormattedMessage id="RulesEmailMsg"/>
-                })
-                return (<FormItem
-                    {...layout}
-                    label={item.label}
-                    name={field != undefined ? [field?.name, item.name] : item.name}
-                    fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
-                    type="email"
-                    style={is_style ? {width: '11rem'} : {}}
-                    required={required}
-                    disabled={isDetail}
-                    placeholder={item.header}
-                    rules={rules}
-
-                />);
-            } else if (item.type == 6) { //日期时间
-                var disabledRangeDate;
+                let required = false;
+                let rules = [];
                 if (item.min != undefined || item.max != undefined) {
-                    disabledRangeDate = current => {
-                        const begin = current < moment().subtract((parseInt(item.min) + 1), 'day');
-                        const end = current > moment().add(item.max, 'd');
-                        return begin || end
-                    }
+                    required = true;
+                    rules.push({
+                        required: true,
+                        message: <FormattedMessage id="RulesRequiredMsg"
+                                                   values={{name: item.header}}/>
+                    })
                 }
-                return (<FormItem
-                    {...layout}
-                    label={item.label}
-                    name={field != undefined ? [field?.name, item.name] : item.name}
-                    fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
-                    type="date"
-                    required={required}
-                    disabled={isDetail}
-                    showTime
-                    style={is_style ? {width: '11rem'} : {}}
-                    dateFormat={"YYYY-MM-DD HH:mm:ss"}
-                    placeholder={item.header}
-                    rules={rules}
-                    disabledDate={disabledRangeDate}
-                />);
-            } else if (item.type == 7) {//日期
-                var disabledRangeDate;
-                if (item.min != undefined || item.max != undefined) {
-                    disabledRangeDate = current => {
-                        const begin = current < moment().subtract((parseInt(item.min) + 1), 'day');
-                        const end = current > moment().add(item.max, 'd');
-                        return begin || end
+                if (item.type == 1) { //boolean 类型
+                    return (
+                        <Col span={5}>
+                            <FormItem
+                                {...layout}
+                                label={item.label}
+                                name={field != undefined ? [field?.name, item.name] : item.name}
+                                fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
+                                type="select"
+                                required={required}
+                                disabled={isDetail}
+                                placeholder={item.header}
+                                style={is_style ? {width: '11rem'} : {width: '13rem'}}
+                                options={[
+                                    {value: true, label: <FormattedMessage id="True"/>},
+                                    {value: false, label: <FormattedMessage id="False"/>}
+                                ]}
+                                rules={rules}
+                            />
+                        </Col>
+                    );
+                } else if (item.type == 2) { // 整数
+                    if (item.min != undefined) {
+                        rules.push({
+                            validator: (rule, value, callback) => {
+                                let minPrice = item.min;
+                                if (value < minPrice) {
+                                    callback(<FormattedMessage id="RulesNumberMinMsg"
+                                                               values={{
+                                                                   name: item.header,
+                                                                   num: item.min
+                                                               }}/>);
+                                } else {
+                                    callback();
+                                }
+                            },
+                        },)
                     }
-                }
-                return (<FormItem
-                    {...layout}
-                    label={item.label}
-                    name={field != undefined ? [field?.name, item.name] : item.name}
-                    fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
-                    type="date"
-                    required={required}
-                    disabled={isDetail}
-                    dateFormat={"YYYY-MM-DD HH:mm:ss"}
-                    placeholder={item.header}
-                    rules={rules}
-                    style={is_style ? {width: '11rem'} : {}}
-                    disabledDate={disabledRangeDate}
-                />);
-            } else if (item.type == 9) { //文本
-                return (
-                    <FormItem
-                        {...layout}
-                        label={item.label}
-                        name={field != undefined ? [field?.name, item.name] : item.name}
-                        fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
-                        type="textarea"
-                        required={required}
-                        disabled={isDetail}
-                        maxLength={250}
-                        style={is_style ? {width: '11rem'} : {}}
-                        placeholder={item.header}
-                        rules={rules}
-                    />
-                );
-            } else if (item.type == 14) { //富文本
-                return (
-                    <FormItem {...layout}
-                              label={item.label}
-                              name={item.name}>
-                        <BraftEditor value={editorState}/>
-                    </FormItem>
-                );
-            } else if (item.type == 15 || item.type == 17 || item.type == 20) { //Enum 要翻译
+                    if (item.max != undefined) {
+                        rules.push({
+                            validator: (rule, value, callback) => {
+                                let maxPrice = item.max;
+                                if (value > maxPrice) {
+                                    callback(<FormattedMessage id="RulesNumberMaxMsg"
+                                                               values={{
+                                                                   name: item.header,
+                                                                   num: item.max
+                                                               }}/>);
+                                } else {
+                                    callback();
+                                }
+                            },
+                        })
+                    }
+                    return (
+                        <Col span={5}>
+                            <FormItem
+                                {...layout}
+                                label={item.label}
+                                name={field != undefined ? [field?.name, item.name] : item.name}
+                                fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
+                                type="number"
+                                required={required}
+                                disabled={isDetail}
+                                stringMode
+                                style={is_style ? {width: '11rem'} : {width: '13rem'}}
+                                placeholder={item.header}
+                                rules={rules}
+                            />
+                        </Col>
+                    );
+                } else if (item.type == 4) { //浮点
+                    if (item.min != undefined) {
+                        rules.push({
+                            validator: (rule, value, callback) => {
+                                let minPrice = item.min;
+                                if (value < minPrice) {
+                                    callback(<FormattedMessage id="RulesNumberMinMsg"
+                                                               values={{
+                                                                   name: item.header,
+                                                                   num: item.min
+                                                               }}/>);
+                                } else {
+                                    callback();
+                                }
+                            },
+                        },)
+                    }
+                    if (item.max != undefined) {
+                        rules.push({
+                            validator: (rule, value, callback) => {
+                                let maxPrice = item.max;
+                                if (value > maxPrice) {
+                                    callback(<FormattedMessage id="RulesNumberMaxMsg"
+                                                               values={{
+                                                                   name: item.header,
+                                                                   num: item.max
+                                                               }}/>);
+                                } else {
+                                    callback();
+                                }
+                            },
+                        })
+                    }
+                    return (
+                        <Col span={5}>
+                            <FormItem
+                                {...layout}
+                                label={item.label}
+                                name={field != undefined ? [field?.name, item.name] : item.name}
+                                fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
+                                type="number"
+                                required={required}
+                                disabled={isDetail}
+                                stringMode
+                                step="0.1"
+                                style={is_style ? {width: '11rem'} : {width: "13rem"}}
+                                placeholder={item.header}
+                                rules={rules}
+                            />
+                        </Col>
+                    );
+                } else if (item.type == 5) { //邮箱
+                    if (item.min != undefined) {
+                        rules.push({
+                            min: item.min,
+                            message: <FormattedMessage id="RulesMinMsg" values={{
+                                name: item.header,
+                                num: item.min
+                            }}/>
+                        })
+                    }
+                    if (item.max != undefined) {
+                        rules.push({
+                            max: item.max,
+                            message: <FormattedMessage id="RulesMaxMsg" values={{
+                                name: item.header,
+                                num: item.max
+                            }}/>
+                        })
+                    }
+                    rules.push({
+                        pattern: new RegExp(/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/, "g"),
+                        message: <FormattedMessage id="RulesEmailMsg"/>
+                    })
+                    return (
+                        <Col span={5}>
+                            <FormItem
+                                {...layout}
+                                label={item.label}
+                                name={field != undefined ? [field?.name, item.name] : item.name}
+                                fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
+                                type="email"
+                                style={is_style ? {width: '11rem'} : {width: '13rem'}}
+                                required={required}
+                                disabled={isDetail}
+                                placeholder={item.header}
+                                rules={rules}
 
-                return (<FormItem
-                    {...layout}
-                    label={item.label}
-                    name={field != undefined ? [field?.name, item.name] : item.name}
-                    fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
-                    type="select"
-                    required={required}
-                    disabled={isDetail}
-                    style={is_style ? {width: '11rem'} : {}}
-                    placeholder={item.header}
-                    options={item.options.map(item => {
-                        return {
-                            value: parseFloat(item.value).toString() == "NaN" ? item.value : parseInt(item.value),
-                            label: <FormattedMessage id={item.name}/>
+                            />
+                        </Col>
+                    );
+                } else if (item.type == 6) { //日期时间
+                    var disabledRangeDate;
+                    if (item.min != undefined || item.max != undefined) {
+                        disabledRangeDate = current => {
+                            const begin = current < moment().subtract((parseInt(item.min) + 1), 'day');
+                            const end = current > moment().add(item.max, 'd');
+                            return begin || end
                         }
-                    })}
-                    rules={rules}
-                />);
-            } else if (item.type == 23) { //密码
-                return (
-                    <FormItem
-                        {...layout}
-                        label={item.label}
-                        name={field != undefined ? [field?.name, item.name] : item.name}
-                        fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
-                        required={required}
-                        disabled={isDetail}
-                        noSpace
-                        type="password"
-                        style={is_style ? {width: '11rem'} : {}}
-                        placeholder={item.header}
-                        rules={rules}
-                    />
-                )
-            } else if (item.type == 16 || item.type == 18 || item.type == 19 || item.type == 26) { //Enum
-                return (<FormItem
-                    {...layout}
-                    label={item.label}
-                    name={field != undefined ? [field?.name, item.name] : item.name}
-                    fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
-                    type="select"
-                    required={required}
-                    disabled={isDetail}
-                    placeholder={item.header}
-                    style={is_style ? {width: '11rem'} : {}}
-                    options={item.options.map(item => {
-                        return {
-                            value: parseFloat(item.value).toString() == "NaN" ? item.value : parseInt(item.value),
-                            label: item.name
-                        }
-                    })}
-                    rules={rules}
-                />);
-            } else if (item.type == 21) { //json子表格
-                return (
-                    <Card title={<FormattedMessage id={item.header}/>}
-                          bodyStyle={{padding: 10}}>
-                        <Form.List name={field != undefined ? [field?.name, item.name] : item.name}>
-                            {(fields, {add, remove}) => (
-                                <>
-                                    {fields.map((subfield) => (
-                                        <Space
-                                            key={subfield.key}
-                                            style={{
-                                                display: 'flex',
-                                                marginBottom: 8,
-                                            }}
-                                            align="baseline"
-                                        >
-
-                                            {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.subcolumns, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
-                                            {!isDetail ? <MinusCircleOutlined
-                                                    onClick={() => remove(subfield.name)}/>
-                                                : null}
-                                        </Space>
-                                    ))}
-                                    <Form.Item>
-                                        <Button type="dashed" onClick={() => add()}
-                                                disabled={isDetail}
-                                                block icon={<PlusOutlined/>}>
-                                            <FormattedMessage id="Create"/>
-                                        </Button>
-                                    </Form.Item>
-                                </>
-                            )}
-                        </Form.List>
-                    </Card>
-                );
-            } else if (item.type == 24) { //关联字段
-                return (
-                    <Card title={<FormattedMessage id={item.header}/>}
-                          bodyStyle={{padding: 10}}>
-                        <Form.List name={field != undefined ? [field?.name, item.name] : item.name}>
-                            {(fields, {add, remove}) => (
-                                <>
-                                    {fields.map((subfield) => (
-                                        <Space
-                                            key={subfield.key}
-                                            wrap
-                                            style={{
-                                                display: 'flex',
-                                                marginBottom: 8,
-                                            }}
-                                            direction="horizontal"
-                                        >
-                                            {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
-                                            {!isDetail ? <MinusCircleOutlined
-                                                    onClick={() => remove(subfield.name)}/>
-                                                : null}
-
-                                        </Space>
-                                    ))}
-                                    <Form.Item>
-
-                                        <Button type="dashed" onClick={() => add()}
-                                                disabled={isDetail || item.related_type == 1 ? (fields.length > 1 ? true : false) : false}
-                                                block icon={<PlusOutlined/>}>
-                                            <FormattedMessage id="Create"/>
-                                        </Button>
-                                    </Form.Item>
-                                </>
-                            )}
-                        </Form.List>
-                    </Card>
-                );
-            } else if (item.type == 27) { //带null的Enum
-                return (<FormItem
-                    {...layout}
-                    label={item.label}
-                    name={field != undefined ? [field?.name, item.name] : item.name}
-                    fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
-                    type="select"
-                    required={required}
-                    disabled={isDetail}
-                    placeholder={item.header}
-                    style={is_style ? {width: '11rem'} : {}}
-                    options={[{
-                        value: "null",
-                        label: getLange(loginUser?.id) == "zh_CN" ? "空" : "Null"
-                    }].concat(item.options.map(item => {
-                        return {value: item.value, label: item.name}
-                    }))}
-                    rules={rules}
-                />);
-            } else if (item.type == 28) { //字符串列表
-                return (
-                    <Card title={<>{required ? <StarFilled style={{color: '#ff4d4f'}}/> : null} <FormattedMessage
-                        id={item.header}/></>}
-                          bodyStyle={{padding: 0}}>
-                        <FormItem shouldUpdate noStyle>
-                            {({getFieldValue}) => {
-                                const systemId = getFieldValue('systemId');
-                                return (
-                                    <FormItem {...layout} name={item.name}>
-                                        <SelectTable
-                                            topId={WITH_SYSTEMS ? systemId : undefined}
-                                            fitHeight={style_object?.fitHeight}
-                                            otherHeight={style_object?.otherHeight}
-                                            locale={locale}
-                                            loginUser={loginUser}
-                                            isDetail={isDetail}
-                                            options={item.options}
-                                        />
-                                    </FormItem>
-                                );
-                            }}
-                        </FormItem>
-                    </Card>
-                )
-            } else if (item.type == 29) { //文件管理器
-                var fileType;
-                var filePaths = [];
-                var viewFilePath = [];
-                if (!isEdit && !isDetail) { //如果是添加
-                    filePaths = (formViewUploadData?.WithChildrenAttachments).filter(v => (v.IsDirectory == false));
-                    fileType = 1;
-                } else if (isEdit) {//如果是编辑
-                    fileType = 3;
-                    if (formViewUploadData?.WithChildrenAttachments.length > 0) {
-                        var loadFilePaths = formViewUploadData?.WithChildrenAttachments;
-                    } else {
-                        var loadFilePaths = form.getFieldValue(item.name) ? form.getFieldValue(item.name)?.WithChildrenAttachments || [] : [];
                     }
-                    filePaths = loadFilePaths.filter(v => (v.IsDirectory == false));
-                } else if (isDetail) { // 如果是查看
-                    fileType = 2;
-                    var loadFilePaths = form.getFieldValue(item.name) ? form.getFieldValue(item.name)?.WithChildrenAttachments : [];
-                    filePaths = loadFilePaths.filter(v => (v.IsDirectory == false));
-                }
-                return (
-                    <>
+                    return (
+                        <Col span={5}>
+                            <FormItem
+                                {...layout}
+                                label={item.label}
+                                name={field != undefined ? [field?.name, item.name] : item.name}
+                                fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
+                                type="date"
+                                required={required}
+                                disabled={isDetail}
+                                showTime
+                                style={is_style ? {width: '11rem'} : {width: '13rem'}}
+                                dateFormat={"YYYY-MM-DD HH:mm:ss"}
+                                placeholder={item.header}
+                                rules={rules}
+                                disabledDate={disabledRangeDate}
+                            />
+                        </Col>
+                    );
+                } else if (item.type == 7) {//日期
+                    var disabledRangeDate;
+                    if (item.min != undefined || item.max != undefined) {
+                        disabledRangeDate = current => {
+                            const begin = current < moment().subtract((parseInt(item.min) + 1), 'day');
+                            const end = current > moment().add(item.max, 'd');
+                            return begin || end
+                        }
+                    }
+                    return (
+                        <Col span={5}>
+                            <FormItem
+                                {...layout}
+                                label={item.label}
+                                name={field != undefined ? [field?.name, item.name] : item.name}
+                                fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
+                                type="date"
+                                required={required}
+                                disabled={isDetail}
+                                dateFormat={"YYYY-MM-DD HH:mm:ss"}
+                                placeholder={item.header}
+                                rules={rules}
+                                style={is_style ? {width: '11rem'} : {width: '13rem'}}
+                                disabledDate={disabledRangeDate}
+                            />
+                        </Col>
+                    );
+                } else if (item.type == 9) { //文本
+                    return (
+                        <Col span={5}>
+                            <FormItem
+                                {...layout}
+                                label={item.label}
+                                name={field != undefined ? [field?.name, item.name] : item.name}
+                                fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
+                                type="textarea"
+                                required={required}
+                                disabled={isDetail}
+                                maxLength={250}
+                                style={is_style ? {width: '11rem'} : {width: '13rem'}}
+                                placeholder={item.header}
+                                rules={rules}
+                            />
+                        </Col>
+                    );
+                } else if (item.type == 14) { //富文本
+                    return (
                         <FormItem {...layout}
                                   label={item.label}
-                        >
-                            <Button type="primary" onClick={() => {
-                                setUploadItemName(item.name);
-                                setFileType(fileType);
-                                setIsModalVisible(true);
-                                if (fileType == 3) {
-                                    setRefreshLoad(false);
-                                }
-                                setModalTitle(<FormattedMessage id={item.header}/>);
-                            }} disabled={isDetail}>
-                                <FormattedMessage id="ClickFileView"/>
-                            </Button>
-                            <List
-                                size="small"
-                                header={<div><FormattedMessage id="AttachmentList"/></div>}
-                                bordered
-                                dataSource={filePaths}
-                                renderItem={(item) => <List.Item><PaperClipOutlined
-                                    style={{paddingRight: "15px"}}/>{item?.FolderName || ''}{item.FileName}
-                                </List.Item>}
-                                style={{display: filePaths.length > 0 ? "block" : "none", marginTop: "20px"}}
-                            />
+                                  name={item.name}>
+                            <BraftEditor value={editorState}/>
                         </FormItem>
-                        <FormItem name={item.name} hidden></FormItem>
-                        <FormItem name="Files" hidden></FormItem>
+                    );
+                } else if (item.type == 15 || item.type == 17 || item.type == 20) { //Enum 要翻译
 
-                    </>
-                );
+                    return (
+                        <Col span={5}>
+                            <FormItem
+                                {...layout}
+                                label={item.label}
+                                name={field != undefined ? [field?.name, item.name] : item.name}
+                                fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
+                                type="select"
+                                required={required}
+                                disabled={isDetail}
+                                style={is_style ? {width: '11rem'} : {width: '13rem'}}
+                                placeholder={item.header}
+                                options={item.options.map(item => {
+                                    return {
+                                        value: parseFloat(item.value).toString() == "NaN" ? item.value : parseInt(item.value),
+                                        label: <FormattedMessage id={item.name}/>
+                                    }
+                                })}
+                                rules={rules}
+                            />
+                        </Col>
+                    );
+                } else if (item.type == 23) { //密码
+                    return (
+                        <Col span={5}>
+                            <FormItem
+                                {...layout}
+                                label={item.label}
+                                name={field != undefined ? [field?.name, item.name] : item.name}
+                                fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
+                                required={required}
+                                disabled={isDetail}
+                                noSpace
+                                type="password"
+                                style={is_style ? {width: '11rem'} : {width: '13rem'}}
+                                placeholder={item.header}
+                                rules={rules}
+                            />
+                        </Col>
+                    )
+                } else if (item.type == 16 || item.type == 18 || item.type == 19 || item.type == 26) { //Enum
+                    return (
+                        <Col span={5}>
+                            <FormItem
+                                {...layout}
+                                label={item.label}
+                                name={field != undefined ? [field?.name, item.name] : item.name}
+                                fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
+                                type="select"
+                                required={required}
+                                disabled={isDetail}
+                                placeholder={item.header}
+                                style={is_style ? {width: '11rem'} : {width: '13rem'}}
+                                options={item.options.map(item => {
+                                    return {
+                                        value: parseFloat(item.value).toString() == "NaN" ? item.value : parseInt(item.value),
+                                        label: item.name
+                                    }
+                                })}
+                                rules={rules}
+                            />
+                        </Col>
+                    );
+                } else if (item.type == 21) { //json子表格
+                    console.log(item.type);
+                    return (
+                        <Card title={<FormattedMessage id={item.header}/>}
+                              bodyStyle={{padding: 10}} style={{marginTop: 10}}>
+                            <Form.List name={field != undefined ? [field?.name, item.name] : item.name}>
+                                {(fields, {add, remove}) => (
+                                    <>
+                                        {fields.map((subfield) => (
+                                            <Space
+                                                key={subfield.key}
+                                                style={{
+                                                    display: 'flex',
+                                                    marginBottom: 8,
+                                                }}
+                                                align="baseline"
+                                            >
 
-            } else {
-                if (item.min != undefined) {
-                    rules.push({
-                        min: item.min,
-                        message: <FormattedMessage id="RulesMinMsg" values={{
-                            name: item.header,
-                            num: item.min
-                        }}/>
-                    })
+                                                {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.subcolumns, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
+                                                {!isDetail ? <Button type="primary" size="small" style={{
+                                                        background: "#FF6060",
+                                                        borderColor: '#FF6060',
+                                                        marginBottom: 24,
+                                                    }} onClick={() => remove(subfield.name)}><FormattedMessage
+                                                        id="Delete"/></Button>
+                                                    : null}
+                                            </Space>
+                                        ))}
+                                        <Form.Item>
+                                            <Button type="dashed" onClick={() => add()}
+                                                    disabled={isDetail}
+                                                    block icon={<PlusOutlined/>}>
+                                                <FormattedMessage id="Create"/>
+                                            </Button>
+                                        </Form.Item>
+                                    </>
+                                )}
+                            </Form.List>
+                        </Card>
+                    );
+                } else if (item.type == 24) { //关联字段
+                    return (
+                        <Card title={<FormattedMessage id={item.header}/>}
+                              bodyStyle={{padding: 10}} style={{marginTop: 10}}
+                        >
+                            <Form.List name={field != undefined ? [field?.name, item.name] : item.name}>
+                                {(fields, {add, remove}) => (
+                                    <>
+                                        {fields.map((subfield) => (
+                                            <Space
+                                                key={subfield.key}
+                                                wrap
+                                                style={{
+                                                    display: 'flex',
+                                                    marginBottom: 8,
+                                                }}
+                                                direction="horizontal"
+                                            >
+                                                {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
+                                                {!isDetail ? <Button type="primary" size="small" style={{
+                                                        background: "#FF6060",
+                                                        borderColor: '#FF6060',
+                                                        marginBottom: 24,
+                                                    }} onClick={() => remove(subfield.name)}><FormattedMessage
+                                                        id="Delete"/></Button>
+                                                    : null}
+
+                                            </Space>
+                                        ))}
+                                        <Form.Item>
+
+                                            <Button type="dashed" onClick={() => add()}
+                                                    disabled={isDetail || item.related_type == 1 ? (fields.length > 1 ? true : false) : false}
+                                                    block icon={<PlusOutlined/>}>
+                                                <FormattedMessage id="Create"/>
+                                            </Button>
+                                        </Form.Item>
+                                    </>
+                                )}
+                            </Form.List>
+                        </Card>
+                    );
+                } else if (item.type == 27) { //带null的Enum
+                    return (
+                        <Col span={5}>
+                            <FormItem
+                                {...layout}
+                                label={item.label}
+                                name={field != undefined ? [field?.name, item.name] : item.name}
+                                fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
+                                type="select"
+                                required={required}
+                                disabled={isDetail}
+                                placeholder={item.header}
+                                style={is_style ? {width: '11rem'} : {width: '13rem'}}
+                                options={[{
+                                    value: "null",
+                                    label: getLange(loginUser?.id) == "zh_CN" ? "空" : "Null"
+                                }].concat(item.options.map(item => {
+                                    return {value: item.value, label: item.name}
+                                }))}
+                                rules={rules}
+                            />
+                        </Col>
+                    );
+                } else if (item.type == 28) { //字符串列表
+                    return (
+                        <Card title={<>{required ? <StarFilled style={{color: '#ff4d4f'}}/> : null} <FormattedMessage
+                            id={item.header}/></>}
+                              bodyStyle={{padding: 0}} style={{marginTop: 10}}>
+                            <FormItem shouldUpdate noStyle>
+                                {({getFieldValue}) => {
+                                    const systemId = getFieldValue('systemId');
+                                    return (
+                                        <FormItem {...layout} name={item.name}>
+                                            <SelectTable
+                                                topId={WITH_SYSTEMS ? systemId : undefined}
+                                                fitHeight={style_object?.fitHeight}
+                                                otherHeight={style_object?.otherHeight}
+                                                locale={locale}
+                                                loginUser={loginUser}
+                                                isDetail={isDetail}
+                                                options={item.options}
+                                            />
+                                        </FormItem>
+                                    );
+                                }}
+                            </FormItem>
+                        </Card>
+                    )
+                } else if (item.type == 29) { //文件管理器
+                    var fileType;
+                    var filePaths = [];
+                    var viewFilePath = [];
+                    if (!isEdit && !isDetail) { //如果是添加
+                        filePaths = (formViewUploadData?.WithChildrenAttachments).filter(v => (v.IsDirectory == false));
+                        fileType = 1;
+                    } else if (isEdit) {//如果是编辑
+                        fileType = 3;
+                        if (formViewUploadData?.WithChildrenAttachments.length > 0) {
+                            var loadFilePaths = formViewUploadData?.WithChildrenAttachments;
+                        } else {
+                            var loadFilePaths = form.getFieldValue(item.name) ? form.getFieldValue(item.name)?.WithChildrenAttachments || [] : [];
+                        }
+                        filePaths = loadFilePaths.filter(v => (v.IsDirectory == false));
+                    } else if (isDetail) { // 如果是查看
+                        fileType = 2;
+                        var loadFilePaths = form.getFieldValue(item.name) ? form.getFieldValue(item.name)?.WithChildrenAttachments : [];
+                        filePaths = loadFilePaths.filter(v => (v.IsDirectory == false));
+                    }
+                    return (
+                        <>
+                            <Col span={5}>
+                                <FormItem {...layout}
+                                          label={item.label}
+                                >
+                                    <Button type="primary" onClick={() => {
+                                        setUploadItemName(item.name);
+                                        setFileType(fileType);
+                                        setIsModalVisible(true);
+                                        if (fileType == 3) {
+                                            setRefreshLoad(false);
+                                        }
+                                        setModalTitle(<FormattedMessage id={item.header}/>);
+                                    }} disabled={isDetail}>
+                                        <FormattedMessage id="ClickFileView"/>
+                                    </Button>
+                                    <List
+                                        size="small"
+                                        header={<div><FormattedMessage id="AttachmentList"/></div>}
+                                        bordered
+                                        dataSource={filePaths}
+                                        renderItem={(item) => <List.Item><PaperClipOutlined
+                                            style={{paddingRight: "15px"}}/>{item?.FolderName || ''}{item.FileName}
+                                        </List.Item>}
+                                        style={{display: filePaths.length > 0 ? "block" : "none", marginTop: "20px"}}
+                                    />
+                                </FormItem>
+                                <FormItem name={item.name} hidden></FormItem>
+                                <FormItem name="Files" hidden></FormItem>
+                            </Col>
+                        </>
+                    );
+
+                } else {
+                    if (item.min != undefined) {
+                        rules.push({
+                            min: item.min,
+                            message: <FormattedMessage id="RulesMinMsg" values={{
+                                name: item.header,
+                                num: item.min
+                            }}/>
+                        })
+                    }
+                    if (item.max != undefined) {
+                        rules.push({
+                            max: item.max,
+                            message: <FormattedMessage id="RulesMaxMsg" values={{
+                                name: item.header,
+                                num: item.max
+                            }}/>
+                        })
+                    }
+
+                    return (
+                        <Col span={5}>
+                            <FormItem
+                                {...layout}
+                                label={item.label}
+                                name={field != undefined ? [field?.name, item.name] : item.name}
+                                fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
+                                required={required}
+                                disabled={isDetail}
+                                placeholder={item.header}
+                                style={is_style ? {width: '11rem'} : {width: '13rem'}}
+                                rules={rules}
+                            />
+                        </Col>
+                    )
+
                 }
-                if (item.max != undefined) {
-                    rules.push({
-                        max: item.max,
-                        message: <FormattedMessage id="RulesMaxMsg" values={{
-                            name: item.header,
-                            num: item.max
-                        }}/>
-                    })
-                }
-
-                return (
-                    <FormItem
-                        {...layout}
-                        label={item.label}
-                        name={field != undefined ? [field?.name, item.name] : item.name}
-                        fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
-                        required={required}
-                        disabled={isDetail}
-                        placeholder={item.header}
-                        style={is_style ? {width: '11rem'} : {}}
-                        rules={rules}
-                    />
-                )
-
             }
-        })
+        )
     }
     return elementItem;
 }
@@ -965,8 +1013,8 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
  * @param str
  * @returns
     {
-        boolean
-    }
+            boolean
+        }
  */
 export function isJSON(str) {
     if (typeof str == 'string') {

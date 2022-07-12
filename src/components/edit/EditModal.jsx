@@ -3,7 +3,7 @@ import React, {useCallback, useEffect, useState, useRef} from 'react';
 import BraftEditor, {EditorState} from 'braft-editor'
 // 引入编辑器样式
 import 'braft-editor/dist/index.css'
-import {Card, Form, ConfigProvider,} from 'antd';
+import {Card, Form, ConfigProvider,Row} from 'antd';
 import {ModalContent, FormItem, Content, useDebounceValidator, getLoginUser} from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
 import {WITH_SYSTEMS, DRAW} from 'src/config';
@@ -15,7 +15,7 @@ import FileModal from "../form/FileModal";
 export default config({
     modal: {
         title: (props) => (<FormattedMessage id={props.dbGridName}/>),
-        width: '70%',
+        width: '85%',
         top: 50,
 
     },
@@ -138,7 +138,7 @@ export default config({
         if (!isEdit && role.name === value) throw Error('角色名不能重复！');
     });
 
-    const layout = {labelCol: {flex: '13rem'}};
+    const layout = {labelCol: {style: {width: '100%', height: '30px', textAlign: "left"},}};
     return (
         <IntlProvider messages={locale} locale={"en"}>
             <ConfigProvider locale={antLocale}>
@@ -152,16 +152,21 @@ export default config({
                         onCancel={() => form.resetFields()}
                         footer={isDetail ? true : null}
                     >
-                        <Content fitHeight otherHeight={200}>
+                        <Content fitHeight otherHeight={200} style={{backgroundColor:"#f0f2f5"}}>
                             {isEdit ? <FormItem hidden name="Id" value={record?.Id}/> : null}
                             <Card title={<FormattedMessage id="BasicInformation"/>}>
                                 <Content otherHeight={0}>
-                                    {
-                                        handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [28], {}, locale)
-                                    }
+                                    <Row gutter={16}>
+                                        {
+                                            handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [28,21,24], {}, locale)
+                                        }
+                                    </Row>
                                 </Content>
                             </Card>
-
+                            {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 25, 26, 27, 28,29, 30], {
+                                fitHeight: false,
+                                otherHeight: 0
+                            }, locale)}
                             {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30], {
                                 fitHeight: false,
                                 otherHeight: 0

@@ -89,6 +89,7 @@ export default config({
     const [selectedRows, setSelectedRows] = useState();
     const [btnDisabled, setBtnDisabled] = useState(true);
     const [dbGridName, setDbGridName] = useState(name);
+    const [balance, setBalance] = useState(9999.99);
     const [form] = Form.useForm();
     const [balanceForm] = Form.useForm();
     useEffect(async () => {
@@ -120,7 +121,6 @@ export default config({
     };
     const params = useMemo(() => {
         setDbGridName(name);
-
         resault = JSON.parse(window.sessionStorage.getItem(dbGridName + '-config-' + loginUser?.id));
         if (!resault) {
             //获取表格配置信息
@@ -130,6 +130,7 @@ export default config({
         //处理表格显示的字段
         const resColums = handleGridDataTypeColumn(resault.ColumnConfigs, isModalVisible, setIsModalVisible, setSubTableHeader, setSubTable, setModalTitle, setSubTableType, setIsListVisible);
         console.log(resColums);
+        setBalance(resault.Balance);
         let apiIncludes = resault.Includes.map((item) => item.Name);
         setIncludes(apiIncludes);
         resColums.table_colums.push({
@@ -271,7 +272,7 @@ export default config({
         setConditions(form.getFieldsValue());
     }, [form]);
     // // 获取列表
-    const {data: {dataSource, total, balance} = {}} = props.ajax.usePost('DbGrid/Page', params, [params], {
+    const {data: {dataSource, total} = {}} = props.ajax.usePost('DbGrid/Page', params, [params], {
         headers: {'Content-Type': 'multipart/form-data'},
         setLoading,
         formatResult: (res) => {
@@ -398,6 +399,7 @@ export default config({
             Id: record?.Id,
             NewBalance: NewBalance
         }), {successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!"});
+        window.sessionStorage.removeItem(dbGridName + '-config-' + loginUser?.id)
     }
     /**
      * 工作授权
