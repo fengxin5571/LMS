@@ -1,5 +1,3 @@
-// @import "src/theme.less";
-
 .root {
   display: flex;
   flex-direction: column;

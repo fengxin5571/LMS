@@ -178,7 +178,10 @@ export default config({
             draw: DRAW,
             FolderName: handlePath,
             FileName: records?.FileName
-        }), {responseType: "blob"});
+        }), {
+            responseType: "blob",
+            errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"},
+        });
         let blob = new Blob([res]);
         if (typeof window.navigator.msSaveBlob !== "undefined") {
             // 兼容IE，window.navigator.msSaveBlob：以本地方式保存文件
@@ -247,7 +250,12 @@ export default config({
                         draw: DRAW,
                         FolderName: handlePath,
                         FileName: records?.FileName
-                    }))
+                    }), {
+                        errorModal: {
+                            okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"),
+                            width: "70%"
+                        },
+                    })
                 }
                 getData(path);
             },
@@ -278,7 +286,9 @@ export default config({
                 Id: Id,
                 draw: DRAW,
                 FolderName: handlePath
-            }))
+            }),{
+                errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"},
+            })
             let localData = res?.WithChildrenAttachments || [];
             localData.forEach((item) => {
                 tableData.push({Id: item.Id, FileName: item.FileName, IsDirectory: item.IsDirectory});
@@ -341,8 +351,8 @@ export default config({
             <ModalContent
                 onOk={onOk}
                 onCancel={onCancel}
-                okText={getLange(props.loginUser?.id) == "zh_CN"?"确定":"Confirm"}
-                cancelText={getLange(props.loginUser?.id) == "zh_CN"?"取消":"Cancel"}
+                okText={getLange(props.loginUser?.id) == "zh_CN" ? "确定" : "Confirm"}
+                cancelText={getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"}
             >
                 <>
                     <Row style={{marginBottom: 15}}>

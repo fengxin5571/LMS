@@ -136,7 +136,7 @@ export default config({
         resColums.table_colums.push({
             title: <FormattedMessage id="Operation"/>,
             key: 'operator',
-            width: getLange(loginUser?.id) == "zh_CN" ?80:100,
+            width: getLange(loginUser?.id) == "zh_CN" ? 80 : 100,
             fixed: 'right',
             align: "center",
             render: (value, record) => {
@@ -275,6 +275,7 @@ export default config({
     const {data: {dataSource, total} = {}} = props.ajax.usePost('DbGrid/Page', params, [params], {
         headers: {'Content-Type': 'multipart/form-data'},
         setLoading,
+        errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"},
         formatResult: (res) => {
             return {
                 dataSource: res?.data || [],
@@ -297,6 +298,7 @@ export default config({
                 "draw": DRAW
             }, {
                 headers: {'Content-Type': 'multipart/form-data'},
+                errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"},
                 setLoading, successTip: getLange(loginUser?.id) == "zh_CN" ? "删除成功" : "Deletion succeeded!"
             });
             // 触发列表更新
@@ -317,6 +319,7 @@ export default config({
                 "draw": DRAW
             }, {
                 headers: {'Content-Type': 'multipart/form-data'},
+                errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"},
                 setLoading, successTip: getLange(loginUser?.id) == "zh_CN" ? "删除成功" : "Deletion succeeded!"
             });
             // 触发列表更新
@@ -333,7 +336,10 @@ export default config({
             DbGridName: dbGridName,
             draw: DRAW,
             AdvancedSearch: JSON.stringify(searchFormData)
-        }), {responseType: "blob"});
+        }), {
+            responseType: "blob",
+            errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
+        });
         let blob = new Blob([res]);
         let name = dbGridName + "-" + GetDateNow() + '.csv';
         if (typeof window.navigator.msSaveBlob !== "undefined") {
@@ -372,7 +378,9 @@ export default config({
         fileList.forEach((file) => {
             formData.append("Files", file);
         });
-        const res = await props.ajax.post('DbGrid/Upload', formData);
+        const res = await props.ajax.post('DbGrid/Upload', formData, {
+            errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
+        });
         setFileList([]);
     };
     const queryItem = {
@@ -398,7 +406,10 @@ export default config({
             draw: DRAW,
             Id: record?.Id,
             NewBalance: NewBalance
-        }), {successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!"});
+        }), {
+            successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!",
+            errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
+        });
         window.sessionStorage.removeItem(dbGridName + '-config-' + loginUser?.id)
     }
     /**
@@ -412,7 +423,8 @@ export default config({
                 Id: Id,
                 draw: DRAW
             }), {
-                successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!"
+                successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!",
+                errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
             });
             //触发列表更新
             refreshSearch();
@@ -429,7 +441,8 @@ export default config({
                 Id: Id,
                 draw: DRAW
             }), {
-                successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!"
+                successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!",
+                errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
             });
             //触发列表更新
             refreshSearch();
@@ -444,7 +457,8 @@ export default config({
             Id: Id,
             draw: DRAW
         }), {
-            successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!"
+            successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!",
+            errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
         });
         //触发列表更新
         refreshSearch();
@@ -458,7 +472,10 @@ export default config({
             DbGridName: dbGridName,
             draw: DRAW,
             Id: Id,
-        }), {responseType: "blob"});
+        }), {
+            responseType: "blob",
+            errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
+        });
         let blob = new Blob([res]);
         let name = dbGridName + "-" + GetDateNow() + '.pdf';
         if (typeof window.navigator.msSaveBlob !== "undefined") {
@@ -493,7 +510,10 @@ export default config({
             DbGridName: dbGridName,
             draw: DRAW,
             UnprintedOnly: false
-        }), {responseType: "blob"});
+        }), {
+            responseType: "blob",
+            errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
+        });
         let blob = new Blob([res]);
         let name = dbGridName + "-" + GetDateNow() + '.pdf';
         if (typeof window.navigator.msSaveBlob !== "undefined") {
@@ -652,7 +672,7 @@ export default config({
                         <Col flex="14rem">
                             {balance != undefined && balance != 9999.99 ?
                                 <span style={{fontSize: 18, fontWeight: "bold"}}><FormattedMessage
-                                    id="FullBalance"/>： <span style={{color: "#FF6060"}}>$ {formatPrice(balance)}</span></span> : null}
+                                    id="FullBalance"/>： <span style={{color: "#FF6060"}}>£ {formatPrice(balance)}</span></span> : null}
                         </Col>
                         <Col flex="auto">
                             {

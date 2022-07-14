@@ -169,7 +169,7 @@ export function formatLmsMenus(values) {
                     'Access': values[key].Access,
                     'ActionHttpMethod': values[key].ActionHttpMethod,
                     //"path": "/" + bigCamel(values[key].Name),
-                    "path": values[key].Name == "BusinessManagement" ? "/BusinessManagement" : "/Dynamic?dbGridName=" + values[key].Name,
+                    "path": values[key].Name == "BusinessManagement" ? "/BusinessManagement" : (values[key].Name == "/" ? "/" : "/Dynamic?dbGridName=" + values[key].Name),
                 };
             }
 
@@ -203,7 +203,7 @@ export function formatLmsMenus(values) {
                     'ActionHttpMethod': values[key].ActionHttpMethod,
                     //'path': values[key].UiRouter ? values[key].UiRouter : bigCamel(values[key].Name)
                     //"path": "/" + bigCamel(values[key].Name),
-                    "path": values[key].Name == "BusinessManagement" ? "/BusinessManagement" : "/Dynamic?dbGridName=" + values[key].Name,
+                    "path": values[key].Name == "BusinessManagement" ? "/BusinessManagement" : (values[key].Name == "/" ? "/" : "/Dynamic?dbGridName=" + values[key].Name),
                 };
             }
 
@@ -792,7 +792,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                         }
                         formartColumns.push(subItem);
                     });
-                    if(!is_style){
+                    if (!is_style) {
                         return (
                             <Card
                                 title={<><span style={{color: "#1890ff", fontSize: 18}}><BarsOutlined/> </span>
@@ -855,10 +855,11 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                                 </Form.List>
                             </Card>
                         );
-                    }else {
+                    } else {
                         return (
                             <Card
-                                title={<><span style={{color: "#1890ff", fontSize: 18}}><BarsOutlined/> </span><FormattedMessage
+                                title={<><span
+                                    style={{color: "#1890ff", fontSize: 18}}><BarsOutlined/> </span><FormattedMessage
                                     id={item.header}/></>}
                                 bodyStyle={{padding: 10}} style={{marginTop: 10}}>
                                 <Form.List name={field != undefined ? [field?.name, item.name] : item.name}>

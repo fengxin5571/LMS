@@ -1,0 +1,100 @@
+{
+  "id": "3508849",
+  "name": "海外物流系统",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "985",
+      "name": "理财",
+      "font_class": "licai",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "429444",
+      "name": "客服",
+      "font_class": "custom-service",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    },
+    {
+      "icon_id": "566086",
+      "name": "客服",
+      "font_class": "kefu",
+      "unicode": "e63f",
+      "unicode_decimal": 58943
+    },
+    {
+      "icon_id": "577357",
+      "name": "删除",
+      "font_class": "shanchu",
+      "unicode": "e74b",
+      "unicode_decimal": 59211
+    },
+    {
+      "icon_id": "844644",
+      "name": "美元8",
+      "font_class": "meiyuan8",
+      "unicode": "e73a",
+      "unicode_decimal": 59194
+    },
+    {
+      "icon_id": "845825",
+      "name": "钱袋",
+      "font_class": "qiandai",
+      "unicode": "e665",
+      "unicode_decimal": 58981
+    },
+    {
+      "icon_id": "4970791",
+      "name": "付款",
+      "font_class": "fukuan",
+      "unicode": "e670",
+      "unicode_decimal": 58992
+    },
+    {
+      "icon_id": "5651478",
+      "name": "设置",
+      "font_class": "shezhi",
+      "unicode": "e66f",
+      "unicode_decimal": 58991
+    },
+    {
+      "icon_id": "7898598",
+      "name": "打单发货-自由打印",
+      "font_class": "dadanfahuo-ziyoudayin",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "8094220",
+      "name": "检验:验收",
+      "font_class": "jianyanyanshou",
+      "unicode": "e64e",
+      "unicode_decimal": 58958
+    },
+    {
+      "icon_id": "9826644",
+      "name": "菜单",
+      "font_class": "caidan",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "12659513",
+      "name": "称重系统",
+      "font_class": "chengzhongxitong",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "15392667",
+      "name": "数据",
+      "font_class": "shuju",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    }
+  ]
+}

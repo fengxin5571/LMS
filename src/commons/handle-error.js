@@ -1,6 +1,7 @@
-import {notification, Modal} from 'antd';
+import {notification, Modal, List, Typography} from 'antd';
 import {getLange, toLogin} from './index';
 import {getLoginUser} from "@ra-lib/admin";
+import {formatDate} from "./common";
 
 const lang = getLange(getLoginUser()?.id);
 const ERROR_SERVER = lang == "zh_CN" ? '系统开小差了，请稍后再试或联系管理员！' : 'The system has deserted, please try again later or contact the administrator';
@@ -27,7 +28,24 @@ function getErrorTip(error, tip) {
     const errorJson = JSON.parse(window.sessionStorage.getItem("error-json-" + getLoginUser()?.id) ? window.sessionStorage.getItem("error-json-" + getLoginUser()?.id) : []);
     if (errorJson) {
         let errorResponse = errorJson.ErrorCodes.find(c => c.Name == data.ErrorCode);
-        if (errorResponse != undefined) return errorResponse.Value;
+        if (errorResponse != undefined) {
+            let content = <span>{errorResponse.Value}</span>;
+            let errorData = [
+                {lable: lang == "zh_CN" ? '时间' : 'Time', text: formatDate(Date.parse(data.EventTime))},
+                {lable: lang == "zh_CN" ? '信息' : 'Msg', text: errorResponse.Value},
+                {lable: lang == "zh_CN" ? '错误文件' : 'FileName', text: data.FileName},
+                {lable: lang == "zh_CN" ? '错误行数' : 'LineNumber', text: data.LineNumber},
+            ]
+            return <List
+                dataSource={errorData}
+                renderItem={(item) => (
+                    <List.Item>
+                        <Typography.Text mark>[{item.lable}]</Typography.Text>  {item.text}
+                    </List.Item>
+                )}
+            />
+        }
+
     }
     if (typeof data === 'string') return data;
     if (data?.message) return data.message;
@@ -38,7 +56,7 @@ function getErrorTip(error, tip) {
 export default function handleError({error, tip, options = {}}) {
     const description = getErrorTip(error, tip);
     const {errorModal} = options;
-
+    console.log(options);
     if (!description && !errorModal) return;
 
     // 避免卡顿

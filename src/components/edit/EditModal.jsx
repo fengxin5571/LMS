@@ -52,6 +52,7 @@ export default config({
         Includes: includes,
     }), [refreshLoad], {
         setLoading,
+        errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"},
         mountFire: isEdit || isDetail, // 组件didMount时，只有编辑时才触发请求
         formatResult: (res) => {
             if (!res) return;
@@ -65,12 +66,13 @@ export default config({
     const {run: createOperation} = props.ajax.usePost('/DbGrid/Create', null, {
         setLoading,
         successTip: getLange(loginUser?.id) == "zh_CN" ? "创建成功！" : "Created Successfully",
-
+        errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"},
     });
     // 更新请求
     const {run: updateOperation} = props.ajax.usePost('DbGrid/Update', null, {
         setLoading,
         successTip: getLange(loginUser?.id) == "zh_CN" ? "修改成功！" : "Modified Successfully",
+        errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"},
     });
     const {run: fetchRoleByName} = props.ajax.useGet('/role/getOneRole');
     const handleSubmit = useCallback(

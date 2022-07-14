@@ -40,7 +40,11 @@ export default config({
         } else {
             setAntLocale(enUS);
         }
-        const res = await props.ajax.get("/Setting/LoadAllGrids", {}, {setLoading});
+        console.log(props);
+        const res = await props.ajax.get("/Setting/LoadAllGrids", {}, {
+            setLoading,
+            errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"},
+        });
         res.forEach((item) => {
             if (item?.Grids) {
                 items = items.concat(item?.Grids);
@@ -87,7 +91,8 @@ export default config({
             await props.ajax.post(`/Setting/RemoveGrid`, convertToFormData({
                 gridName: dbgridName
             }), {
-                successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!"
+                successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!",
+                errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"},
             });
             setRefresh(true);
         }
@@ -116,12 +121,14 @@ export default config({
         if (isEdit) { //编辑
             params.Id = dbgridForm.getFieldValue('Id');
             await props.ajax.post(`Setting/UpdateGrid`, convertToFormData(params), {
-                successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!"
+                successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!",
+                errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"},
             });
         } else {
 
             await props.ajax.post(`/Setting/AddGrid`, convertToFormData(params), {
-                successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!"
+                successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!",
+                errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"},
             })
         }
         setRefresh(true);
@@ -181,7 +188,7 @@ export default config({
                                 <Modal
                                     visible={visible}
                                     width="70%"
-                                    onCancel={() => setVisible(false)}
+                                    onCancel={() => setVisible(false) || dbgridForm.resetFields()}
                                     onOk={() => setVisible(false) || UpdateGrid()}
                                 >
                                     <Content fitHeight otherHeight={250} style={{padding: 10, top: 20}}>
