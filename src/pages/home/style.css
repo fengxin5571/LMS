@@ -13,7 +13,7 @@
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  height: 100vh;
+  height: 50vw;
   padding: 0;
   margin: 0;
   background: #F0F2F5;
@@ -44,24 +44,20 @@
 }
 
 .iconfont {
-  font-size: 40px;
+  /* font-size: 2%; */
+  margin: auto;
   color: #fff;
 }
 
-.iconfont1 {
-  position: relative;
-  top: -2px;
-
-}
 
 .top_div {
   width: 99%;
   height: 13%;
-  margin-top: 10px;
-  border-left: 10px solid #2A8BCF;
-  margin-left: 10px;
+  margin-top: 1vw;
+  border-left: 0.4vw solid #2A8BCF;
+  margin-left: 0.6vw;
   display: table-cell;
-  font-size: 16px;
+  font-size: 0.8vw;
   font-weight: bold;
   vertical-align: middle;
 }
@@ -88,12 +84,12 @@
 
 .move_icon {
   position: relative;
-  top: 5px;
+  top: 0.4vw;
 }
 
 .circular {
-  width: 70px;
-  height: 70px;
+  width: 4vw;
+  height: 4vw;
   /* background: red; */
   border-radius: 50%;
   margin-top: 10%;
@@ -107,7 +103,7 @@
   margin: 0 auto;
   display: inline;
   margin-top: 10%;
-  font-size: 16px;
+  font-size: 0.9vw;
   font-weight: bold;
 }
 
@@ -122,9 +118,9 @@
 
 .two_top_div {
   width: 100%;
-  height: 20%;
+  height: 24%;
   text-align: right;
-  padding-top: 20px;
+  padding-top: 0.8vw;
 }
 
 .twoLines {
@@ -147,10 +143,10 @@
 }
 
 .div_ {
-  width: 15%;
-  height: 92%;
+  width: 14vw;
+  height: 7vw;
   /* border: 1px solid black; */
-  margin-top: 1%;
+  /* margin-top: 1wv; */
   background: red;
   border-radius: 5px;
   opacity: 0.8;
@@ -165,17 +161,19 @@
 }
 
 .tow_top_div_left {
-  width: 35px;
-  height: 35px;
-  background: blue;
-  margin-top: 5px;
-  margin-left: 5%;
+  width: 2vw;
+  height: 2vw;
+  /* background: blue; */
+  margin-top: 0.2vw;
+  /* margin-left: 5%; */
   border-radius: 5px;
-  display: inline-block;
+  position: relative;
+  top: -0.1vw;
+  /* display: inline-block; */
 }
 
 .span_div {
-  font-size: 20px;
+  font-size: 1vw;
   font-weight: bold;
   color: #fff;
   display: block;
@@ -185,20 +183,20 @@
 
 
 .div_span {
-  font-size: 32px;
+  font-size: 1.6vw;
   font-weight: bold;
   color: #fff;
   text-align: right;
-  /* margin-top: -2%; */
-  padding: 10px;
+  margin-top: -5%;
+  padding: 10%;
 }
 
 .div_span1 {
-  font-size: 20px;
+  font-size: 1.1vw;
   font-weight: bold;
   color: #fff;
   text-align: right;
-  padding: 0px 10px 0px 0px;
+  padding: 0px 0.4vw 0px 0px;
   /* margin-right: 10px; */
 }
 
@@ -228,36 +226,37 @@
 }
 
 .time_div {
-  height: 30px;
+  height: 1.2vw;
   text-align: right;
   position: relative;
-  right: 30px;
+  right: 1.2vw;
 }
 
 
 .time1_div {
-  height: 30px;
+  height: 1.2vw;
   text-align: right;
   position: relative;
-  right: 10px;
-  bottom: 10px;
+  right: 0.1vw;
+  bottom: 0.1vw;
 }
 
 
 
 .right_div_top {
-  border-left: 10px solid #2A8BCF;
-  height: 30px;
-  width: 7%;
-  margin-top: 10px;
-  margin-left: 20px;
+  border-left: 0.4vw solid #2A8BCF;
+  height: 1.5vw;
+  /* width: 7%; */
+  margin-top: 0.4vw;
+  margin-left: 0.8vw;
 }
 
 .lrtj {
-  font-size: 16px;
+  font-size: 0.7vw;
   font-weight: bold;
   display: block;
-  padding-top: 12px;
+  padding-top: 0.7vw;
+  margin-left: 0.4vw;
 }
 
 .company {
@@ -268,54 +267,60 @@
   padding-top: 15px;
 }
 
-.ziti_div {
-  width: 60px;
-  height: 20px;
-  background: #F8F8FA;
-  text-align: center;
-  border-radius: 20px;
-  cursor: pointer;
-  color: #000;
-  font-size: 12px;
-}
-
-.ziti_gb {
-  background: #2A8BCF;
-  color: #fff;
-  width: 60px;
-  height: 20px;
-  text-align: center;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 12px
-}
 
 
 .zxt_div {
-  width: 60px;
-  height: 20px;
+  width: 3vw;
+  height: 1vw;
   background: #F8F8FA;
   text-align: center;
   border-radius: 20px;
   cursor: pointer;
   color: #000;
-  font-size: 12px;
-  margin-right: 20px;
+  font-size: 0.6vw;
+  line-height: 1vw;
 }
 
 .zxt_gb {
-  width: 60px;
-  height: 20px;
+  width: 3vw;
+  height: 1vw;
   text-align: center;
   border-radius: 20px;
   cursor: pointer;
-  font-size: 12px;
-  margin-right: 20px;
+  font-size: 0.6vw;
+  /* margin-right: 20px; */
   background: #2A8BCF;
   color: #fff;
-  display: inline-block
+  display: inline-block;
+  line-height: 1vw;
 }
 
+.ziti_div {
+  width: 3vw;
+  height: 1vw;
+  background: #F8F8FA;
+  text-align: center;
+  border-radius: 20px;
+  cursor: pointer;
+  color: #000;
+  font-size: 0.6vw;
+  margin-right: 0.2vw;
+  line-height: 1vw;
+}
+
+.ziti_gb {
+  width: 3vw;
+  height: 1vw;
+  text-align: center;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.6vw;
+  /* margin-right: 20px; */
+  background: #2A8BCF;
+  color: #fff;
+  display: inline-block;
+  line-height: 1vw;
+}
 
 
 
@@ -358,7 +363,7 @@
 .four_div {
   width: 100%;
   height: 30%;
-  padding-top: 10px;
+  padding-top: 0.4vw;
   /* background: #fff; */
 }
 
@@ -368,25 +373,25 @@
 }
 
 .four_top_left_div {
-  border-left: 10px solid #2A8BCF;
-  width: 20px;
-  height: 20px;
-  margin-top: 20px;
+  border-left: 0.4vw solid #2A8BCF;
+  width: 1vw;
+  height: 1vw;
+  margin-top: 1vw;
   /* padding-top: 20px; */
-  margin-left: 20px;
+  margin-left: 1vw;
 }
 
 .four_span {
   display: block;
-  font-size: 16px;
+  font-size: 0.8vw;
   font-weight: bold;
-  margin-top: -22px;
-  margin-left: 40px;
+  margin-top: -1.2vw;
+  margin-left: 2vw;
 }
 
 .four_bottom_left_div {
   width: 95%;
-  height: 200px;
+  height: 10vw;
   /* background: blueviolet; */
   background: #E9F2FB;
   /* opacity: 0.5; */
@@ -397,32 +402,32 @@
 }
 
 .content_div {
-  width: 300px;
-  height: 140px;
+  width: 10vw;
+  height: 7vw;
 
   position: relative;
-  top: 25%;
-  left: 6%;
+  top: 3vw;
+  left: 4vw;
   text-align: center;
 }
 
 .monery_p {
   display: block;
-  margin-top: 20px;
-  font-size: 30px;
+  margin-top: 1vw;
+  font-size: 1.5vw;
   font-weight: bold;
-  padding-top: 20px;
+  padding-top: 1vw;
 }
 
 .result {
-  font-size: 16px;
+  font-size: 0.8vw;
   font-weight: bold;
   display: block;
   /* padding-top: -20px; */
   position: relative;
-  padding-top: -20px;
-  top: -20px;
-  left: -10px;
+  padding-top: -1vw;
+  top: -1vw;
+  left: -1vw;
 
 }
 
@@ -434,18 +439,21 @@
 }
 
 .four_right_top {
-  height: 30px;
-  border-left: 10px solid #2A8BCF;
-  margin-left: 20px;
-  margin-top: 20px;
+  height: 1.5vw;
+  border-left: 0.4vw solid #2A8BCF;
+  margin-left: 0.8vw;
+  margin-top: 0.7vw;
 }
 
 .jytj {
-  position: relative;
-  top: 35%;
-  left: 5%;
-  font-size: 16px;
+  /* position: relative;
+  top: 30%;
+  left: 5%; */
+  font-size: 0.8vw;
   font-weight: bold;
+  padding-top: 0.8vw;
+  margin-left: 0.4vw;
+  width: 4vw;
 }
 
 

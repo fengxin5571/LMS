@@ -83,9 +83,12 @@ const Echartszx = (props) => {
   if (main !== "") {
     var myChart = echarts.init(main);
     myChart.setOption(option);
+    window.addEventListener("resize", function () {
+      myChart.resize();
+    });
   }
   return (
-    <div style={{ width: '100%', height: '260px', paddingLeft: '20px', position: 'relative', bottom: '40px' }} id="main1"></div>
+    <div style={{ width: '100%', height: '13vw', paddingLeft: '1vw', position: 'relative', bottom: '1.5vw' }} id="main1"></div>
   )
 }
 export default Echartszx;

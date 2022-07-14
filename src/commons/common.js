@@ -169,7 +169,7 @@ export function formatLmsMenus(values) {
                     'Access': values[key].Access,
                     'ActionHttpMethod': values[key].ActionHttpMethod,
                     //"path": "/" + bigCamel(values[key].Name),
-                    "path": values[key].Name == "BusinessManagement" ? "/BusinessManagement" : (values[key].Name == "/" ? "/" : "/Dynamic?dbGridName=" + values[key].Name),
+                    "path": values[key].Name == "BusinessManagement" ? "/BusinessManagement" : (values[key].Name == "/" ? "/" : "/Dynamic/" + values[key].Name.replace(new RegExp(/( )/g), "_")),
                 };
             }
 
@@ -203,7 +203,7 @@ export function formatLmsMenus(values) {
                     'ActionHttpMethod': values[key].ActionHttpMethod,
                     //'path': values[key].UiRouter ? values[key].UiRouter : bigCamel(values[key].Name)
                     //"path": "/" + bigCamel(values[key].Name),
-                    "path": values[key].Name == "BusinessManagement" ? "/BusinessManagement" : (values[key].Name == "/" ? "/" : "/Dynamic?dbGridName=" + values[key].Name),
+                    "path": values[key].Name == "BusinessManagement" ? "/BusinessManagement" : (values[key].Name == "/" ? "/" : "/Dynamic/" + values[key].Name.replace(new RegExp(/( )/g), "_")),
                 };
             }
 
@@ -691,8 +691,9 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                     );
                 } else if (item.type == 9) { //文本
                     return (
-                        <Col span={4} style={!is_style ? {marginRight: "2rem"} : {}}>
+                        <Col span={is_style ? 24 : 4} style={!is_style ? {marginRight: "2rem"} : {}}>
                             <FormItem
+                                width={"100%"}
                                 {...layout}
                                 label={item.label}
                                 name={field != undefined ? [field?.name, item.name] : item.name}
@@ -900,6 +901,10 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                     }
                 } else if (item.type == 24) { //关联字段
                     let formartColumns = [];
+                    item.ColumnConfigs.sort((a, b) => {
+                        var order = [10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 27, 26, 28, 29, 21, 24, 25];
+                        return order.indexOf(a.type) - order.indexOf(b.type);
+                    });
                     item.ColumnConfigs.map(subItem => {
                         if ((!isEdit && !isDetail) && !((subItem.access & authority.create) > 0)) {
                             return;

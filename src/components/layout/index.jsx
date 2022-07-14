@@ -99,7 +99,7 @@ export default function Layout(props) {
         }, {});
 
         layoutRef.current.setState(state);
-        const resp = await fetch(`./lang/${lang}.json`)
+        const resp = await fetch(window.location.origin+`/lang/${lang}.json`)
         const data = await resp.json();
         setLocale(data)
         // eslint-disable-next-line react-hooks/exhaustive-deps

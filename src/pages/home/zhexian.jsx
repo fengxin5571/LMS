@@ -4,6 +4,7 @@ import echarts from 'echarts/lib/echarts';
 import 'echarts/lib/component/legend';
 import 'echarts/lib/component/dataZoom';
 import 'echarts/lib/component/title';
+import 'echarts/lib/component/axis';
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/markPoint';
 import 'echarts/lib/component/markLine';
@@ -86,9 +87,12 @@ const Echartszxt = (props) => {
     var myChart = echarts.init(main);
     console.log(myChart);
     myChart.setOption(option);
+    window.addEventListener("resize", function () {
+      myChart.resize();
+    });
   }
   return (
-    <div style={{ height: "220px", width: "100%", position: 'relative', top: '-40px' }} id="main2"></div>
+    <div style={{ height: "11vw", width: "100%", position: 'relative', top: '-1.5vw' }} id="main2"></div>
   )
 }
 export default Echartszxt;

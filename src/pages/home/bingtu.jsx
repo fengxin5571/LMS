@@ -72,9 +72,12 @@ const Echartstest = (props) => {
   if (main !== "") {
     var myChart = echarts.init(main);
     myChart.setOption(option);
+    window.addEventListener("resize", function () {
+      myChart.resize();
+    });
   }
   return (
-    <div style={{ height: "200px", width: "100%" }} id="main"></div>
+    <div style={{ height: "10vw", width: "100%", marginTop: '2vw' }} id="main"></div>
   )
 }
 export default Echartstest;

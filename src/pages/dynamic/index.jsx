@@ -26,12 +26,11 @@ import {getLange, setLange} from 'src/commons';
 import {FormattedMessage, IntlProvider} from 'react-intl'; /* react-intl imports */
 import zhCN from 'antd/lib/locale/zh_CN';
 import enUS from 'antd/lib/locale/en_US';
-import {useLocation} from "react-router-dom";
+import {useLocation, useHistory, useParams} from "react-router-dom";
 import {DbGridNames} from "src/commons/dbgridconfig";
 import TableModal from "src/pages/GridTools/TableModal";
 import TableList from "src/pages/GridTools/TableList";
 import {confirm} from '@ra-lib/components';
-import Cookies from 'js-cookie'
 import {
     UploadOutlined,
     PlusOutlined,
@@ -48,14 +47,16 @@ import {
 } from "@ant-design/icons";
 
 export default config({
-    path: "/Dynamic",
+    path: "/Dynamic/:dbGridName",
 })(function Dynamic(props) {
     const useQuery = () => {
         return new URLSearchParams(useLocation().search);
     }
+    const history = useHistory();
     const location = useLocation();
-    const name = useQuery().get("dbGridName");
+    const name = useParams()?.dbGridName.replace(new RegExp(/(_)/g)," ");
     let resault = null;
+    console.log(window.location.search)
     const loginUser = getLoginUser();
     const [lang, setLang] = useState(getLange(loginUser?.id))
     const [modalTitle, setModalTitle] = useState("");
@@ -93,9 +94,9 @@ export default config({
     const [form] = Form.useForm();
     const [balanceForm] = Form.useForm();
     useEffect(async () => {
-        const resp = await fetch(`./lang/${lang}.json`)
+        const resp = await fetch(window.location.origin + `/lang/${lang}.json`)
         const data = await resp.json();
-        const localization = await fetch(`./lang/${lang}_Localization.json`);
+        const localization = await fetch(window.location.origin + `/lang/${lang}_Localization.json`);
         const errorJson = await localization.json();
         window.sessionStorage.setItem("error-json-" + loginUser?.id, JSON.stringify(errorJson));
         if (lang == "zh_CN") {
@@ -109,6 +110,7 @@ export default config({
         } else {
             setBtnDisabled(true);
         }
+        console.log(locale);
     }, [lang, fileList, selectedRowKeys, isEdit, isDetail]);
     //表格排序
     const handleTableChange = (newPagination, filters, sorter) => {
@@ -129,7 +131,7 @@ export default config({
         }
         //处理表格显示的字段
         const resColums = handleGridDataTypeColumn(resault.ColumnConfigs, isModalVisible, setIsModalVisible, setSubTableHeader, setSubTable, setModalTitle, setSubTableType, setIsListVisible);
-        console.log(resColums);
+        console.log(locale);
         setBalance(resault.Balance);
         let apiIncludes = resault.Includes.map((item) => item.Name);
         setIncludes(apiIncludes);
@@ -669,7 +671,7 @@ export default config({
 
                     </QueryBar>
                     <Row style={{marginBottom: 15}}>
-                        <Col flex="14rem">
+                        <Col flex="20rem">
                             {balance != undefined && balance != 9999.99 ?
                                 <span style={{fontSize: 18, fontWeight: "bold"}}><FormattedMessage
                                     id="FullBalance"/>： <span style={{color: "#FF6060"}}>£ {formatPrice(balance)}</span></span> : null}
