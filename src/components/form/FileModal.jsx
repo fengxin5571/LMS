@@ -141,6 +141,14 @@ export default config({
                 FolderName: handlePath,
                 FileName: creatFolderName
             }))
+        } else if (fileType == 4) {
+            const res = await props.ajax.post('DbGrid/CreateFolder', convertToFormData({
+                DbGridName: dbGridName,
+                Id: 0,
+                draw: DRAW,
+                FolderName: handlePath,
+                FileName: creatFolderName
+            }))
         }
         getData(path);
     }
@@ -173,7 +181,7 @@ export default config({
         });
         const res = await props.ajax.post('DbGrid/DownloadAttachment', convertToFormData({
             DbGridName: dbGridName,
-            Id: record?.Id,
+            Id: fileType == 4 ? 0 : record?.Id,
             draw: DRAW,
             FolderName: handlePath,
             FileName: records?.FileName
@@ -255,6 +263,19 @@ export default config({
                             width: "70%"
                         },
                     })
+                } else if (fileType == 4) {
+                    const res = await props.ajax.post('DbGrid/DeleteAttachment', convertToFormData({
+                        DbGridName: dbGridName,
+                        Id: 0,
+                        draw: DRAW,
+                        FolderName: handlePath,
+                        FileName: records?.FileName
+                    }), {
+                        errorModal: {
+                            okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"),
+                            width: "70%"
+                        },
+                    })
                 }
                 getData(path);
             },
@@ -283,6 +304,19 @@ export default config({
             const res = await props.ajax.post('DbGrid/Attachments', convertToFormData({
                 DbGridName: dbGridName,
                 Id: Id,
+                draw: DRAW,
+                FolderName: handlePath
+            }), {
+                errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"},
+            })
+            let localData = res?.WithChildrenAttachments || [];
+            localData.forEach((item) => {
+                tableData.push({Id: item.Id, FileName: item.FileName, IsDirectory: item.IsDirectory});
+            });
+        } else if (fileType == 4) { //如果是表格附件
+            const res = await props.ajax.post('DbGrid/Attachments', convertToFormData({
+                DbGridName: dbGridName,
+                Id: 0,
                 draw: DRAW,
                 FolderName: handlePath
             }), {
@@ -356,7 +390,7 @@ export default config({
             >
                 <>
                     <Row style={{marginBottom: 15}}>
-                        <Col span={14}>
+                        <Col span={13}>
                             <Breadcrumb style={{"padding-left": '20px'}}>
                                 {
                                     path.length === 1 ?
@@ -384,18 +418,19 @@ export default config({
                                 }
                             </Breadcrumb>
                         </Col>
-                        <Col span={5}>
+                        <Col span={4} style={{textAlign: 'right', marginRight: 10}}>
+                            <Button type="primary" onClick={() => setVisible(true)}>
+                                <FormattedMessage id="CreateFileFolder"/>
+                            </Button>
+                        </Col>
+                        <Col span={6}>
                             <Upload {...uploadConfig} >
                                 <Button type="primary" icon={<UploadOutlined/>}>
                                     <FormattedMessage id="UploadFile"/>
                                 </Button>
                             </Upload>
                         </Col>
-                        <Col span={5} style={{textAlign: 'right'}}>
-                            <Button type="primary" onClick={() => setVisible(true)}>
-                                <FormattedMessage id="CreateFileFolder"/>
-                            </Button>
-                        </Col>
+
                     </Row>
 
                     <Row>

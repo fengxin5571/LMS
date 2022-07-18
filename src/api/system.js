@@ -26,7 +26,7 @@ export default {
         //获取登录用户的菜单
         const origin_menus = getLoginUser().Menus;
         //处理LMS拿到的菜单
-        const menus = formatLmsMenus(origin_menus);
+        const menus = formatLmsMenus(origin_menus.filter(item => item.InMenu == true));
         // 前端硬编码菜单
         // return [
         //     {id: 1, title: '系统管理', order: 900, type: 1},
@@ -46,7 +46,7 @@ export default {
 
         const serverMenus = await this.getMenuData();
         const menus = serverMenus
-            .filter((item) => !item.type ||item.ActionType===2||item.ActionType===0)
+            .filter((item) => !item.type || item.ActionType === 2 || item.ActionType === 0)
             .map((item) => {
                 return {
                     ...item,

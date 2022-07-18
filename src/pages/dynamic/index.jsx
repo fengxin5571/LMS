@@ -1,5 +1,5 @@
-import React, {useState, useMemo, useCallback, useEffect, useLayoutEffect} from 'react';
-import {Button, Form, Space, ConfigProvider, Modal, Upload, Col, Row, Dropdown, Menu, Popconfirm} from 'antd';
+import React, {useState, useMemo, useCallback, useEffect, useLayoutEffect, useRef} from 'react';
+import {Button, Form, Space, ConfigProvider, Modal, Upload, Col, Row, Dropdown, Menu, Popconfirm, Card} from 'antd';
 import {
     PageContent,
     QueryBar,
@@ -27,7 +27,6 @@ import {FormattedMessage, IntlProvider} from 'react-intl'; /* react-intl imports
 import zhCN from 'antd/lib/locale/zh_CN';
 import enUS from 'antd/lib/locale/en_US';
 import {useLocation, useHistory, useParams} from "react-router-dom";
-import {DbGridNames} from "src/commons/dbgridconfig";
 import TableModal from "src/pages/GridTools/TableModal";
 import TableList from "src/pages/GridTools/TableList";
 import {confirm} from '@ra-lib/components';
@@ -43,8 +42,10 @@ import {
     EditOutlined,
     UserAddOutlined,
     PoweroffOutlined,
-    PlayCircleOutlined
+    PlayCircleOutlined,
+    PaperClipOutlined
 } from "@ant-design/icons";
+import FileModal from "../../components/form/FileModal";
 
 export default config({
     path: "/Dynamic/:dbGridName",
@@ -89,8 +90,13 @@ export default config({
     const [btnDisabled, setBtnDisabled] = useState(true);
     const [dbGridName, setDbGridName] = useState(name);
     const [balance, setBalance] = useState(9999.99);
+    const [fileModaVisible, setFileModaVisible] = useState(false);
     const [form] = Form.useForm();
     const [balanceForm] = Form.useForm();
+    const [uploadItemName, setUploadItemName] = useState();
+    const [viewFilePath, setViewFilePath] = useState([]);
+    const [viewFile, setViewFile] = useState([]);
+    const fileModal = useRef();
     useEffect(async () => {
         const resp = await fetch(window.location.origin + `/lang/${lang}.json`)
         const data = await resp.json();
@@ -241,7 +247,6 @@ export default config({
                 } else {
                     searchData.push({name: key, min: conditions[key], max: conditions[key]});
                 }
-
             }
         });
         setSearchFormData(searchData);
@@ -531,6 +536,20 @@ export default config({
         }
     }
     /**
+     * 读取表格附件
+     * @type {(function(): Promise<void>)|*}
+     */
+    const loadGridAttachment = useCallback(async () => {
+        const res = props.ajax.post("DbGrid/Attachments", convertToFormData({
+            DbGridName: dbGridName,
+            draw: DRAW,
+            Id: 0,
+            FolderName: '/'
+        }), {errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}});
+
+
+    }, []);
+    /**
      * 上传配置
      * @type {{onRemove: uploadConfig.onRemove, fileList: *[], beforeUpload: (function(*): boolean)}}
      */
@@ -680,7 +699,21 @@ export default config({
                                     </Button>
                                     : null
                             }
+                            {
+                                (resBtnFlags & BtnFlags.CanGridAttachment) > 0 ?
+                                    <Button size="small" type="primary" style={{
+                                        float: "right",
+                                        marginRight: 10,
+                                        background: "#FDBE80",
+                                        borderColor: '#FDBE80'
+                                    }}
+                                            onClick={() => setFileModaVisible(true)}>
+                                        <PaperClipOutlined/> <FormattedMessage id="GridFlags_CanGridAttachment"
+                                                                               defaultMessage="Grid Attachment"/>
+                                    </Button>
+                                    : null
 
+                            }
                             {
                                 (resBtnFlags & BtnFlags.CanPrintAll) > 0 ?
                                     <Button size="small" type="primary" style={{
@@ -739,8 +772,6 @@ export default config({
                         </Col>
                     </Row>
                     <ToolBar>
-
-
                     </ToolBar>
                     <Table
                         onRow={record => {
@@ -808,6 +839,8 @@ export default config({
                         visible={uploadVisible}
                         onCancel={() => setUploadVisible(false)}
                         onOk={() => setUploadVisible(false) || dbGridUpload()}
+                        title={<FormattedMessage id="GridFlags_CanUpload"
+                                                 defaultMessage="Upload"/>}
                     >
                         <Content style={{padding: 20}}>
                             <Form autoComplete="off" style={{paddingTop: 30}}>
@@ -832,6 +865,61 @@ export default config({
                             </FormItem>
                         </Form>
                     </Modal>
+                    <FileModal
+                        visible={fileModaVisible}
+                        title={<><FormattedMessage id="GridFlags_CanGridAttachment"
+                                                   defaultMessage="Grid Attachment"/> - <FormattedMessage id={dbGridName}/></>}
+                        onOk={() => {
+                            setFileModaVisible(false);
+                            //获取附件管理子组件文件封装数据
+                            var handleUploadData = fileModal.current.onHandleUploadFile;
+                            var handleUploadFile = fileModal.current.onUploadFile;
+                            console.log(handleUploadData);
+                            console.log(handleUploadFile);
+                            var onPath = fileModal.current.onPath;
+                            setTimeout(async () => {
+                                var folderName = '';
+                                handleUploadData.WithChildrenAttachments.map(item => {
+                                    if (item.IsDirectory == false) {
+                                        folderName = item.FolderName
+                                    }
+                                });
+                                if (folderName && handleUploadFile.length > 0) {
+                                    handleUploadFile.map((file) => {
+                                        var fileName = "";
+                                        fileName = folderName + file.name;
+                                        var formData = convertToFormData({
+                                            DbGridName: dbGridName,
+                                            Id: 0,
+                                            draw: DRAW,
+                                            FolderName: folderName,
+                                            FileName: fileName
+                                        }, {
+                                            errorModal: {
+                                                okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"),
+                                                width: "70%"
+                                            },
+                                        });
+                                        formData.append("Files", file);
+                                        setTimeout(async () => {
+                                            await props.ajax.post('DbGrid/UploadAttachment', formData);
+                                        }, 0)
+
+                                    });
+
+                                }
+                            }, 0);
+                        }}
+                        onCancel={() => setFileModaVisible(false)}
+                        fileType={4}
+                        dbGridName={dbGridName}
+                        record={{}}
+                        cRef={fileModal}
+                        uploadItemName={uploadItemName}
+                        viewFilePath={viewFilePath}
+                        viewFile={viewFile}
+                        antLocale={antLocale}
+                    />
                 </PageContent>
             </ConfigProvider>
         </IntlProvider>

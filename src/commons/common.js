@@ -148,6 +148,7 @@ export function bigCamel(s) {
  */
 export function formatLmsMenus(values) {
     const menus = [];
+    const homeBtnMenus = [];
     Object.keys(values).forEach(key => {
         let menu = null;
         //如果是顶级菜单

@@ -92,6 +92,8 @@ export default config({
                         'TenantId': res.TenantId,
                         'Menus': res.Menus,
                     };
+                    const homeApiMenus = res.Menus.filter(item => item.ActionType == 1);
+                    window.sessionStorage.setItem('homeApiMenus-' + res.UserId, JSON.stringify(homeApiMenus || []));
                     //获取token
                     getToken
                         .run(params, {errorTip: false})
