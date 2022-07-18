@@ -3,14 +3,24 @@ import {DRAW, WITH_SYSTEMS} from "../config";
 import {FormItem, getLoginUser, getToken, Content} from "@ra-lib/admin";
 import {FormattedMessage} from "react-intl";
 import React from "react";
-import {Button, Card, Form, Input, Space, Tag, List, Col, Row} from "antd";
+import {Button, Card, Form, Input, Space, Tag, List, Col, Row, Tree} from "antd";
 import {getLange} from "./index";
 import moment from "moment";
 import BraftEditor from "braft-editor";
-import {MinusCircleOutlined, BarsOutlined, PlusOutlined, StarFilled, PaperClipOutlined} from "@ant-design/icons";
+import {
+    MinusCircleOutlined,
+    BarsOutlined,
+    PlusOutlined,
+    StarFilled,
+    PaperClipOutlined,
+    FolderOpenOutlined,
+    FileOutlined,
+    DownOutlined
+} from "@ant-design/icons";
 
 import SelectTable from "src/components/form/SelectTable";
 
+const {DirectoryTree} = Tree;
 /**
  * 表格按钮权限
  * @type {{All: number, CanUpload: number, CanGridAttachment: number, CanPrint: number, CanApprove: number, CanDelete: number, CanUndo: number, CanView: number, CanUploadAttachment: number, CanUV: number, CanAdd: number, CanPrintAll: number, CanCopyRecord: number, CanTransfer: number, CanDownload: number, CanUpdate: number, IncludeArchived: number, CustomerSupport: number, CanFinish: number, CanStart: number, CanCS: number}}
@@ -444,7 +454,7 @@ export function renderTableColumns(column, text, record, index, isModalVisible, 
  * @param field
  * @returns {*}
  */
-export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, filter_type = [], style_object = {}, locale, is_style = false, field) {
+export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, filter_type = [], style_object = {}, locale, is_style = false, field) {
     {
         formColums.sort((a, b) => {
             var order = [10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 27, 26, 28, 29, 21, 24, 25];
@@ -831,7 +841,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                                                         }}
                                                         direction="horizontal"
                                                     >
-                                                        {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
+                                                        {handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
                                                         {!isDetail ? <Button type="primary" size="small" style={{
                                                                 background: "#FF6060",
                                                                 borderColor: '#FF6060',
@@ -876,7 +886,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                                                     align="baseline"
                                                 >
 
-                                                    {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.subcolumns, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
+                                                    {handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.subcolumns, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
                                                     {!isDetail ? <Button type="primary" size="small" style={{
                                                             background: "#FF6060",
                                                             borderColor: '#FF6060',
@@ -953,7 +963,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                                                         }}
                                                         direction="horizontal"
                                                     >
-                                                        {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
+                                                        {handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
                                                         {!isDetail ? <Button type="primary" size="small" style={{
                                                                 background: "#FF6060",
                                                                 borderColor: '#FF6060',
@@ -999,7 +1009,7 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                                                     }}
                                                     direction="horizontal"
                                                 >
-                                                    {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
+                                                    {handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
                                                     {!isDetail ? <Button type="primary" size="small" style={{
                                                             background: "#FF6060",
                                                             borderColor: '#FF6060',
@@ -1091,10 +1101,31 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                         filePaths = loadFilePaths.filter(v => (v.IsDirectory == false));
                     } else if (isDetail) { // 如果是查看
                         fileType = 2;
-                        var loadFilePaths = form.getFieldValue(item.name) ? form.getFieldValue(item.name)?.WithChildrenAttachments : [];
+                        var loadFilePaths = form.getFieldValue(item.name) ? form.getFieldValue(item.name)?.WithChildrenAttachments || [] : [];
                         filePaths = loadFilePaths.filter(v => (v.IsDirectory == false));
+                        loadFilePaths.map((item, k) => {
+                            item.key = item.Id;
+                            item.title = item.FileName;
+                            item.icon = item.IsDirectory ? <FolderOpenOutlined/> : <FileOutlined/>;
+                            item.IsDirectory = item.IsDirectory;
+                            item.FolderName = item.FolderName;
+                            item.isLeaf = !item.IsDirectory;
+                        });
+                        treeData.concat(loadFilePaths);
+                        var updateTreeData = (list, key, children) =>
+                            list.map((node) => {
+                                if (node.key == key) {
+                                    return {...node, children};
+                                }
+
+                                if (node.children) {
+                                    return {...node, children: updateTreeData(node.children, key, children)};
+                                }
+                                return node;
+                            });
+
                     }
-                    if (is_style) {
+                    if (is_style) { //如果是子表格中的字段
                         return (
                             <>
                                 <Col span={4} style={!is_style ? {marginRight: "2rem"} : {}}>
@@ -1146,22 +1177,103 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
                                         <FormattedMessage id="ClickFileView"/>
                                     </Button>
                                 }>
-                                    <FormItem {...layout}
-                                    >
+                                    {fileType == 1 || fileType == 3 ?
+                                        <>
+                                            <FormItem {...layout}>
+                                                <List
+                                                    size="small"
+                                                    header={<div><FormattedMessage id="AttachmentList"/></div>}
+                                                    bordered
+                                                    dataSource={filePaths}
+                                                    renderItem={(item) => <List.Item><PaperClipOutlined
+                                                        style={{paddingRight: "15px"}}/>{item?.FolderName || ''}{item.FileName}
+                                                    </List.Item>}
+                                                    style={{
+                                                        display: filePaths.length > 0 ? "block" : "none",
+                                                        marginTop: "20px"
+                                                    }}
+                                                />
+                                            </FormItem>
+                                            <FormItem name={item.name} hidden></FormItem>
+                                            <FormItem name="Files" hidden></FormItem>
+                                        </> : (loadFilePaths.length > 0 ? <>
+                                            <FormItem {...layout} name={item.name}>
+                                                <DirectoryTree
+                                                    selectedKeys={[]}
+                                                    treeData={treeData.length > 0 ? treeData : loadFilePaths}
+                                                    loadData={async (treeNode) => {
+                                                        console.log(treeNode);
+                                                        if (treeNode.IsDirectory) {
+                                                            const res = await props.ajax.post('DbGrid/Attachments', convertToFormData({
+                                                                DbGridName: props.dbGridName,
+                                                                Id: form.getFieldValue("Id"),
+                                                                draw: DRAW,
+                                                                FolderName: treeNode.FolderName + treeNode.FileName + "/"
+                                                            }), {
+                                                                errorModal: {
+                                                                    okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"),
+                                                                    width: "70%"
+                                                                },
+                                                            })
+                                                            const children = res.WithChildrenAttachments || [];
+                                                            children.map(item => {
+                                                                item.key = item.Id;
+                                                                item.title = item.FileName;
+                                                                item.icon = item.IsDirectory ? <FolderOpenOutlined/> :
+                                                                    <FileOutlined/>;
+                                                                item.isLeaf = !item.IsDirectory;
+                                                            })
+                                                            if (children.length > 0) {
+                                                                var t = updateTreeData(loadFilePaths, treeNode.key, children);
+                                                                console.log(t);
+                                                                setTreeData(t);
+                                                            }
+                                                        }
+                                                    }}
+                                                    onSelect={async (selectedKeys, info,) => {
+                                                        console.log(info.node);
+                                                        if (info.node.IsDirectory) return;
+                                                        const res = await props.ajax.post('DbGrid/DownloadAttachment', convertToFormData({
+                                                            DbGridName: props.dbGridName,
+                                                            Id: form.getFieldValue("Id"),
+                                                            draw: DRAW,
+                                                            FolderName: info.node.FolderName,
+                                                            FileName: info.node.FileName
+                                                        }), {
+                                                            responseType: "blob",
+                                                            errorModal: {
+                                                                okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"),
+                                                                width: "70%"
+                                                            },
+                                                        });
+                                                        let blob = new Blob([res]);
+                                                        if (typeof window.navigator.msSaveBlob !== "undefined") {
+                                                            // 兼容IE，window.navigator.msSaveBlob：以本地方式保存文件
+                                                            window.navigator.msSaveBlob(blob, decodeURI(info.node.FileName));
+                                                        } else {
+                                                            // 创建新的URL并指向File对象或者Blob对象的地址
+                                                            const blobURL = window.URL.createObjectURL(blob);
+                                                            // 创建a标签，用于跳转至下载链接
+                                                            const tempLink = document.createElement("a");
+                                                            tempLink.style.display = "none";
+                                                            tempLink.href = blobURL;
+                                                            tempLink.setAttribute("download", decodeURI(info.node.FileName));
+                                                            // 兼容：某些浏览器不支持HTML5的download属性
+                                                            if (typeof tempLink.download === "undefined") {
+                                                                tempLink.setAttribute("target", "_blank");
+                                                            }
+                                                            // 挂载a标签
+                                                            document.body.appendChild(tempLink);
+                                                            tempLink.click();
+                                                            document.body.removeChild(tempLink);
+                                                            // 释放blob URL地址
+                                                            window.URL.revokeObjectURL(blobURL);
+                                                        }
+                                                    }}
+                                                />
+                                            </FormItem>
+                                        </> : null)}
 
-                                        <List
-                                            size="small"
-                                            header={<div><FormattedMessage id="AttachmentList"/></div>}
-                                            bordered
-                                            dataSource={filePaths}
-                                            renderItem={(item) => <List.Item><PaperClipOutlined
-                                                style={{paddingRight: "15px"}}/>{item?.FolderName || ''}{item.FileName}
-                                            </List.Item>}
-                                            style={{display: filePaths.length > 0 ? "block" : "none", marginTop: "20px"}}
-                                        />
-                                    </FormItem>
-                                    <FormItem name={item.name} hidden></FormItem>
-                                    <FormItem name="Files" hidden></FormItem>
                                 </Card>
                             </>
                         );
@@ -1215,8 +1327,8 @@ export function handleFormItem(form, setRefreshLoad, setUploadItemName, setIsMod
  * @param str
  * @returns
     {
-            boolean
-        }
+                    boolean
+                }
  */
 export function isJSON(str) {
     if (typeof str == 'string') {

@@ -52,11 +52,9 @@ export default config({
     const useQuery = () => {
         return new URLSearchParams(useLocation().search);
     }
-    const history = useHistory();
     const location = useLocation();
-    const name = useParams()?.dbGridName.replace(new RegExp(/(_)/g)," ");
+    const name = useParams()?.dbGridName.replace(new RegExp(/(_)/g), " ");
     let resault = null;
-    console.log(window.location.search)
     const loginUser = getLoginUser();
     const [lang, setLang] = useState(getLange(loginUser?.id))
     const [modalTitle, setModalTitle] = useState("");
@@ -99,19 +97,14 @@ export default config({
         const localization = await fetch(window.location.origin + `/lang/${lang}_Localization.json`);
         const errorJson = await localization.json();
         window.sessionStorage.setItem("error-json-" + loginUser?.id, JSON.stringify(errorJson));
-        if (lang == "zh_CN") {
-            setAntLocale(zhCN);
-        } else {
-            setAntLocale(enUS);
-        }
+        setAntLocale(lang == "zh_CN" ? zhCN : enUS);
+        setBtnDisabled(selectedRowKeys.length > 0 ? false : true);
         setLocale(data);
-        if (selectedRowKeys.length > 0) {
-            setBtnDisabled(false);
-        } else {
-            setBtnDisabled(true);
-        }
-        console.log(locale);
     }, [lang, fileList, selectedRowKeys, isEdit, isDetail]);
+    useEffect(() => {
+        setPageNum(1);
+        setPageSize(20);
+    }, [location]);
     //表格排序
     const handleTableChange = (newPagination, filters, sorter) => {
         setOrder([
@@ -123,15 +116,11 @@ export default config({
     };
     const params = useMemo(() => {
         setDbGridName(name);
+        //获取表格配置信息
+        asyncConfigData(dbGridName);
         resault = JSON.parse(window.sessionStorage.getItem(dbGridName + '-config-' + loginUser?.id));
-        if (!resault) {
-            //获取表格配置信息
-            asyncConfigData(dbGridName);
-            resault = JSON.parse(window.sessionStorage.getItem(dbGridName + '-config-' + loginUser?.id));
-        }
         //处理表格显示的字段
         const resColums = handleGridDataTypeColumn(resault.ColumnConfigs, isModalVisible, setIsModalVisible, setSubTableHeader, setSubTable, setModalTitle, setSubTableType, setIsListVisible);
-        console.log(locale);
         setBalance(resault.Balance);
         let apiIncludes = resault.Includes.map((item) => item.Name);
         setIncludes(apiIncludes);

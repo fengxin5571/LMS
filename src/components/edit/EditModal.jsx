@@ -36,6 +36,7 @@ export default config({
     const [viewFile, setViewFile] = useState([]);
     const [editorState, setEditorState] = useState(BraftEditor.createEditorState(null));
     const [uploadItemName, setUploadItemName] = useState();
+    const [treeData, setTreeData] = useState([]);
     const fileModal = useRef();
     useEffect(async () => {
         formColums.forEach((item) => {
@@ -43,7 +44,7 @@ export default config({
                 setColLayout({xs: {span: 24}, sm: {span: 14}});
             }
         });
-    }, [isDetail, isEdit]);
+    }, [isDetail, isEdit,treeData]);
     // 获取详情 data为表单回显数据
     props.ajax.usePost('/DbGrid/Load', convertToFormData({
         DbGridName: props.dbGridName,
@@ -163,22 +164,22 @@ export default config({
                                 <Content otherHeight={0}>
                                     <Row gutter={16}>
                                         {
-                                            handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [28, 21, 24, 29], {}, locale)
+                                            handleFormItem(form,props, treeData, setTreeData,setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [28, 21, 24, 29], {}, locale)
                                         }
                                     </Row>
                                 </Content>
                             </Card>
 
-                            {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 30], {
+                            {handleFormItem(form,props, treeData, setTreeData,setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 30], {
                                 fitHeight: false,
                                 otherHeight: 0
                             }, locale)}
 
-                            {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 25, 26, 27, 28, 29, 30], {
+                            {handleFormItem(form,props,treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 25, 26, 27, 28, 29, 30], {
                                 fitHeight: false,
                                 otherHeight: 0
                             }, locale)}
-                            {handleFormItem(form, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30], {
+                            {handleFormItem(form,props,treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30], {
                                 fitHeight: false,
                                 otherHeight: 0
                             }, locale)}

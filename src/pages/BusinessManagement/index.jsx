@@ -40,7 +40,6 @@ export default config({
         } else {
             setAntLocale(enUS);
         }
-        console.log(props);
         const res = await props.ajax.get("/Setting/LoadAllGrids", {}, {
             setLoading,
             errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"},

@@ -74,7 +74,6 @@ export default config({
     useEffect(() => {
         getData(path);
     }, [path]);
-
     /**
      * 封装上传数据结构
      * @returns {*[]}
@@ -286,7 +285,7 @@ export default config({
                 Id: Id,
                 draw: DRAW,
                 FolderName: handlePath
-            }),{
+            }), {
                 errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"},
             })
             let localData = res?.WithChildrenAttachments || [];
@@ -340,6 +339,7 @@ export default config({
             newFileList.splice(index, 1);
             setFileList(newFileList);
         },
+
         beforeUpload: (file) => {
             setFileList([...fileList, file]);
             return false;
@@ -385,7 +385,7 @@ export default config({
                             </Breadcrumb>
                         </Col>
                         <Col span={5}>
-                            <Upload {...uploadConfig} multiple>
+                            <Upload {...uploadConfig} >
                                 <Button type="primary" icon={<UploadOutlined/>}>
                                     <FormattedMessage id="UploadFile"/>
                                 </Button>
