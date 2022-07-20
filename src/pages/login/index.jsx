@@ -94,6 +94,8 @@ export default config({
                     };
                     const homeApiMenus = res.Menus.filter(item => item.ActionType == 1 && item.Name != "BusinessManagement");
                     window.sessionStorage.setItem('homeApiMenus-' + res.UserId, JSON.stringify(homeApiMenus || []));
+                    const homeQuickMenus = res.Menus.filter(item => item.ActionType != 1 && item.Shortcut);
+                    window.sessionStorage.setItem('homeQuickMenus-' + res.UserId, JSON.stringify(homeQuickMenus || []));
                     //获取token
                     getToken
                         .run(params, {errorTip: false})

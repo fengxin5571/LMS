@@ -37,18 +37,18 @@ const Echartszxt = (props) => {
 
     },
     grid: {
-      left: "4%",
-      // right: "4%",
+      // left: "2%",
+      right: "2%",
       // bottom: "3%",
-      // top: '20%',
-      width: "92%",
-      height: "65%",
+      top: '14%',
+      width: "95%",
+      height: "80%",
+      // padding: '20px',
       containLabel: true
     },
     xAxis: {
       type: 'category',
       boundaryGap: false,
-      // data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
       data: props.timeData,
       formatter: function (value) {
         // console.log(value);
@@ -107,7 +107,7 @@ const Echartszxt = (props) => {
     });
   }
   return (
-    <div style={{ height: "11vw", width: "100%", position: 'relative', top: '-1.5vw' }} id="main2"></div>
+    <div style={{ height: "15.5vw", width: "100%", position: 'relative', }} id="main2"></div>
   )
 }
 export default Echartszxt;

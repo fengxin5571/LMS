@@ -32,7 +32,7 @@ function getErrorTip(error, tip) {
             let content = <span>{errorResponse.Value}</span>;
             let errorData = [
                 {lable: lang == "zh_CN" ? '时间' : 'Time', text: formatDate(Date.parse(data.EventTime))},
-                {lable: lang == "zh_CN" ? '信息' : 'Msg', text: errorResponse.Value},
+                {lable: lang == "zh_CN" ? '信息' : 'Msg', text: errorResponse.Value + data.SecondLine},
                 {lable: lang == "zh_CN" ? '错误文件' : 'FileName', text: data.FileName},
                 {lable: lang == "zh_CN" ? '错误行数' : 'LineNumber', text: data.LineNumber},
             ]
@@ -40,7 +40,7 @@ function getErrorTip(error, tip) {
                 dataSource={errorData}
                 renderItem={(item) => (
                     <List.Item>
-                        <Typography.Text mark>[{item.lable}]</Typography.Text>  {item.text}
+                        <Typography.Text mark>[{item.lable}]</Typography.Text> {item.text}
                     </List.Item>
                 )}
             />

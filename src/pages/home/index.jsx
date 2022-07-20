@@ -15,7 +15,7 @@ import {
     ConfigProvider,
     Spin, Form
 } from 'antd';
-import {PageContent, getLoginUser, FormItem,} from '@ra-lib/admin';
+import {PageContent, getLoginUser, FormItem, setLoginUser,} from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
 import styles from './style.less';
 import {DownOutlined, UserOutlined, SwapOutlined, PoundCircleOutlined, LoadingOutlined} from '@ant-design/icons';
@@ -55,6 +55,21 @@ export default config({
     const [tenantOptions, setTenantOptions] = useState([]);
     const [companyOptions, setCompanyOptions] = useState([]);
     const [form] = Form.useForm();
+    // 下拉框租户
+    const [items, setItems] = useState([]);
+    // 下拉框用户
+    const [items1, setItems1] = useState([]);
+
+    // 随机生成颜色
+    const [randomRgbColor, setRandomRgbColor] = useState(['#6599FE', '#F94242', '#FE9200', '#01BB00', '#FFB6C1', '	#40E0D0'])
+    const [randomNum, setRandomNum] = useState(()=>{
+        var map=[];
+        homeApiMenus.map((item,key)=>{
+            map.push(Math.floor(Math.random() * 5 ))
+        });
+        return map;
+    })
+    const [subscript, setSubscript] = useState()
     const onChange = async (key) => {
         // console.log(key);
         setNumkey(key)
@@ -84,6 +99,9 @@ export default config({
     // 下拉框
     const handleChange = (value) => {
         // console.log(value);
+        const companyList = items.filter(item => item.TenantId == value)?.pop()?.CmpList || [];
+        // console.log(companyList);
+        setItems1(companyList)
     }
     // 下拉框搜索
     const onSearch = (value) => {
@@ -95,22 +113,22 @@ export default config({
     // 金额统计
     const [money, setMoney] = useState({})
     // 票数
-    const [votesNum, setVotesNum] = useState()
+    const [votesNum, setVotesNum] = useState(0)
     // 重量
-    const [weightNum, setWeightNum] = useState()
+    const [weightNum, setWeightNum] = useState(0)
     // 利润
-    const [profitNum, setProfitNum] = useState()
+    const [profitNum, setProfitNum] = useState(0)
     // 结余
-    const [balanceNum, setBalanceNum] = useState()
+    const [balanceNum, setBalanceNum] = useState(0)
     // 客服统计
     // 未处理
-    const [processedNum, setProcessedNum] = useState()
+    const [processedNum, setProcessedNum] = useState(0)
     // 未处理
-    const [notprocessedNum, setNotprocessedNum] = useState()
+    const [notprocessedNum, setNotprocessedNum] = useState(0)
     // 人工核算
-    const [processedNum1, setProcessedNum1] = useState()
+    const [processedNum1, setProcessedNum1] = useState(0)
     // 未处理
-    const [notprocessedNum1, setNotprocessedNum1] = useState()
+    const [notprocessedNum1, setNotprocessedNum1] = useState(0)
     // const [loading, setLoading] = useState(false)
     // const [loading, setLoading] = useState(false);
     useEffect(async () => {
@@ -121,6 +139,7 @@ export default config({
         setAntLocale(lang == "zh_CN" ? zhCN : enUS);
         window.sessionStorage.setItem("error-json-" + loginUser?.id, JSON.stringify(errorJson));
         setLocale(data);
+        setSubscript(randomNum[Math.floor(Math.random() * randomNum.length)])
     }, [lang]);
     useEffect(async () => {
         const res = await props.ajax.get('/Proj/GetCmpTenantList', null, {
@@ -132,6 +151,7 @@ export default config({
         })
         res.unshift({label: getLange(props.loginUser?.id) == "zh_CN" ? "控制台" : "Console", value: null});
         setTenantOptions(res);
+
     }, []);
     /**
      * 租户、公司联动
@@ -158,18 +178,23 @@ export default config({
             errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
         })
         //处理登录后的用户信息
-        const loginUser = {
+        const LoginUser = {
             'id': res.UserId,
             'name': res.UserName,
-            'token': res.Token,
+            'token': loginUser?.token,
             'CompanyId': res.CompanyId,
             'DepartmentRole': res.DepartmentRole,
             'TenantId': res.TenantId,
             'Menus': res.Menus,
         };
-        // const homeApiMenus = res.Menus.filter(item => item.ActionType == 1 && item.Name != "BusinessManagement");
-        // window.sessionStorage.setItem('homeApiMenus-' + res.UserId, JSON.stringify(homeApiMenus || []));
-        //await props.ajax.get('/Api/Token/GetToken',)
+        console.log(LoginUser);
+        window.sessionStorage.clear();
+        window.sessionStorage.setItem('last-href', window.location.href);
+        setLoginUser(LoginUser);
+        setLange(LoginUser.id, lang);
+        const homeApiMenus = res.Menus.filter(item => item.ActionType == 1 && item.Name != "BusinessManagement");
+        window.sessionStorage.setItem('homeApiMenus-' + res.UserId, JSON.stringify(homeApiMenus || []));
+        window.location.reload();
     }
     useEffect(async () => {
         // starttime.
@@ -219,6 +244,7 @@ export default config({
         // 租户
         const tenant = await props.ajax.get("Proj/GetCmpTenantList", {}, {});
         // console.log(tenant);
+        setItems(tenant)
         // sessionStorage.setItem('username', 'uiu');
 
 
@@ -270,6 +296,32 @@ export default config({
 
     }, [setTimeData, setSingle, setTimeData1, setSingle, setMoney, setPieChart])
 
+    const [modanum, setModanum] = useState(0)
+    const handleModal = () => {
+        const jurisdiction = JSON.parse(sessionStorage.getItem('react-admin_login_user'))
+        if (jurisdiction.CompanyId == null && jurisdiction.TenantId == null) {
+            setModalVisible(true)
+        } else {
+            setModalVisible(false)
+        }
+    }
+    const confirmButton = () => {
+        setModalVisible(false)
+        // setModanum(1)
+    }
+    const handleModal1 = () => {
+        const jurisdiction = JSON.parse(sessionStorage.getItem('react-admin_login_user'))
+        if (jurisdiction.CompanyId == null && jurisdiction.TenantId == null) {
+            setModalVisible1(true)
+        } else {
+            setModalVisible1(false)
+        }
+    }
+
+    const confirmButton1 = () => {
+        setModalVisible1(false)
+        // setModanum(0)
+    }
 
     // 美元人民币切换
     const changestyle = (e, index) => {
@@ -414,11 +466,6 @@ export default config({
     }
 
 
-    // 下拉框租户
-    const [items, setItems] = useState(['jack', 'lucy', 'jc', 'jd']);
-    // 下拉框用户
-    const [items1, setItems1] = useState(['jack1', 'lucy1', 'a1', 'ar', 'q4']);
-
     return (
         <IntlProvider locale="en" messages={locale}>
             <ConfigProvider locale={antLocale}>
@@ -448,12 +495,13 @@ export default config({
                     <div className='box column' styles>
                         <div className='one_div flex column'>
                             <div className='top_div flex '>
-                                <span className=''
-                                      style={{marginLeft: '10px'}}>{getLange(props.loginUser?.id) == "zh_CN" ? "快捷操作" : "Shortcut"}</span>
+                <span className=''
+                      style={{marginLeft: '10px'}}>{getLange(props.loginUser?.id) == "zh_CN" ? "快捷操作" : "Shortcut"}</span>
                             </div>
                             <div className='bottom_div flex'>
                                 <div className='div1_ flex'>
-                                    {homeApiMenus.map(item => {
+                                    {homeApiMenus.map((item, k) => {
+                                        // console.log(randomRgbColor[key]);
                                         const {run: ajaxHomeBtn} = item.ActionHttpMethod == 1 ? props.ajax.useGet(item.UiRouter, null) : (item.ActionHttpMethod == 2 ? props.ajax.usePost(item.UiRouter, null) : props.ajax.useDel(item.UiRouter, null));
                                         const handleHomeBtn = async () => {
                                             await ajaxHomeBtn(null, {
@@ -468,8 +516,14 @@ export default config({
                                             <>
                                                 <div className='div2_ flex column' style={{marginLeft: '32px'}}
                                                      onClick={() => handleHomeBtn()}>
-                                                    <div className='circular' style={{background: '#6A97F7'}}>
-                                                        <i className="iconfont icon-dadanfahuo-ziyoudayin move_icon"></i>
+                                                    <div className='circular' style={{background: randomRgbColor[randomNum[k]]}}>
+                                                        {/* <i className="iconfont icon-dadanfahuo-ziyoudayin move_icon"></i> */}
+                                                        <SwapOutlined style={{
+                                                            fontSize: '2vw',
+                                                            color: '#fff',
+                                                            position: 'relative',
+                                                            top: '1vw'
+                                                        }}/>
                                                     </div>
                                                     <p className='p_div'><FormattedMessage id={item.Name}/></p>
                                                 </div>
@@ -477,22 +531,21 @@ export default config({
                                         )
                                     })}
 
-
-                                    <div className='div2_ flex column'>
+                                    <div className='div2_ flex column' style={{marginLeft: '1.5vw'}}>
                                         <div className='circular' style={{background: '#C7C7C7'}}
                                              onClick={() => setChangeAccountVisible(true)}>
                                             <SwapOutlined style={{
                                                 fontSize: '2vw',
                                                 color: '#fff',
                                                 position: 'relative',
-                                                top: '0.8vw'
+                                                top: '1vw'
                                             }}/>
                                         </div>
                                         <p className='p_div'>
                                             {getLange(props.loginUser?.id) == "zh_CN" ? "切换账号" : "Switch account"}</p>
                                     </div>
                                 </div>
-                                <div className='div1_'></div>
+                                {/* <div className='div1_'></div> */}
                             </div>
                         </div>
                         <div className='two_div '>
@@ -583,8 +636,8 @@ export default config({
                                             className='span_div'>{getLange(props.loginUser?.id) == "zh_CN" ? "客服统计" : "Customer service statistics"}</span>
                                     </div>
                                     <div className='twoLines' style={{}}>
-                                        <span className='div_span1 flex1 display_div' style={{}}><span
-                                            style={{fontSize: '12px'}}>{getLange(props.loginUser?.id) == "zh_CN" ? "已处理" : "Processed"} </span> {processedNum}</span>
+                    <span className='div_span1 flex1 display_div' style={{}}><span
+                        style={{fontSize: '12px'}}>{getLange(props.loginUser?.id) == "zh_CN" ? "已处理" : "Processed"} </span> {processedNum}</span>
                                         <span className='div_span1 flex1 display_div' style={{}}><span
                                             style={{fontSize: '12px',}}>{getLange(props.loginUser?.id) == "zh_CN" ? "未处理" : "Not processed"} </span> {notprocessedNum}</span>
                                     </div>
@@ -603,8 +656,8 @@ export default config({
                                             className='span_div'>{getLange(props.loginUser?.id) == "zh_CN" ? "人工核算" : "Manual accounting"}</span>
                                     </div>
                                     <div className='twoLines' style={{}}>
-                                        <span className='div_span1 flex1 display_div' style={{}}><span
-                                            style={{fontSize: '12px'}}>{getLange(props.loginUser?.id) == "zh_CN" ? "已处理" : "Processed"} </span> {processedNum1}</span>
+                    <span className='div_span1 flex1 display_div' style={{}}><span
+                        style={{fontSize: '12px'}}>{getLange(props.loginUser?.id) == "zh_CN" ? "已处理" : "Processed"} </span> {processedNum1}</span>
                                         <span className='div_span1 flex1 display_div' style={{}}><span
                                             style={{fontSize: '12px',}}>{getLange(props.loginUser?.id) == "zh_CN" ? "未处理" : "Not processed"} </span> {notprocessedNum1}</span>
                                     </div>
@@ -612,8 +665,8 @@ export default config({
                                 </div>
                             </div>
                         </div>
-                        <div className='three_div flex'>
-                            <div className='left_div flex'>
+                        <div className='divVad three_div flex'>
+                            <div className='divVad left_div flex'>
                                 <div style={{paddingLeft: '20px', width: '100%'}}>
                                     <Tabs defaultActiveKey="1" onChange={onChange}>
                                         <TabPane
@@ -629,21 +682,20 @@ export default config({
                                                         color: '#fff',
                                                         borderColor: '#fff',
                                                         fontSize: '0.7vw'
-                                                    }} onClick={() => setModalVisible2(true)}>
+                                                    }} onClick={(e) => handleModal(e)}>
                                                         <Space>
-                                                            {getLange(loginUser?.id) == "zh_CN" ? '公司' : 'company'}
+                                                            {getLange(loginUser?.id) == "zh_CN" ? '租户' : 'tenant'}
                                                             <DownOutlined/>
                                                         </Space>
                                                     </Button>
                                                     <Modal
-                                                        title={getLange(loginUser?.id) == "zh_CN" ? '公司' : "company"}
+                                                        title={getLange(loginUser?.id) == "zh_CN" ? '租户' : "tenant"}
                                                         centered
-                                                        visible={modalVisible2}
-                                                        onOk={() => setModalVisible2(false)}
-                                                        onCancel={() => setModalVisible2(false)}
+                                                        visible={modalVisible}
+                                                        onOk={() => setModalVisible(false)}
+                                                        onCancel={(e) => confirmButton(e)}
                                                     >
                                                         <Select
-
                                                             defaultValue=""
                                                             style={{
                                                                 width: '100%',
@@ -653,7 +705,8 @@ export default config({
                                                             onSearch={(e) => onSearch(e)}
                                                         >
                                                             {items.map(item => (
-                                                                <Option key={item}>{item}</Option>
+                                                                // console.log(item)
+                                                                <Option key={item.TenantId}>{item.TenantName}</Option>
                                                             ))}
                                                         </Select>
                                                     </Modal>
@@ -666,17 +719,18 @@ export default config({
                                                         marginLeft: '0.5vw',
                                                         borderColor: '#fff',
                                                         fontSize: '0.7vw'
-                                                    }} onClick={() => setModalVisible3(true)}>
+                                                    }} onClick={(e) => handleModal1(e)}>
                                                         <Space>
-                                                            {getLange(loginUser?.id) == "zh_CN" ? '租户' : 'tenant'}
+                                                            {getLange(loginUser?.id) == "zh_CN" ? '公司' : 'company'}
+                                                            <DownOutlined/>
                                                         </Space>
                                                     </Button>
                                                     <Modal
-                                                        title={getLange(loginUser?.id) == "zh_CN" ? '租户' : "tenant"}
+                                                        title={getLange(loginUser?.id) == "zh_CN" ? '公司' : "company"}
                                                         centered
-                                                        visible={modalVisible3}
-                                                        onOk={() => setModalVisible3(false)}
-                                                        onCancel={() => setModalVisible3(false)}
+                                                        visible={modalVisible1}
+                                                        onOk={() => setModalVisible1(false)}
+                                                        onCancel={(e) => confirmButton1(e)}
                                                     >
                                                         <Select
                                                             defaultValue=""
@@ -688,22 +742,23 @@ export default config({
                                                             onSearch={(e) => onSearch(e)}
                                                         >
                                                             {items1.map(item => (
-                                                                <Option key={item}>{item}</Option>
+                                                                // console.log(item)
+                                                                <Option key={item.CompanyId}>{item.CompanyName}</Option>
                                                             ))}
                                                         </Select>
                                                     </Modal>
 
                                                 </Col>
                                                 <Col span={12} className="">
-                                                    <div className='flex' style={{
+                                                    <div className='move flex' style={{
                                                         width: '100%',
                                                         textAlign: 'right',
                                                         height: '100%',
-                                                        marginLeft: '18vw',
+                                                        marginLeft: '30%',
                                                     }}>
-                                        <span id='d1'
-                                              className={`zxt_div ${num == 'Daily' ? 'zxt_gb' : ''}`}
-                                              onClick={(e) => changestyle1(e, 'Daily')}>{getLange(loginUser?.id) == "zh_CN" ? '日统计' : 'Daily'}</span>
+                            <span id='d1'
+                                  className={`zxt_div ${num == 'Daily' ? 'zxt_gb' : ''}`}
+                                  onClick={(e) => changestyle1(e, 'Daily')}>{getLange(loginUser?.id) == "zh_CN" ? '日统计' : 'Daily'}</span>
                                                         <div id='d2'
                                                              className={`zxt_div ${num == 'Weekly' ? 'zxt_gb' : ''}`}
                                                              onClick={(e) => changestyle1(e, 'Weekly')}>{getLange(loginUser?.id) == "zh_CN" ? '周统计' : 'Weekly'}</div>
@@ -721,7 +776,7 @@ export default config({
                                                 <RangePicker bordered={false} onCalendarChange={handelTime}
                                                              format={dateFormat} style={{width: '12vw', zIndex: '10'}}/>
                                                 {/* <RangePicker bordered={false} onCalendarChange={handelTime} defaultValue={[moment(new Date(), dateFormat), moment(new Date(), dateFormat)]}
-                          format={dateFormat} style={{ width: '12vw', zIndex: '10' }} /> */}
+                        format={dateFormat} style={{ width: '12vw', zIndex: '10' }} /> */}
                                             </div>
                                             {/* <Row> */}
                                             <Echartszxt timeData={timeData} single={single} getLange={getLange}
@@ -741,18 +796,20 @@ export default config({
                                                         color: '#fff',
                                                         borderColor: '#fff',
                                                         fontSize: '0.7vw'
-                                                    }} onClick={() => setModalVisible2(true)}>
+                                                    }} onClick={(e) => handleModal(e)}>
                                                         <Space>
-                                                            {getLange(loginUser?.id) == "zh_CN" ? '公司' : 'company'}
+                                                            {getLange(loginUser?.id) == "zh_CN" ? '租户' : 'tenant'}
+
                                                             <DownOutlined/>
                                                         </Space>
                                                     </Button>
                                                     <Modal
-                                                        title={getLange(loginUser?.id) == "zh_CN" ? '公司' : "company"}
+                                                        title={getLange(loginUser?.id) == "zh_CN" ? '租户' : "tenant"}
+
                                                         centered
                                                         visible={modalVisible2}
-                                                        onOk={() => setModalVisible2(false)}
-                                                        onCancel={() => setModalVisible2(false)}
+                                                        onOk={() => setModalVisible(false)}
+                                                        onCancel={(e) => confirmButton(e)}
                                                     >
                                                         <Select
 
@@ -765,7 +822,8 @@ export default config({
                                                             onSearch={(e) => onSearch(e)}
                                                         >
                                                             {items.map(item => (
-                                                                <Option key={item}>{item}</Option>
+                                                                // console.log(item)
+                                                                <Option key={item.TenantId}>{item.TenantName}</Option>
                                                             ))}
                                                         </Select>
                                                     </Modal>
@@ -778,18 +836,18 @@ export default config({
                                                         marginLeft: '0.5vw',
                                                         borderColor: '#fff',
                                                         fontSize: '0.7vw'
-                                                    }} onClick={() => setModalVisible3(true)}>
+                                                    }} onClick={(e) => handleModal1(e)}>
                                                         <Space>
-                                                            {getLange(loginUser?.id) == "zh_CN" ? '租户' : 'tenant'}
+                                                            {getLange(loginUser?.id) == "zh_CN" ? '公司' : 'company'}
                                                             <DownOutlined/>
                                                         </Space>
                                                     </Button>
                                                     <Modal
-                                                        title={getLange(loginUser?.id) == "zh_CN" ? '租户' : "tenant"}
+                                                        title={getLange(loginUser?.id) == "zh_CN" ? '公司' : "company"}
                                                         centered
                                                         visible={modalVisible3}
-                                                        onOk={() => setModalVisible3(false)}
-                                                        onCancel={() => setModalVisible3(false)}
+                                                        onOk={() => setModalVisible1(false)}
+                                                        onCancel={(e) => confirmButton1(e)}
                                                     >
                                                         <Select
                                                             defaultValue=""
@@ -801,22 +859,22 @@ export default config({
                                                             onSearch={(e) => onSearch(e)}
                                                         >
                                                             {items1.map(item => (
-                                                                <Option key={item}>{item}</Option>
+                                                                <Option key={item.CompanyId}>{item.CompanyName}</Option>
                                                             ))}
                                                         </Select>
                                                     </Modal>
 
                                                 </Col>
                                                 <Col span={12} className="">
-                                                    <div className='flex' style={{
+                                                    <div className='move flex' style={{
                                                         width: '100%',
                                                         textAlign: 'right',
                                                         height: '100%',
-                                                        marginLeft: '18vw'
+                                                        marginLeft: '30%'
                                                     }}>
-                                        <span id='d1'
-                                              className={`zxt_div ${num1 == 'Daily' ? 'zxt_gb' : ''}`}
-                                              onClick={(e) => changestyle2(e, 'Daily')}>{getLange(loginUser?.id) == "zh_CN" ? '日统计' : 'Daily'}</span>
+                            <span id='d1'
+                                  className={`zxt_div ${num1 == 'Daily' ? 'zxt_gb' : ''}`}
+                                  onClick={(e) => changestyle2(e, 'Daily')}>{getLange(loginUser?.id) == "zh_CN" ? '日统计' : 'Daily'}</span>
                                                         <div id='d2'
                                                              className={`zxt_div ${num1 == 'Weekly' ? 'zxt_gb' : ''}`}
                                                              onClick={(e) => changestyle2(e, 'Weekly')}>{getLange(loginUser?.id) == "zh_CN" ? '周统计' : 'Weekly'}</div>
@@ -843,16 +901,12 @@ export default config({
                                 </div>
 
                             </div>
-                            <div className='right_div'>
+                            <div className='divVad a right_div'>
                                 <div className='flex' style={{width: '100%', height: '60px', flex: '1'}}>
                                     <div className='right_div_top flex column'></div>
                                     <span
                                         className='lrtj'>{getLange(loginUser?.id) == "zh_CN" ? '利润统计' : 'Profit statistics'}</span>
-                                    <div className='company flex' style={{
-                                        width: '30%',
-                                        marginLeft: getLange(loginUser?.id) == "zh_CN" ? '42%' : '37%',
-                                        height: '100%'
-                                    }}>
+                                    <div className='company flex' style={{}}>
                                         <div className={`zxt_div ${status == 'pound' ? 'ziti_gb' : ''}`}
                                              onClick={(e) => changestyle(e, 'pound')}>{getLange(loginUser?.id) == "zh_CN" ? '英镑' : 'pound'}</div>
                                         <div className={`zxt_div ${status == 'RMB' ? 'ziti_gb' : ''}`}
@@ -869,8 +923,8 @@ export default config({
                             </div>
 
                         </div>
-                        <div className='four_div flex'>
-                            <div className='left_div flex'>
+                        <div className='divVad four_div flex'>
+                            <div className=' left_div flex'>
                                 <div className='four_left_div'>
                                     <div className='' style={{
                                         width: '100%',
@@ -923,10 +977,10 @@ export default config({
                                                     <Row style={{width: '100%'}}>
                                                         <Col span={12}>
                                                             <div style={{}}>
-                                        <span style={{
-                                            fontSize: '0.9vw',
-                                            fontWeight: 'bold'
-                                        }}>{getLange(loginUser?.id) == "zh_CN" ? '已开票' : 'Invoiced'}&nbsp;</span><span>{getLange(loginUser?.id) == "zh_CN" ? '未支付' : 'Unpaid'}&nbsp;</span><span>25%</span>
+                                <span style={{
+                                    fontSize: '0.9vw',
+                                    fontWeight: 'bold'
+                                }}>{getLange(loginUser?.id) == "zh_CN" ? '已开票' : 'Invoiced'}&nbsp;</span><span>{getLange(loginUser?.id) == "zh_CN" ? '未支付' : 'Unpaid'}&nbsp;</span><span>25%</span>
                                                             </div>
                                                         </Col>
                                                         <Col span={12}>
@@ -960,10 +1014,10 @@ export default config({
                                                     <Row style={{width: '100%'}}>
                                                         <Col span={12}>
                                                             <div style={{}}>
-                                        <span style={{
-                                            fontSize: '0.9vw',
-                                            fontWeight: 'bold'
-                                        }}>{getLange(loginUser?.id) == "zh_CN" ? '已开票' : 'Invoiced'}&nbsp;</span><span>{getLange(loginUser?.id) == "zh_CN" ? '已支付' : 'Paid'}&nbsp;</span><span>25%</span>
+                                <span style={{
+                                    fontSize: '0.9vw',
+                                    fontWeight: 'bold'
+                                }}>{getLange(loginUser?.id) == "zh_CN" ? '已开票' : 'Invoiced'}&nbsp;</span><span>{getLange(loginUser?.id) == "zh_CN" ? '已支付' : 'Paid'}&nbsp;</span><span>25%</span>
                                                             </div>
                                                         </Col>
                                                         <Col span={12}>
@@ -997,10 +1051,10 @@ export default config({
                                                     <Row style={{width: '100%'}}>
                                                         <Col span={12}>
                                                             <div style={{}}>
-                                        <span style={{
-                                            fontSize: '0.9vw',
-                                            fontWeight: 'bold'
-                                        }}>{getLange(loginUser?.id) == "zh_CN" ? '未开票' : 'Not invoiced'}&nbsp;</span><span>{getLange(loginUser?.id) == "zh_CN" ? '未支付' : 'Unpaid'}&nbsp;</span><span>25%</span>
+                                <span style={{
+                                    fontSize: '0.9vw',
+                                    fontWeight: 'bold'
+                                }}>{getLange(loginUser?.id) == "zh_CN" ? '未开票' : 'Not invoiced'}&nbsp;</span><span>{getLange(loginUser?.id) == "zh_CN" ? '未支付' : 'Unpaid'}&nbsp;</span><span>25%</span>
                                                             </div>
                                                         </Col>
                                                         <Col span={12}>
@@ -1034,10 +1088,10 @@ export default config({
                                                     <Row style={{width: '100%'}}>
                                                         <Col span={12}>
                                                             <div style={{}}>
-                                        <span style={{
-                                            fontSize: '0.9vw',
-                                            fontWeight: 'bold'
-                                        }}>{getLange(loginUser?.id) == "zh_CN" ? '余额' : 'balance'}</span>
+                                <span style={{
+                                    fontSize: '0.9vw',
+                                    fontWeight: 'bold'
+                                }}>{getLange(loginUser?.id) == "zh_CN" ? '余额' : 'balance'}</span>
                                                             </div>
                                                         </Col>
                                                         <Col span={12}>
@@ -1048,8 +1102,8 @@ export default config({
                                                                 color: 'red'
                                                             }}>
                                                                 ￡<span>
-                                    {String(money.RemainingCredit).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                        </span>
+                                  {String(money.RemainingCredit).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                </span>
                                                             </div>
                                                         </Col>
                                                     </Row>
@@ -1066,7 +1120,7 @@ export default config({
 
                                 </div>
                             </div>
-                            <div className='right_div'>
+                            <div className='divVad a right_div'>
                                 <div className='flex' style={{width: '100%', height: '2vw', flex: '1'}}>
                                     <div className='four_right_top flex column'></div>
                                     <span
@@ -1084,15 +1138,15 @@ export default config({
 
                     {/* <h1>首页</h1> */}
                     {/* {process.env.REACT_APP_MOCK ? (
-        <Button
-          onClick={async () => {
-            await props.ajax.post('/initDB', null, { successTip: '数据库重置成功！' });
-            setTimeout(() => window.location.reload(), 2000);
-          }}
-        >
-          重置数据库
-        </Button>
-      ) : null} */}
+      <Button
+        onClick={async () => {
+          await props.ajax.post('/initDB', null, { successTip: '数据库重置成功！' });
+          setTimeout(() => window.location.reload(), 2000);
+        }}
+      >
+        重置数据库
+      </Button>
+    ) : null} */}
                 </PageContent>
             </ConfigProvider>
         </IntlProvider>

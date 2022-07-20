@@ -411,7 +411,8 @@ export function renderTableColumns(column, text, record, index, isModalVisible, 
         case 17:
         case 20:
             var item = (column.options == undefined ? [] : column.options).find((item) => item.value == text);
-            return item?.name ? <FormattedMessage id={item?.name}/> : "";
+            const name = item?.name ? item?.name : "";
+            return <FormattedMessage id={name}/>
             break;
         case 16:
         case 18:

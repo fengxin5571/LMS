@@ -28,9 +28,9 @@ const Echartszx = (props) => {
       left: "4%",
       // right: "4%",
       // bottom: "3%",
-      // top: '20%',
-      // width: "92%",
-      // height: "65%",
+      top: '20%',
+      width: "92%",
+      height: "80%",
       containLabel: true
     },
     xAxis: {
@@ -97,7 +97,7 @@ const Echartszx = (props) => {
     });
   }
   return (
-    <div style={{ width: '100%', height: '13vw', paddingLeft: '1vw', position: 'relative', bottom: '1.5vw' }} id="main1"></div>
+    <div style={{ width: '100%', height: '15.5vw', paddingLeft: '1vw', position: 'relative', bottom: '1.5vw' }} id="main1"></div>
   )
 }
 export default Echartszx;

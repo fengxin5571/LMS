@@ -1,3 +1,18 @@
+@media (max-width: 1600px) {
+  .divVad {
+    flex-direction: column;
+    margin-top: 20px;
+  }
+
+  .a {
+    margin-left: 0vw !important;
+  }
+
+  .move {
+    margin-left: 47% !important;
+  }
+}
+
 .root {
   display: flex;
   flex-direction: column;
@@ -13,12 +28,10 @@
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  height: 50vw;
+  height: 100%;
   padding: 0;
   margin: 0;
   background: #F0F2F5;
-
-
 }
 
 .column {
@@ -27,13 +40,11 @@
 
 .flex {
   display: flex;
-
 }
 
 .flex1 {
   flex: 1;
 }
-
 
 /* 第一行 */
 .one_div {
@@ -49,7 +60,6 @@
   color: #fff;
 }
 
-
 .top_div {
   width: 99%;
   height: 13%;
@@ -64,21 +74,27 @@
 
 .bottom_div {
   width: 100%;
-  height: 80%;
+  height: 100%;
   margin-top: 0.5%;
   /* border: 1px solid black; */
 }
 
 .div1_ {
-  width: 50%;
+  width: 100%;
   height: 100%;
-  flex-direction: row;
+  /* flex-direction: row; */
   justify-self: space-between;
+  flex-wrap: wrap;
 }
 
 .div2_ {
-  width: 17%;
+  width: 9%;
   height: 100%;
+  text-align: center;
+  cursor: pointer;
+
+  word-wrap: break-word;
+  word-break: break-all;
   /* border: 1px solid black; */
 }
 
@@ -92,7 +108,6 @@
   height: 4vw;
   /* background: red; */
   border-radius: 50%;
-  margin-top: 10%;
   text-align: center;
   margin: 0 auto;
   margin-top: 10%;
@@ -105,24 +120,22 @@
   margin-top: 10%;
   font-size: 0.9vw;
   font-weight: bold;
+  word-wrap: break-word;
+  word-break: break-all;
 }
 
-.p_div {
+/* .p_div {
   text-align: center;
   margin: 0 auto;
   display: inline;
   margin-top: 10%;
   font-size: 0.9vw;
   font-weight: bold;
-}
-
-
+} */
 /* 第二行 */
 .two_div {
   width: 100%;
   height: 19%;
-
-
 }
 
 .two_top_div {
@@ -159,7 +172,6 @@
   background: red;
   border-radius: 5px;
   opacity: 0.8;
-
   /* background: #fff; */
 }
 
@@ -191,7 +203,6 @@
   margin-left: 2%;
 }
 
-
 .div_span {
   font-size: 1.6vw;
   font-weight: bold;
@@ -210,13 +221,9 @@
   /* margin-right: 10px; */
 }
 
-
-
-
 .left_div {
   flex: 3;
   /* border: 1px solid black; */
-  margin-right: 20px;
   background: #fff;
 }
 
@@ -224,6 +231,8 @@
   flex: 1;
   /* border: 1px solid black; */
   background: #fff;
+  margin-left: 1vw;
+  /* margin-left: 20px; */
 }
 
 /* 
@@ -242,16 +251,13 @@
   right: 1.2vw;
 }
 
-
 .time1_div {
-  height: 1.2vw;
+  /* height: 1.2vw; */
   text-align: right;
   position: relative;
   right: 0.1vw;
   bottom: 0.1vw;
 }
-
-
 
 .right_div_top {
   border-left: 0.4vw solid #2A8BCF;
@@ -271,29 +277,29 @@
 
 .company {
   text-align: right;
-  width: 70%;
-  height: 50px;
+  width: 10vw;
+  height: 2.5vw;
   /* background: red; */
   padding-top: 15px;
+  position: absolute;
+  right: 0;
 }
 
-
-
 .zxt_div {
-  width: 3vw;
-  height: 1vw;
+  width: 5vw;
+  height: 1.5vw;
   background: #F8F8FA;
   text-align: center;
   border-radius: 20px;
   cursor: pointer;
   color: #000;
   font-size: 0.6vw;
-  line-height: 1vw;
+  line-height: 1.5vw;
 }
 
 .zxt_gb {
-  width: 3vw;
-  height: 1vw;
+  width: 5vw;
+  height: 1.5vw;
   text-align: center;
   border-radius: 20px;
   cursor: pointer;
@@ -302,12 +308,12 @@
   background: #2A8BCF;
   color: #fff;
   display: inline-block;
-  line-height: 1vw;
+  line-height: 1.5vw;
 }
 
 .ziti_div {
-  width: 3vw;
-  height: 1vw;
+  width: 5vw;
+  height: 1.5vw;
   background: #F8F8FA;
   text-align: center;
   border-radius: 20px;
@@ -315,12 +321,12 @@
   color: #000;
   font-size: 0.6vw;
   margin-right: 0.2vw;
-  line-height: 1vw;
+  line-height: 1.5vw;
 }
 
 .ziti_gb {
-  width: 3vw;
-  height: 1vw;
+  width: 5vw;
+  height: 1.5vw;
   text-align: center;
   border-radius: 20px;
   cursor: pointer;
@@ -329,45 +335,7 @@
   background: #2A8BCF;
   color: #fff;
   display: inline-block;
-  line-height: 1vw;
-}
-
-
-
-
-
-.button2_style {
-  width: 50px;
-  height: 20px;
-  padding: 0;
-  line-height: 1.2;
-  background: #2A8BCF;
-  color: #fff;
-  border-radius: 20px;
-  font-size: 12px;
-}
-
-.button1_style {
-  width: 50px;
-  height: 20px;
-  padding: 0;
-  line-height: 1.2;
-  background: #F8F8FA;
-  color: #000;
-  border-radius: 20px;
-  font-size: 12px;
-}
-
-.button1_style:hover,
-.button1_style:focus {
-  width: 50px;
-  height: 20px;
-  padding: 0;
-  line-height: 1.2;
-  background: #2A8BCF;
-  color: #fff;
-  border-radius: 5px;
-  font-size: 12px;
+  line-height: 1.5vw;
 }
 
 .four_div {
@@ -378,7 +346,7 @@
 }
 
 .four_left_div {
-  flex: 2;
+  flex: 1;
   /* background: red; */
 }
 
@@ -400,33 +368,35 @@
 }
 
 .four_bottom_left_div {
-  width: 95%;
+  width: 100%;
   height: 10vw;
   /* background: blueviolet; */
   background: #E9F2FB;
   /* opacity: 0.5; */
   text-align: center;
-  margin-left: 20px;
+  margin-left: 1vw;
   border-radius: 20px;
-  background: url(./images//首页切图_22.png) no-repeat;
+  background: url(images//首页切图_22.png) no-repeat;
+  /* background-image: 100%; */
+  background-size: 100%;
+  margin-top: 3vw;
 }
 
 .content_div {
   width: 10vw;
   height: 7vw;
-
   position: relative;
-  top: 3vw;
-  left: 4vw;
+  top: 25%;
   text-align: center;
+  margin: 0px auto;
 }
 
 .monery_p {
-  display: block;
-  margin-top: 1vw;
+  /* display: block; */
+  /* margin-top: 1vw; */
   font-size: 1.5vw;
   font-weight: bold;
-  padding-top: 1vw;
+  /* padding-top: 1vw; */
 }
 
 .result {
@@ -438,14 +408,10 @@
   padding-top: -1vw;
   top: -1vw;
   left: -1vw;
-
 }
 
-
-
-
 .four_right_div {
-  flex: 4;
+  flex: 2;
 }
 
 .four_right_top {
@@ -466,35 +432,33 @@
   width: 8vw;
 }
 
-
-
 .piaoshu {
-  background: url('./images/首页切图_03.png') no-repeat;
+  background: url('images/首页切图_03.png') no-repeat;
   background-size: 100%;
 }
 
 .zhongliang {
-  background: url('./images/首页切图_05.png') no-repeat;
+  background: url('images/首页切图_05.png') no-repeat;
   background-size: 100%;
 }
 
 .lirun {
-  background: url('./images/首页切图_07.png') no-repeat;
+  background: url('images/首页切图_07.png') no-repeat;
   background-size: 100%;
 }
 
 .jieyu {
-  background: url('./images/首页切图_09.png') no-repeat;
+  background: url('images/首页切图_09.png') no-repeat;
   background-size: 100%;
 }
 
 .kefu {
-  background: url('./images/首页切图_11.png') no-repeat;
+  background: url('images/首页切图_11.png') no-repeat;
   background-size: 100%;
 }
 
 .hesuan {
-  background: url('./images/首页切图_13.png') no-repeat;
+  background: url('images/首页切图_13.png') no-repeat;
   background-size: 100%;
 }
 
@@ -515,12 +479,8 @@
   text-align: right;
   width: 77%;
   height: 30px;
-  position: relative;
-  top: 15px;
-}
-
-@media (max-width:600px) {
-  .neirong {
-    flex-direction: column;
-  }
+  /* position: relative; */
+  margin-top: 0.5vw;
+  position: absolute;
+  right: 1%;
 }

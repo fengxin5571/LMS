@@ -125,6 +125,7 @@ export default config({
         //获取表格配置信息
         asyncConfigData(dbGridName);
         resault = JSON.parse(window.sessionStorage.getItem(dbGridName + '-config-' + loginUser?.id));
+        if(resault==null) return ;
         //处理表格显示的字段
         const resColums = handleGridDataTypeColumn(resault.ColumnConfigs, isModalVisible, setIsModalVisible, setSubTableHeader, setSubTable, setModalTitle, setSubTableType, setIsListVisible);
         setBalance(resault.Balance);
@@ -667,7 +668,7 @@ export default config({
 
                     </QueryBar>
                     <Row style={{marginBottom: 15}}>
-                        <Col flex="20rem">
+                        <Col >
                             {balance != undefined && balance != 9999.99 ?
                                 <span style={{fontSize: 18, fontWeight: "bold"}}><FormattedMessage
                                     id="FullBalance"/>： <span style={{color: "#FF6060"}}>£ {formatPrice(balance)}</span></span> : null}
