@@ -3,7 +3,7 @@ import {DRAW, WITH_SYSTEMS} from "../config";
 import {FormItem, getLoginUser, getToken, Content} from "@ra-lib/admin";
 import {FormattedMessage} from "react-intl";
 import React from "react";
-import {Button, Card, Form, Input, Space, Tag, List, Col, Row, Tree} from "antd";
+import {Button, Card, Form, Input, Space, Tag, List, Col, Row, Tree, Tooltip} from "antd";
 import {getLange} from "./index";
 import moment from "moment";
 import BraftEditor from "braft-editor";
@@ -199,6 +199,9 @@ export function formatLmsMenus(values) {
                     'ActionType': values[key].ActionType,
                     'ActionHttpMethod': values[key].ActionHttpMethod
                 };
+                if (values[key].Name == "/") {
+                    menu.path = "/";
+                }
             } else {
                 menu = {
                     'id': parseInt(key) + 1,
@@ -283,6 +286,9 @@ export function handleGridDataTypeColumn(columns, isModalVisible, setIsModalVisi
                     dataIndex: value.name,
                     width: width,
                     align: "center",
+                    ellipsis: {
+                        showTitle: false,
+                    },
                     render: function (text, record, index) {
                         return renderTableColumns(value, text, record, index, isModalVisible, setIsModalVisible, setSubTableHeader, setSubTable, setModalTitle, setSubTableType, setIsListVisible);
                     }
@@ -437,7 +443,16 @@ export function renderTableColumns(column, text, record, index, isModalVisible, 
             );
             break;
         default:
-            return text;
+            if (text?.length > 20) {
+                return (
+                    <Tooltip placement="topLeft" title={text}>
+                        {text}
+                    </Tooltip>
+                );
+            } else {
+                return text;
+            }
+
     }
 }
 
@@ -794,7 +809,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                     );
                 } else if (item.type == 21) { //json子表格
                     let formartColumns = [];
-                    item.ColumnConfigs.map(subItem => {
+                    item.subcolumns.map(subItem => {
                         if ((!isEdit && !isDetail) && !((subItem.access & authority.create) > 0)) {
                             return;
                         } else if (isEdit && !((subItem.access & authority.change) > 0)) {
@@ -842,7 +857,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                                         }}
                                                         direction="horizontal"
                                                     >
-                                                        {handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
+                                                        {handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.subcolumns, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
                                                         {!isDetail ? <Button type="primary" size="small" style={{
                                                                 background: "#FF6060",
                                                                 borderColor: '#FF6060',

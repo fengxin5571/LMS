@@ -210,18 +210,6 @@ export default config({
                         </Menu.Item> : null}
                     </Menu>
                 )
-                // //判断是否有删除权限
-                // if ((resault.BtnFlags & BtnFlags.CanDelete) > 0) {
-                //     items.push({
-                //         label: <FormattedMessage id="Delete"/>,
-                //         color: 'red',
-                //         confirm: {
-                //             title: <FormattedMessage id="DeleteConfirmMsg" values={{name: `${name}`}}/>,
-                //             onConfirm: () => handleDelete(id),
-                //         },
-                //     });
-                // }
-
                 return (
                     <>
                         <Dropdown overlay={serverMenu} placement="bottomRight">

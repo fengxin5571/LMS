@@ -21,12 +21,13 @@ import { useState, useEffect } from 'react';
 
 const Echartszxt1 = (props) => {
   let [main, setMain] = useState('')
+  // console.log(props);
 
   const option = {
 
     tooltip: {
       trigger: 'axis',
-      formatter: '{c} <br />重量(kg)',
+      formatter: props.getLange(props.loginUser?.id) == "zh_CN" ? '{c} <br />重量(kg)' : '{c} <br />weight(kg)',
       axisPointer: {
         type: 'cross',
         label: {
@@ -35,30 +36,38 @@ const Echartszxt1 = (props) => {
       }
     },
     grid: {
-      left: "0%",
-      right: "4%",
+      left: "1%",
+      // right: "4%",
       // bottom: "3%",
       top: '20%',
-      width: "97%",
+      width: "95%",
       height: "65%",
       containLabel: true
     },
     xAxis: {
       type: 'category',
+      show: true,
       boundaryGap: false,
-      data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+      // data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+      data: props.timeData,
+      // axisLabel: {
+      //   interval: 0 //全部显示x轴
+      // }
     },
     yAxis: {
-      name: "单位：kg",
+      name: props.getLange(props.loginUser?.id) == "zh_CN" ? "单位：kg" : 'Company:kg',
       type: 'value',
       nameLocation: "end",
+      // min: 'dataMin',
+      // max: 'dataMax',
       nameTextStyle: {
         padding: [0, 40, 0, 0]    // 四个数字分别为上右下左与原位置距离
       }
     },
     series: [
       {
-        data: [1500, 3932, 9201, 5234, 6290, 2330, 6320, 5999, 6000, 10000, 2300, 10000],
+        // data: [1500, 3932, 9201, 5234, 6290, 2330, 6320, 5999, 6000, 10000, 2300, 10000],
+        data: props.single,
         smooth: 0.3,
         type: 'line',
         symbol: 'none',
@@ -85,7 +94,7 @@ const Echartszxt1 = (props) => {
   }, [])
   if (main !== "") {
     var myChart = echarts.init(main);
-    console.log(myChart);
+    // console.log(myChart);
     myChart.setOption(option);
     window.addEventListener("resize", function () {
       myChart.resize();

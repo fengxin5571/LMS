@@ -8,10 +8,17 @@ import { useState, useEffect } from 'react';
 
 const Echartstest = (props) => {
   let [main, setMain] = useState('')
-  let data1 = [
-    { value: 335, name: '租户' },
-    { value: 310, name: '用户' },
-  ]
+  // console.log(props);
+  let arr = []
+  for (let key in props.balance) {
+    // console.log(key);
+    arr.push({
+      value: props.balance[key], // value字段 
+      name: key   // name 字段
+    })
+  }
+  // console.log(arr);
+  let data1 = arr
   const option = {
     tooltip: {
       // trigger: 'item',

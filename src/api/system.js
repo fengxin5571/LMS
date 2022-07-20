@@ -15,18 +15,11 @@ export default {
 
         // 作为子应用，不加载
         if (IS_SUB) return [];
-
-        // 获取服务端数据，并做缓存，防止多次调用接口
-        // return (this.getMenuData.__CACHE =
-        //     this.getMenuData.__CACHE ||
-        //     ajax
-        //         .get('/authority/queryUserMenus', { userId: getLoginUser()?.id })
-        //         .then((res) => res.map((item) => ({ ...item, order: item.order ?? item.ord ?? item.sort })))
-        //         .catch(() => []));
         //获取登录用户的菜单
         const origin_menus = getLoginUser().Menus;
         //处理LMS拿到的菜单
         const menus = formatLmsMenus(origin_menus.filter(item => item.InMenu == true));
+        // menus.push({id: 0, title: '/', order: 0, type: 1, ActionType: 0, path: "/"});
         // 前端硬编码菜单
         // return [
         //     {id: 1, title: '系统管理', order: 900, type: 1},

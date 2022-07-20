@@ -12,6 +12,7 @@ import { useState, useEffect } from 'react';
 
 const Echartszx = (props) => {
   let [main, setMain] = useState('')
+  // console.log(props);
   let data1 = [1000, 1500, 2000, 3000, -500, -1000]
 
   const option = {
@@ -19,11 +20,19 @@ const Echartszx = (props) => {
       trigger: 'axis',
       // formatter: '$ \n{c}',
       formatter: function name (params) {
-        console.log(params[0].value);
+        // console.log(params[0].value);
         return '￡' + String(params[0].value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
       },
     },
-
+    grid: {
+      left: "4%",
+      // right: "4%",
+      // bottom: "3%",
+      // top: '20%',
+      // width: "92%",
+      // height: "65%",
+      containLabel: true
+    },
     xAxis: {
       axisLabel: {
         //x轴文字的配置
@@ -46,7 +55,7 @@ const Echartszx = (props) => {
 
     },
     yAxis: {
-      name: "单位：英镑",
+      name: props.getLange(props.loginUser?.id) == "zh_CN" ? "单位：英镑" : 'Company:pound',
       type: 'value',
       nameLocation: "end",
       nameTextStyle: {

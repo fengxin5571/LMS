@@ -21,35 +21,49 @@ import { useState, useEffect } from 'react';
 
 const Echartszxt = (props) => {
   let [main, setMain] = useState('')
+  // console.log(props);
 
   const option = {
 
     tooltip: {
       trigger: 'axis',
-      formatter: '{c} <br />票数(单)',
+      formatter: props.getLange(props.loginUser?.id) == "zh_CN" ? '{c} <br />票数(单)' : '{c} <br />Number of votes(single)',
       axisPointer: {
         type: 'cross',
         label: {
           backgroundColor: '#6a7985'
         }
-      }
+      },
+
     },
     grid: {
-      left: "0%",
-      right: "4%",
+      left: "4%",
+      // right: "4%",
       // bottom: "3%",
-      top: '20%',
-      width: "97%",
+      // top: '20%',
+      width: "92%",
       height: "65%",
       containLabel: true
     },
     xAxis: {
       type: 'category',
       boundaryGap: false,
-      data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+      // data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+      data: props.timeData,
+      formatter: function (value) {
+        // console.log(value);
+        let valueTxt = '';
+        if (value.length > 5) {
+          valueTxt = value.substring(0, 5) + '...';
+        }
+        else {
+          valueTxt = value;
+        }
+        return valueTxt;
+      }
     },
     yAxis: {
-      name: "单位：单",
+      name: props.getLange(props.loginUser?.id) == "zh_CN" ? "单位：单" : 'Company:single',
       type: 'value',
       nameLocation: "end",
       nameTextStyle: {
@@ -58,7 +72,8 @@ const Echartszxt = (props) => {
     },
     series: [
       {
-        data: [1500, 9320, 4901, 6934, 2290, 6330, 8320, 5999, 6000, 10000, 2300, 10000],
+        // data: [1500, 9320, 4901, 6934, 2290, 6330, 8320, 5999, 6000, 10000, 2300, 10000],
+        data: props.single,
         smooth: 0.3,
         type: 'line',
         symbol: 'none',
@@ -85,7 +100,7 @@ const Echartszxt = (props) => {
   }, [])
   if (main !== "") {
     var myChart = echarts.init(main);
-    console.log(myChart);
+    // console.log(myChart);
     myChart.setOption(option);
     window.addEventListener("resize", function () {
       myChart.resize();

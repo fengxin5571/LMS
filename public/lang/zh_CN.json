@@ -33,6 +33,7 @@
   "Create": "添加",
   "Login": "登录",
   "ChangePassword": "修改密码",
+  "SwitchAccount": "切换账号",
   "LogOut": "退出登录",
   "Password": "密码",
   "PasswordMsg": "请输入密码",

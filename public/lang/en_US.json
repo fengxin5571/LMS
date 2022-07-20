@@ -33,6 +33,7 @@
   "Create": "Create",
   "Login": "Login",
   "ChangePassword": "Change Password",
+  "SwitchAccount": "Switch Account",
   "LogOut": "LogOut",
   "PasswordMsg": "Enter One PassWord",
   "SearchPlaceholder": "Enter Keywords To Search",

@@ -92,7 +92,7 @@ export default config({
                         'TenantId': res.TenantId,
                         'Menus': res.Menus,
                     };
-                    const homeApiMenus = res.Menus.filter(item => item.ActionType == 1);
+                    const homeApiMenus = res.Menus.filter(item => item.ActionType == 1 && item.Name != "BusinessManagement");
                     window.sessionStorage.setItem('homeApiMenus-' + res.UserId, JSON.stringify(homeApiMenus || []));
                     //获取token
                     getToken
