@@ -7,6 +7,7 @@ import {Button, Card, Form, Input, Space, Tag, List, Col, Row, Tree, Tooltip} fr
 import {getLange} from "./index";
 import moment from "moment";
 import BraftEditor from "braft-editor";
+import ReactDOMServer from 'react-dom/server';
 import {
     MinusCircleOutlined,
     BarsOutlined,
@@ -282,7 +283,7 @@ export function handleGridDataTypeColumn(columns, isModalVisible, setIsModalVisi
                 //封装表格字段集合
                 let table_column = {
                     key: value.name,
-                    title: <FormattedMessage id={value.header} defaultMessage=""/>,
+                    title: <FormattedMessage id={value.header} defaultMessage={value.header}/>,
                     dataIndex: value.name,
                     width: width,
                     align: "center",
@@ -384,7 +385,7 @@ export function renderTableColumns(column, text, record, index, isModalVisible, 
             var color = text ? 'green' : 'red';
             return (
                 <Tag color={color} key={text}>
-                    <FormattedMessage id={text ? "True" : "False"}/>
+                    <FormattedMessage id={text ? "True" : "False"} defaultMessage={text ? "True" : "False"}/>
                 </Tag>
             );
             break;
@@ -402,7 +403,7 @@ export function renderTableColumns(column, text, record, index, isModalVisible, 
                         setSubTable(text);
                         setModalTitle(<FormattedMessage id={column.header}/>);
                     }}>
-                        <FormattedMessage id="ClickView"/>
+                        <FormattedMessage id="ClickView" defaultMessage="ClickView"/>
                     </Button>
                 </>
             );
@@ -412,7 +413,7 @@ export function renderTableColumns(column, text, record, index, isModalVisible, 
         case 20:
             var item = (column.options == undefined ? [] : column.options).find((item) => item.value == text);
             const name = item?.name ? item?.name : "";
-            return <FormattedMessage id={name}/>
+            return name == "" ? "" : <FormattedMessage id={name}/>
             break;
         case 16:
         case 18:
@@ -873,7 +874,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                             <Form.Item>
 
                                                 <Button type="dashed" onClick={() => add()}
-                                                        disabled={isDetail || item.related_type == 1 ? (fields.length > 1 ? true : false) : false}
+                                                        disabled={isDetail}
                                                         block icon={<PlusOutlined/>}>
                                                     <FormattedMessage id="Create"/>
                                                 </Button>
@@ -995,7 +996,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                             <Form.Item>
 
                                                 <Button type="dashed" onClick={() => add()}
-                                                        disabled={isDetail || item.related_type == 1 ? (fields.length > 1 ? true : false) : false}
+                                                        disabled={isDetail ? true : (item.related_type == 1 ? (fields.length > 1 ? true : false) : false)}
                                                         block icon={<PlusOutlined/>}>
                                                     <FormattedMessage id="Create"/>
                                                 </Button>
@@ -1040,7 +1041,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                             <Form.Item>
 
                                                 <Button type="dashed" onClick={() => add()}
-                                                        disabled={isDetail || item.related_type == 1 ? (fields.length > 1 ? true : false) : false}
+                                                        disabled={isDetail ? true : (item.related_type == 1 ? (fields.length > 1 ? true : false) : false)}
                                                         block icon={<PlusOutlined/>}>
                                                     <FormattedMessage id="Create"/>
                                                 </Button>

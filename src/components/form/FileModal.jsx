@@ -51,7 +51,6 @@ export default config({
                             break;
                         }
                     }
-
                 }
             } else {
                 handldePath = ['/'];
@@ -374,8 +373,8 @@ export default config({
             setFileList(newFileList);
         },
 
-        beforeUpload: (file) => {
-            setFileList([...fileList, file]);
+        beforeUpload: (file,fileList) => {
+            setFileList([...fileList]);
             return false;
         },
         fileList,
@@ -424,7 +423,7 @@ export default config({
                             </Button>
                         </Col>
                         <Col span={6}>
-                            <Upload {...uploadConfig} >
+                            <Upload {...uploadConfig} multiple>
                                 <Button type="primary" icon={<UploadOutlined/>}>
                                     <FormattedMessage id="UploadFile"/>
                                 </Button>

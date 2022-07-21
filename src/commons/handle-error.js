@@ -11,7 +11,7 @@ const ERROR_UNKNOWN = lang == "zh_CN" ? '未知错误' : 'Unknown mistake';
 const TIP_TITLE = lang == "zh_CN" ? '温馨提示' : 'Kind tips';
 const TIP = lang == "zh_CN" ? '失败' : 'Fail';
 
-function getErrorTip(error, tip) {
+function getErrorTip(error, tip, options) {
 
     if (tip && tip !== true) return tip;
     // http 状态码相关
@@ -25,28 +25,38 @@ function getErrorTip(error, tip) {
 
     // 后端自定义信息
     const data = error?.response?.data || error;
+    const {errorModal} = options;
     const errorJson = JSON.parse(window.sessionStorage.getItem("error-json-" + getLoginUser()?.id) ? window.sessionStorage.getItem("error-json-" + getLoginUser()?.id) : []);
-    if (errorJson) {
+    if (errorModal) {
         let errorResponse = errorJson.ErrorCodes.find(c => c.Name == data.ErrorCode);
-        if (errorResponse != undefined) {
-            let content = <span>{errorResponse.Value}</span>;
-            let errorData = [
-                {lable: lang == "zh_CN" ? '时间' : 'Time', text: formatDate(Date.parse(data.EventTime))},
-                {lable: lang == "zh_CN" ? '信息' : 'Msg', text: errorResponse.Value + data.SecondLine},
-                {lable: lang == "zh_CN" ? '错误文件' : 'FileName', text: data.FileName},
-                {lable: lang == "zh_CN" ? '错误行数' : 'LineNumber', text: data.LineNumber},
-            ]
-            return <List
-                dataSource={errorData}
-                renderItem={(item) => (
-                    <List.Item>
-                        <Typography.Text mark>[{item.lable}]</Typography.Text> {item.text}
-                    </List.Item>
-                )}
-            />
-        }
+        let errorData = [
+            {
+                lable: lang == "zh_CN" ? '信息' : 'Msg',
+                text: errorResponse != undefined ? errorResponse.Value : ERROR_UNKNOWN + "   " + data.SecondLine
+            },
+            {lable: lang == "zh_CN" ? '错误文件' : 'FileName', text: data.FileName},
+            {lable: lang == "zh_CN" ? '错误行数' : 'LineNumber', text: data.LineNumber},
+        ]
+        return <List
+            dataSource={errorData}
+            renderItem={(item) => (
+                <List.Item>
+                    <Typography.Text mark>[{item.lable}]</Typography.Text> {item.text}
+                </List.Item>
+            )}
+        />
 
+    } else {
+        if (errorJson) {
+            let errorResponse = errorJson.ErrorCodes.find(c => c.Name == data.ErrorCode);
+            if (errorResponse != undefined) {
+                let content = <span>{errorResponse.Value}</span>;
+                return content;
+            }
+
+        }
     }
+
     if (typeof data === 'string') return data;
     if (data?.message) return data.message;
     if (data?.msg) return data.msg;
@@ -54,11 +64,10 @@ function getErrorTip(error, tip) {
 }
 
 export default function handleError({error, tip, options = {}}) {
-    const description = getErrorTip(error, tip);
+    const description = getErrorTip(error, tip, options);
     const {errorModal} = options;
-    console.log(options);
     if (!description && !errorModal) return;
-
+    const data = error?.response?.data || error;
     // 避免卡顿
     setTimeout(() => {
         // 弹框提示
@@ -66,7 +75,7 @@ export default function handleError({error, tip, options = {}}) {
             // 详细配置
             if (typeof errorModal === 'object') {
                 return Modal.error({
-                    title: TIP_TITLE,
+                    title: TIP_TITLE + " " + (data?.EventTime ? formatDate(Date.parse(data?.EventTime)) : ''),
                     content: description,
                     ...errorModal,
                 });
