@@ -50,7 +50,10 @@ export default config({
     const [timeData1, setTimeData1] = useState([]);
     const [single1, setSingle1] = useState([]);
     const [pieChart, setPieChart] = useState({});
+    //首页api按钮 fx
     const [homeApiMenus] = useState(JSON.parse(window.sessionStorage.getItem('homeApiMenus-' + loginUser?.id)) || []);
+    //首页quick按钮 fx
+    const [homeQuickMenus] = useState(JSON.parse(window.sessionStorage.getItem('homeQuickMenus-' + loginUser?.id)) || [])
     const [changeAccountVisible, setChangeAccountVisible] = useState(false);
     const [tenantOptions, setTenantOptions] = useState([]);
     const [companyOptions, setCompanyOptions] = useState([]);
@@ -62,13 +65,26 @@ export default config({
 
     // 随机生成颜色
     const [randomRgbColor, setRandomRgbColor] = useState(['#6599FE', '#F94242', '#FE9200', '#01BB00', '#FFB6C1', '	#40E0D0'])
-    const [randomNum, setRandomNum] = useState(()=>{
-        var map=[];
-        homeApiMenus.map((item,key)=>{
-            map.push(Math.floor(Math.random() * 5 ))
+    /**
+     * 随机颜色apibtn fx
+     */
+    const [randomNum] = useState(() => {
+        var map = [];
+        homeApiMenus.map((item, key) => {
+            map.push(Math.floor(Math.random() * 5))
         });
         return map;
     })
+    /**
+     * 随机颜色quickbtn fx
+     */
+    const [randomNum1] = useState(() => {
+        var map = [];
+        homeQuickMenus.map((item, key) => {
+            map.push(Math.floor(Math.random() * 5))
+        });
+        return map;
+    });
     const [subscript, setSubscript] = useState()
     const onChange = async (key) => {
         // console.log(key);
@@ -129,8 +145,9 @@ export default config({
     const [processedNum1, setProcessedNum1] = useState(0)
     // 未处理
     const [notprocessedNum1, setNotprocessedNum1] = useState(0)
-    // const [loading, setLoading] = useState(false)
-    // const [loading, setLoading] = useState(false);
+    /**
+     * 页面双语、错误弹窗处理 fx
+     */
     useEffect(async () => {
         const resp = await fetch(window.location.origin + `/lang/${lang}.json`)
         const data = await resp.json();
@@ -141,6 +158,9 @@ export default config({
         setLocale(data);
         setSubscript(randomNum[Math.floor(Math.random() * randomNum.length)])
     }, [lang]);
+    /**
+     * 获取租户、公司 fx
+     */
     useEffect(async () => {
         const res = await props.ajax.get('/Proj/GetCmpTenantList', null, {
             errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
@@ -151,10 +171,10 @@ export default config({
         })
         res.unshift({label: getLange(props.loginUser?.id) == "zh_CN" ? "控制台" : "Console", value: null});
         setTenantOptions(res);
-
     }, []);
+
     /**
-     * 租户、公司联动
+     * 租户、公司联动fx
      * @param value
      */
     const handleTenantChange = (value) => {
@@ -168,7 +188,7 @@ export default config({
         setCompanyOptions(companyList)
     };
     /**
-     * 切换账号
+     * 切换账号 fx
      * @returns {Promise<void>}
      */
     const handleChangeAccount = async () => {
@@ -194,6 +214,8 @@ export default config({
         setLange(LoginUser.id, lang);
         const homeApiMenus = res.Menus.filter(item => item.ActionType == 1 && item.Name != "BusinessManagement");
         window.sessionStorage.setItem('homeApiMenus-' + res.UserId, JSON.stringify(homeApiMenus || []));
+        const homeQuickMenus = res.Menus.filter(item => item.ActionType != 1 && item.Shortcut);
+        window.sessionStorage.setItem('homeQuickMenus-' + res.UserId, JSON.stringify(homeQuickMenus || []));
         window.location.reload();
     }
     useEffect(async () => {
@@ -516,21 +538,39 @@ export default config({
                                             <>
                                                 <div className='div2_ flex column' style={{marginLeft: '32px'}}
                                                      onClick={() => handleHomeBtn()}>
-                                                    <div className='circular' style={{background: randomRgbColor[randomNum[k]]}}>
-                                                        {/* <i className="iconfont icon-dadanfahuo-ziyoudayin move_icon"></i> */}
-                                                        <SwapOutlined style={{
-                                                            fontSize: '2vw',
-                                                            color: '#fff',
-                                                            position: 'relative',
-                                                            top: '1vw'
-                                                        }}/>
+                                                    <div className='circular'
+                                                         style={{background: randomRgbColor[randomNum[k]]}}>
+                                                        {React.createElement(require('@ant-design/icons')[item.Icon||"BlockOutlined"],{style:{
+                                                                fontSize: '2vw',
+                                                                color: '#fff',
+                                                                position: 'relative',
+                                                                top: '1vw'
+                                                            }})}
                                                     </div>
                                                     <p className='p_div'><FormattedMessage id={item.Name}/></p>
                                                 </div>
                                             </>
                                         )
                                     })}
-
+                                    {homeQuickMenus.map((item, k) => {
+                                        return (
+                                            <>
+                                                <div className='div2_ flex column' style={{marginLeft: '32px'}}
+                                                     onClick={()=>props.history.push(item.Name == "BusinessManagement" ? "/BusinessManagement" : (item.Name == "/" ? "/" : "/Dynamic/" + item.Name.replace(new RegExp(/( )/g), "_")))}>
+                                                    <div className='circular'
+                                                         style={{background: randomRgbColor[randomNum1[k]]}}>
+                                                        {React.createElement(require('@ant-design/icons')[item.Icon||"BlockOutlined"],{style:{
+                                                                fontSize: '2vw',
+                                                                color: '#fff',
+                                                                position: 'relative',
+                                                                top: '1vw'
+                                                            }})}
+                                                    </div>
+                                                    <p className='p_div'><FormattedMessage id={item.Name}/></p>
+                                                </div>
+                                            </>
+                                        )
+                                    })}
                                     <div className='div2_ flex column' style={{marginLeft: '1.5vw'}}>
                                         <div className='circular' style={{background: '#C7C7C7'}}
                                              onClick={() => setChangeAccountVisible(true)}>
