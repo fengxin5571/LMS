@@ -8,12 +8,14 @@ import 'echarts/lib/component/markPoint'
 import 'echarts/lib/component/grid'
 
 import { useState, useEffect } from 'react';
+import { data } from 'jquery';
 
 
 const Echartszx = (props) => {
   let [main, setMain] = useState('')
-  // console.log(props);
-  let data1 = [1000, 1500, 2000, 3000, -500, -1000]
+  // console.log(props.profitX);
+  let data2 = props.profitX
+  let data1 = props.profitY
 
   const option = {
     tooltip: {
@@ -50,7 +52,8 @@ const Echartszx = (props) => {
         }
       },
       fontSize: '16px',
-      data: ['中外运敦豪', '联邦快递', 'TNT', '欧商宝', '美国', '德国本土DHL'],
+      data: data2,
+      // data: ['中外运敦豪', '联邦快递', 'TNT', '欧商宝', '美国', '德国本土DHL'],
 
 
     },

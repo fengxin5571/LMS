@@ -33,7 +33,7 @@ export default config({
 
             });
             setColumns(columns);
-            setDataSource(JSON.parse(subTable));
+            setDataSource(subTable);
         }
 
     }, []);

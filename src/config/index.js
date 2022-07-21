@@ -106,7 +106,7 @@ export const CONFIG_HOC = {
     // tab高度
     tabHeight: 40,
     // 页面头部是否显示
-    pageHeader: false,
+    pageHeader: true,
     // 头部主题
     headerTheme: 'default', // dark
     // 侧边栏主题
