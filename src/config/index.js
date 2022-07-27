@@ -120,7 +120,7 @@ export const CONFIG_HOC = {
     // 保持菜单展开状态
     keepMenuOpen: true,
     // 左侧菜单是否收起
-    sideCollapsed: false,
+    sideCollapsed: true,
     // 是否显示搜索菜单
     searchMenu: false,
     // 是否显示我的收藏菜单

@@ -569,45 +569,45 @@ export default config({
                                 initialValues={{position: '01'}}
                                 onFinish={(values) => setPageNum(1) || setConditions(values)}
                             >
-                                <Row style={{marginBottom: 15}}>
+                                <Row style={{marginBottom: 15, marginTop: 15}}>
                                     {searchColumns.map((item, k) => {
                                         if (item.type == 27) {//带null的Enum
                                             return (
-                                                    <FormItem
-                                                        hidden={k < 3 ? false : collapsed}
-                                                        {...queryItem}
-                                                        label={item.label}
-                                                        labelCol={{style: {width: 223}}}
-                                                        name={item.name}
-                                                        allowClear
-                                                        key={item.text}
-                                                        placeholder={item.text}
-                                                        options={[{
-                                                            value: "null",
-                                                            label: getLange(loginUser?.id) == "zh_CN" ? "空" : "Null"
-                                                        }].concat(item.options.map(item => {
-                                                            return {value: item.value, label: item.name}
-                                                        }))}
-                                                    />
+                                                <FormItem
+                                                    hidden={k < 3 ? false : collapsed}
+                                                    {...queryItem}
+                                                    label={item.label}
+                                                    labelCol={{style: {width: 223}}}
+                                                    name={item.name}
+                                                    allowClear
+                                                    key={item.text}
+                                                    placeholder={item.text}
+                                                    options={[{
+                                                        value: "null",
+                                                        label: getLange(loginUser?.id) == "zh_CN" ? "空" : "Null"
+                                                    }].concat(item.options.map(item => {
+                                                        return {value: item.value, label: item.name}
+                                                    }))}
+                                                />
                                             )
                                         } else if (item.type == 15 || item.type == 17 || item.type == 20) {//Enum要翻译
                                             return (
-                                                    <FormItem
-                                                        hidden={k < 3 ? false : collapsed}
-                                                        {...queryItem}
-                                                        key={item.text}
-                                                        label={item.label}
-                                                        labelCol={{style: {width: 223}}}
-                                                        name={item.name}
-                                                        allowClear
-                                                        placeholder={item.text}
-                                                        options={item.options.map(item => {
-                                                            return {
-                                                                value: item.value,
-                                                                label: <FormattedMessage id={item.name}/>
-                                                            }
-                                                        })}
-                                                    />
+                                                <FormItem
+                                                    hidden={k < 3 ? false : collapsed}
+                                                    {...queryItem}
+                                                    key={item.text}
+                                                    label={item.label}
+                                                    labelCol={{style: {width: 223}}}
+                                                    name={item.name}
+                                                    allowClear
+                                                    placeholder={item.text}
+                                                    options={item.options.map(item => {
+                                                        return {
+                                                            value: item.value,
+                                                            label: <FormattedMessage id={item.name}/>
+                                                        }
+                                                    })}
+                                                />
                                             )
                                         } else if (item.type == 16 || item.type == 18 || item.type == 19 || item.type == 26 || item.type == 28) { //Enum
                                             return (
@@ -664,276 +664,276 @@ export default config({
                                                     value=""/>);
                                         }
                                     })}
-                                        </Row>
-                                        <Row style={{marginBottom: 15,width:"100%"}}>
-                                        <Col></Col>
-                                        <Col flex="auto"  offset={21}>
+                                </Row>
+                                <Row style={{marginBottom: 15, width: "100%"}}>
+                                    <Col></Col>
+                                    <Col flex="auto" offset={21}>
                                         <FormItem>
-                                        <Space>
-                                        <Button type="primary" htmlType="submit">
-                                        <FormattedMessage id="Search" />
-                                        </Button>
-                                        <Button onClick={() => form.resetFields() || refreshSearch()}>
-                                        <FormattedMessage
-                                        id="Reset"/></Button>
-                                        </Space>
+                                            <Space>
+                                                <Button type="primary" htmlType="submit">
+                                                    <FormattedMessage id="Search"/>
+                                                </Button>
+                                                <Button onClick={() => form.resetFields() || refreshSearch()}>
+                                                    <FormattedMessage
+                                                        id="Reset"/></Button>
+                                            </Space>
                                         </FormItem>
-                                        </Col>
-                                        </Row>
-                                        </Form>
-                                        )}
-
-                                </QueryBar>
-                                <Row style={{marginBottom: 15}}>
-                                    <Col>
-                                        {balance != undefined && balance != 9999.99 ?
-                                            <span style={{fontSize: 18, fontWeight: "bold"}}><FormattedMessage
-                                                id="FullBalance"/>： <span
-                                                style={{color: "#FF6060"}}>£ {formatPrice(balance)}</span></span> : null}
-                                    </Col>
-                                    <Col flex="auto">
-                                        {
-                                            (resBtnFlags & BtnFlags.CanDelete) > 0 ?
-                                                <Button size="small" type="primary" style={!btnDisabled ? {
-                                                    float: "right",
-                                                    marginRight: 10,
-                                                    background: "#FF6060",
-                                                    borderColor: '#FF6060'
-                                                } : {float: "right", marginRight: 10}}
-                                                        onClick={() => handleDeleteBatch(selectedRowKeys)}
-                                                        disabled={btnDisabled}>
-                                                    <DeleteOutlined/> <FormattedMessage id="Delete" defaultMessage=""/>
-                                                </Button>
-                                                : null
-                                        }
-                                        {
-                                            (resBtnFlags & BtnFlags.CanGridAttachment) > 0 ?
-                                                <Button size="small" type="primary" style={{
-                                                    float: "right",
-                                                    marginRight: 10,
-                                                    background: "#FDBE80",
-                                                    borderColor: '#FDBE80'
-                                                }}
-                                                        onClick={() => setFileModaVisible(true)}>
-                                                    <PaperClipOutlined/> <FormattedMessage
-                                                    id="GridFlags_CanGridAttachment"
-                                                    defaultMessage="Grid Attachment"/>
-                                                </Button>
-                                                : null
-
-                                        }
-                                        {
-                                            (resBtnFlags & BtnFlags.CanPrintAll) > 0 ?
-                                                <Button size="small" type="primary" style={{
-                                                    float: "right",
-                                                    marginRight: 10,
-                                                    background: "#47BC69",
-                                                    borderColor: '#47BC69'
-                                                }}
-                                                        onClick={() => dbGridPrintAll()}>
-                                                    <PrinterOutlined/> <FormattedMessage id="GridFlags_CanPrintAll"
-                                                                                         defaultMessage="PrintAll"/>
-                                                </Button>
-
-                                                : null
-                                        }
-                                        {
-                                            ((resBtnFlags & BtnFlags.CanUpload) > 0) ?
-                                                <Button size="small" type="primary" style={{
-                                                    float: "right",
-                                                    marginRight: 10,
-                                                    background: "#3ABFB7",
-                                                    borderColor: '#3ABFB7'
-                                                }}
-                                                        onClick={() => setUploadVisible(true)}>
-                                                    <UploadOutlined/> <FormattedMessage id="GridFlags_CanUpload"
-                                                                                        defaultMessage="Upload"/>
-                                                </Button>
-
-                                                : null
-                                        }
-                                        {
-                                            (resBtnFlags & BtnFlags.CanDownload) > 0 ?
-                                                <Button size="small" type="primary" style={{
-                                                    float: "right",
-                                                    marginRight: 10,
-                                                    background: "#FF9F54",
-                                                    borderColor: '#FF9F54'
-                                                }}
-                                                        onClick={() => dbGridDownload()}>
-                                                    <DownloadOutlined/> <FormattedMessage id="GridFlags_CanDownload"
-                                                                                          defaultMessage="Download"/>
-                                                </Button>
-
-                                                : null
-                                        }
-                                        {
-                                            (resBtnFlags & BtnFlags.CanAdd) > 0 ?
-                                                <Button size="small" type="primary"
-                                                        style={{float: "right", marginRight: 10}}
-                                                        onClick={() => setRecord(null) || setVisible(true) || setIsCreate(true) || setIsDetail(false) || setIsEdit(false)}>
-                                                    <PlusOutlined/> <FormattedMessage id="Create" defaultMessage=""/>
-                                                </Button>
-                                                : null
-                                        }
-
-
                                     </Col>
                                 </Row>
-                                <ToolBar>
-                                </ToolBar>
-                                <Table
-                                    onRow={record => {
-                                        return {
-                                            onDoubleClick: (e) => e.stopPropagation() || setRecord({
-                                                ...record,
-                                                isDetail: true
-                                            }) || setVisible(true) || setIsDetail(true) || setIsEdit(false),
-                                        };
+                            </Form>
+                        )}
+
+                    </QueryBar>
+                    <Row style={{marginBottom: 15}}>
+                        <Col>
+                            {balance != undefined && balance != 9999.99 ?
+                                <span style={{fontSize: 18, fontWeight: "bold"}}><FormattedMessage
+                                    id="FullBalance"/>： <span
+                                    style={{color: "#FF6060"}}>£ {formatPrice(balance)}</span></span> : null}
+                        </Col>
+                        <Col flex="auto">
+                            {
+                                (resBtnFlags & BtnFlags.CanDelete) > 0 ?
+                                    <Button size="small" type="primary" style={!btnDisabled ? {
+                                        float: "right",
+                                        marginRight: 10,
+                                        background: "#FF6060",
+                                        borderColor: '#FF6060'
+                                    } : {float: "right", marginRight: 10}}
+                                            onClick={() => handleDeleteBatch(selectedRowKeys)}
+                                            disabled={btnDisabled}>
+                                        <DeleteOutlined/> <FormattedMessage id="Delete" defaultMessage=""/>
+                                    </Button>
+                                    : null
+                            }
+                            {
+                                (resBtnFlags & BtnFlags.CanGridAttachment) > 0 ?
+                                    <Button size="small" type="primary" style={{
+                                        float: "right",
+                                        marginRight: 10,
+                                        background: "#FDBE80",
+                                        borderColor: '#FDBE80'
                                     }}
-                                    rowSelection={rowSelection}
-                                    pageNum={pageNum}
-                                    pageSize={pageSize}
-                                    fitHeight
-                                    dataSource={dataSource}
-                                    columns={tableColumns}
-                                    rowKey={record => record.Id}
-                                    onChange={handleTableChange}
-                                />
-                                <Pagination
-                                    total={total}
-                                    pageNum={pageNum}
-                                    pageSize={pageSize}
-                                    onPageNumChange={setPageNum}
-                                    showTotal={(t) => <FormattedMessage id="Pagination" values={{total: t}}
-                                                                        defaultMessage=""/>}
-                                    onPageSizeChange={(pageSize) => setPageNum(1) || setPageSize(pageSize)}
-                                />
-                                <EditModal
-                                    visible={visible}
-                                    dbGridName={dbGridName}
-                                    record={record}
-                                    isEdit={isEdit}
-                                    isCreate={isCreate}
-                                    formColums={formColumns}
-                                    antLocale={antLocale}
-                                    locale={locale}
-                                    onOk={() => setVisible(false) || refreshSearch()}
-                                    onCancel={() => setVisible(false)}
-                                    includes={includes}
-                                    isDetail={isDetail}
-                                />
-                                <TableModal
-                                    visible={isModalVisible}
-                                    title={modalTitle}
-                                    onOk={() => {
+                                            onClick={() => setFileModaVisible(true)}>
+                                        <PaperClipOutlined/> <FormattedMessage
+                                        id="GridFlags_CanGridAttachment"
+                                        defaultMessage="Grid Attachment"/>
+                                    </Button>
+                                    : null
+
+                            }
+                            {
+                                (resBtnFlags & BtnFlags.CanPrintAll) > 0 ?
+                                    <Button size="small" type="primary" style={{
+                                        float: "right",
+                                        marginRight: 10,
+                                        background: "#47BC69",
+                                        borderColor: '#47BC69'
                                     }}
-                                    onCancel={() => setIsModalVisible(false)}
-                                    subTableHeader={subTableHeader}
-                                    subTable={subTable}
-                                    dbGridName={dbGridName}
-                                    subTableType={subTableType}
-                                />
-                                <TableList
-                                    visible={isListVisible}
-                                    title={modalTitle}
-                                    onOk={() => {
+                                            onClick={() => dbGridPrintAll()}>
+                                        <PrinterOutlined/> <FormattedMessage id="GridFlags_CanPrintAll"
+                                                                             defaultMessage="PrintAll"/>
+                                    </Button>
+
+                                    : null
+                            }
+                            {
+                                ((resBtnFlags & BtnFlags.CanUpload) > 0) ?
+                                    <Button size="small" type="primary" style={{
+                                        float: "right",
+                                        marginRight: 10,
+                                        background: "#3ABFB7",
+                                        borderColor: '#3ABFB7'
                                     }}
-                                    onCancel={() => setIsListVisible(false)}
-                                    dbGridName={dbGridName}
-                                    subTableHeader={subTableHeader}
-                                    subTable={subTable}
-                                    subTableType={subTableType}
-                                />
-                                <Modal
-                                    visible={uploadVisible}
-                                    onCancel={() => setUploadVisible(false)}
-                                    onOk={() => setUploadVisible(false) || dbGridUpload()}
-                                    title={<FormattedMessage id="GridFlags_CanUpload"
-                                                             defaultMessage="Upload"/>}
-                                >
-                                    <Content style={{padding: 20}}>
-                                        <Form autoComplete="off" style={{paddingTop: 30}}>
-                                            <FormItem label={<FormattedMessage id="GridFlags_CanUploadAttachment"/>}>
-                                                <Upload {...uploadConfig} multiple>
-                                                    <Button type="primary" icon={<UploadOutlined/>}>
-                                                        <FormattedMessage id="UploadFile"/>
-                                                    </Button>
-                                                </Upload>
-                                            </FormItem>
-                                        </Form>
-                                    </Content>
-                                </Modal>
-                                <Modal
-                                    visible={splitVisible}
-                                    onCancel={() => setSplitVisible(false)}
-                                    onOk={() => setSplitVisible(false) || dbGridSplit() || balanceForm.resetFields()}
-                                >
-                                    <Form autoComplete="off" style={{paddingTop: 30}} form={balanceForm}>
-                                        <FormItem type="number" placeholder="NewBalance" name="NewBalance" required
-                                                  min={1}
-                                                  label={<FormattedMessage id="NewBalance"/>}>
-                                        </FormItem>
-                                    </Form>
-                                </Modal>
-                                <FileModal
-                                    visible={fileModaVisible}
-                                    title={<><FormattedMessage id="GridFlags_CanGridAttachment"
-                                                               defaultMessage="Grid Attachment"/> - <FormattedMessage
-                                        id={dbGridName}/></>}
-                                    onOk={() => {
-                                        setFileModaVisible(false);
-                                        //获取附件管理子组件文件封装数据
-                                        var handleUploadData = fileModal.current.onHandleUploadFile;
-                                        var handleUploadFile = fileModal.current.onUploadFile;
-                                        console.log(handleUploadData);
-                                        console.log(handleUploadFile);
-                                        var onPath = fileModal.current.onPath;
+                                            onClick={() => setUploadVisible(true)}>
+                                        <UploadOutlined/> <FormattedMessage id="GridFlags_CanUpload"
+                                                                            defaultMessage="Upload"/>
+                                    </Button>
+
+                                    : null
+                            }
+                            {
+                                (resBtnFlags & BtnFlags.CanDownload) > 0 ?
+                                    <Button size="small" type="primary" style={{
+                                        float: "right",
+                                        marginRight: 10,
+                                        background: "#FF9F54",
+                                        borderColor: '#FF9F54'
+                                    }}
+                                            onClick={() => dbGridDownload()}>
+                                        <DownloadOutlined/> <FormattedMessage id="GridFlags_CanDownload"
+                                                                              defaultMessage="Download"/>
+                                    </Button>
+
+                                    : null
+                            }
+                            {
+                                (resBtnFlags & BtnFlags.CanAdd) > 0 ?
+                                    <Button size="small" type="primary"
+                                            style={{float: "right", marginRight: 10}}
+                                            onClick={() => setRecord(null) || setVisible(true) || setIsCreate(true) || setIsDetail(false) || setIsEdit(false)}>
+                                        <PlusOutlined/> <FormattedMessage id="Create" defaultMessage=""/>
+                                    </Button>
+                                    : null
+                            }
+
+
+                        </Col>
+                    </Row>
+                    <ToolBar>
+                    </ToolBar>
+                    <Table
+                        onRow={record => {
+                            return {
+                                onDoubleClick: (e) => e.stopPropagation() || setRecord({
+                                    ...record,
+                                    isDetail: true
+                                }) || setVisible(true) || setIsDetail(true) || setIsEdit(false),
+                            };
+                        }}
+                        rowSelection={rowSelection}
+                        pageNum={pageNum}
+                        pageSize={pageSize}
+                        fitHeight
+                        dataSource={dataSource}
+                        columns={tableColumns}
+                        rowKey={record => record.Id}
+                        onChange={handleTableChange}
+                    />
+                    <Pagination
+                        total={total}
+                        pageNum={pageNum}
+                        pageSize={pageSize}
+                        onPageNumChange={setPageNum}
+                        showTotal={(t) => <FormattedMessage id="Pagination" values={{total: t}}
+                                                            defaultMessage=""/>}
+                        onPageSizeChange={(pageSize) => setPageNum(1) || setPageSize(pageSize)}
+                    />
+                    <EditModal
+                        visible={visible}
+                        dbGridName={dbGridName}
+                        record={record}
+                        isEdit={isEdit}
+                        isCreate={isCreate}
+                        formColums={formColumns}
+                        antLocale={antLocale}
+                        locale={locale}
+                        onOk={() => setVisible(false) || refreshSearch()}
+                        onCancel={() => setVisible(false)}
+                        includes={includes}
+                        isDetail={isDetail}
+                    />
+                    <TableModal
+                        visible={isModalVisible}
+                        title={modalTitle}
+                        onOk={() => {
+                        }}
+                        onCancel={() => setIsModalVisible(false)}
+                        subTableHeader={subTableHeader}
+                        subTable={subTable}
+                        dbGridName={dbGridName}
+                        subTableType={subTableType}
+                    />
+                    <TableList
+                        visible={isListVisible}
+                        title={modalTitle}
+                        onOk={() => {
+                        }}
+                        onCancel={() => setIsListVisible(false)}
+                        dbGridName={dbGridName}
+                        subTableHeader={subTableHeader}
+                        subTable={subTable}
+                        subTableType={subTableType}
+                    />
+                    <Modal
+                        visible={uploadVisible}
+                        onCancel={() => setUploadVisible(false)}
+                        onOk={() => setUploadVisible(false) || dbGridUpload()}
+                        title={<FormattedMessage id="GridFlags_CanUpload"
+                                                 defaultMessage="Upload"/>}
+                    >
+                        <Content style={{padding: 20}}>
+                            <Form autoComplete="off" style={{paddingTop: 30}}>
+                                <FormItem label={<FormattedMessage id="GridFlags_CanUploadAttachment"/>}>
+                                    <Upload {...uploadConfig} multiple>
+                                        <Button type="primary" icon={<UploadOutlined/>}>
+                                            <FormattedMessage id="UploadFile"/>
+                                        </Button>
+                                    </Upload>
+                                </FormItem>
+                            </Form>
+                        </Content>
+                    </Modal>
+                    <Modal
+                        visible={splitVisible}
+                        onCancel={() => setSplitVisible(false)}
+                        onOk={() => setSplitVisible(false) || dbGridSplit() || balanceForm.resetFields()}
+                    >
+                        <Form autoComplete="off" style={{paddingTop: 30}} form={balanceForm}>
+                            <FormItem type="number" placeholder="NewBalance" name="NewBalance" required
+                                      min={1}
+                                      label={<FormattedMessage id="NewBalance"/>}>
+                            </FormItem>
+                        </Form>
+                    </Modal>
+                    <FileModal
+                        visible={fileModaVisible}
+                        title={<><FormattedMessage id="GridFlags_CanGridAttachment"
+                                                   defaultMessage="Grid Attachment"/> - <FormattedMessage
+                            id={dbGridName}/></>}
+                        onOk={() => {
+                            setFileModaVisible(false);
+                            //获取附件管理子组件文件封装数据
+                            var handleUploadData = fileModal.current.onHandleUploadFile;
+                            var handleUploadFile = fileModal.current.onUploadFile;
+                            console.log(handleUploadData);
+                            console.log(handleUploadFile);
+                            var onPath = fileModal.current.onPath;
+                            setTimeout(async () => {
+                                var folderName = '';
+                                handleUploadData.WithChildrenAttachments.map(item => {
+                                    if (item.IsDirectory == false) {
+                                        folderName = item.FolderName
+                                    }
+                                });
+                                if (folderName && handleUploadFile.length > 0) {
+                                    handleUploadFile.map((file) => {
+                                        var fileName = "";
+                                        fileName = folderName + file.name;
+                                        var formData = convertToFormData({
+                                            DbGridName: dbGridName,
+                                            Id: 0,
+                                            draw: DRAW,
+                                            FolderName: folderName,
+                                            FileName: fileName
+                                        }, {
+                                            errorModal: {
+                                                okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"),
+                                                width: "70%"
+                                            },
+                                        });
+                                        formData.append("Files", file);
                                         setTimeout(async () => {
-                                            var folderName = '';
-                                            handleUploadData.WithChildrenAttachments.map(item => {
-                                                if (item.IsDirectory == false) {
-                                                    folderName = item.FolderName
-                                                }
-                                            });
-                                            if (folderName && handleUploadFile.length > 0) {
-                                                handleUploadFile.map((file) => {
-                                                    var fileName = "";
-                                                    fileName = folderName + file.name;
-                                                    var formData = convertToFormData({
-                                                        DbGridName: dbGridName,
-                                                        Id: 0,
-                                                        draw: DRAW,
-                                                        FolderName: folderName,
-                                                        FileName: fileName
-                                                    }, {
-                                                        errorModal: {
-                                                            okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"),
-                                                            width: "70%"
-                                                        },
-                                                    });
-                                                    formData.append("Files", file);
-                                                    setTimeout(async () => {
-                                                        await props.ajax.post('DbGrid/UploadAttachment', formData);
-                                                    }, 0)
+                                            await props.ajax.post('DbGrid/UploadAttachment', formData);
+                                        }, 0)
 
-                                                });
+                                    });
 
-                                            }
-                                        }, 0);
-                                    }}
-                                    onCancel={() => setFileModaVisible(false)}
-                                    fileType={4}
-                                    dbGridName={dbGridName}
-                                    record={{}}
-                                    cRef={fileModal}
-                                    uploadItemName={uploadItemName}
-                                    viewFilePath={viewFilePath}
-                                    viewFile={viewFile}
-                                    antLocale={antLocale}
-                                />
-                            </PageContent>
-                            </ConfigProvider>
-                            </IntlProvider>
-                            );
-                            });
+                                }
+                            }, 0);
+                        }}
+                        onCancel={() => setFileModaVisible(false)}
+                        fileType={4}
+                        dbGridName={dbGridName}
+                        record={{}}
+                        cRef={fileModal}
+                        uploadItemName={uploadItemName}
+                        viewFilePath={viewFilePath}
+                        viewFile={viewFile}
+                        antLocale={antLocale}
+                    />
+                </PageContent>
+            </ConfigProvider>
+        </IntlProvider>
+    );
+});

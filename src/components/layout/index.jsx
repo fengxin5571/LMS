@@ -80,7 +80,7 @@ function getOptions(options) {
 export const layoutRef = {current: null};
 
 export default function Layout(props) {
-    const {menus, collectedMenus, onMenuCollect,onClick} = props;
+    const {menus, collectedMenus, onMenuCollect} = props;
     const {auth, ...nextState} = getOptions();
     if (auth && !isLogin()) toLogin();
     const loginUser = getLoginUser();
@@ -139,7 +139,6 @@ export default function Layout(props) {
                 headerExtra={<Header/>}
                 keepPageAlive={CONFIG_HOC.keepAlive}
                 hashRouter={HASH_ROUTER}
-
                 {...nextState}
                 {...props}
             />

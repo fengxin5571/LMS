@@ -166,7 +166,8 @@ export function formatLmsMenus(values) {
                     'UiRouter': values[key].UiRouter,
                     'ActionType': values[key].ActionType,
                     'Access': values[key].Access,
-                    'ActionHttpMethod': values[key].ActionHttpMethod
+                    'ActionHttpMethod': values[key].ActionHttpMethod,
+                    "icon": React.createElement(require('@ant-design/icons')[values[key].Icon || "UnorderedListOutlined"])
                 };
             } else {
                 menu = {
@@ -182,6 +183,7 @@ export function formatLmsMenus(values) {
                     'ActionHttpMethod': values[key].ActionHttpMethod,
                     //"path": "/" + bigCamel(values[key].Name),
                     "path": values[key].Name == "BusinessManagement" ? "/BusinessManagement" : (values[key].Name == "/" ? "/" : "/Dynamic/" + values[key].Name.replace(new RegExp(/( )/g), "_")),
+                    "icon": React.createElement(require('@ant-design/icons')[values[key].Icon || "UnorderedListOutlined"])
                 };
             }
 
@@ -198,7 +200,8 @@ export function formatLmsMenus(values) {
                     'UiRouter': values[key].UiRouter,
                     'Access': values[key].Access,
                     'ActionType': values[key].ActionType,
-                    'ActionHttpMethod': values[key].ActionHttpMethod
+                    'ActionHttpMethod': values[key].ActionHttpMethod,
+                    "icon": React.createElement(require('@ant-design/icons')[values[key].Icon || "UnorderedListOutlined"])
                 };
                 if (values[key].Name == "/") {
                     menu.path = "/";
@@ -219,6 +222,7 @@ export function formatLmsMenus(values) {
                     //'path': values[key].UiRouter ? values[key].UiRouter : bigCamel(values[key].Name)
                     //"path": "/" + bigCamel(values[key].Name),
                     "path": values[key].Name == "BusinessManagement" ? "/BusinessManagement" : (values[key].Name == "/" ? "/" : "/Dynamic/" + values[key].Name.replace(new RegExp(/( )/g), "_")),
+                    "icon": React.createElement(require('@ant-design/icons')[values[key].Icon || "UnorderedListOutlined"])
                 };
             }
 
