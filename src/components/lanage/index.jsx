@@ -28,8 +28,11 @@ export default function Lanage(props) {
                                 setLange(loginUser?.id, key);
                                 run(convertToFormData(
                                     {language: key == "zh_CN" ? "zh-Hans" : "en"}
-                                ));
-                                window.location.reload();
+                                )).then((res)=>{
+                                    if(res==true){
+                                        window.location.reload();
+                                    }
+                                });
                             }}
                         >
                             {name}

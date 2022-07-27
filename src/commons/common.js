@@ -424,7 +424,7 @@ export function renderTableColumns(column, text, record, index, isModalVisible, 
         case 19:
         case 26://Enum
             var item = (column.options == undefined ? [] : column.options).find((item) => item.value == text);
-            return item?.name;
+            return text;
             break;
         case 27://带null  Enum
             var find_item = [{
