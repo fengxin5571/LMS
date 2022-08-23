@@ -1,5 +1,19 @@
 import React, {useState, useMemo, useCallback, useEffect, useLayoutEffect, useRef} from 'react';
-import {Button, Form, Space, ConfigProvider, Modal, Upload, Col, Row, Dropdown, Menu, Popconfirm, Card} from 'antd';
+import {
+    Button,
+    Form,
+    Space,
+    ConfigProvider,
+    Modal,
+    Upload,
+    Col,
+    Row,
+    Dropdown,
+    Menu,
+    Popconfirm,
+    Card,
+    Switch
+} from 'antd';
 import {
     PageContent,
     QueryBar,
@@ -79,7 +93,7 @@ export default config({
     const [searchColumns, setSearchColumns] = useState([]);
     const [formColumns, setFormColumns] = useState([]);
     const [resBtnFlags, setResBtnFlags] = useState();
-    const [order, setOrder] = useState();
+    const [order, setOrder] = useState(null);
     const [includes, setIncludes] = useState();
     const [searchFormData, setSearchFormData] = useState([]);
     const [uploadVisible, setUploadVisible] = useState(false);
@@ -96,6 +110,7 @@ export default config({
     const [uploadItemName, setUploadItemName] = useState();
     const [viewFilePath, setViewFilePath] = useState([]);
     const [viewFile, setViewFile] = useState([]);
+    const [disableStatus, setDisableStatus] = useState(false);
     const fileModal = useRef();
     useEffect(async () => {
         const resp = await fetch(window.location.origin + `/lang/${lang}.json`)
@@ -108,8 +123,11 @@ export default config({
         setLocale(data);
     }, [lang, fileList, selectedRowKeys, isEdit, isDetail]);
     useEffect(() => {
+        //地址变更时初始化相关参数
         setPageNum(1);
         setPageSize(20);
+        setConditions({});
+        form.resetFields();
     }, [location]);
     //表格排序
     const handleTableChange = (newPagination, filters, sorter) => {
@@ -229,10 +247,16 @@ export default config({
         setSearchColumns(resColums.search_colums);
         setFormColumns(resColums.form_colums);
         let searchData = [];
+        let globalSearch = null;
         Object.keys(conditions).forEach(key => {
             if (conditions[key] !== undefined) {
                 if (conditions[key] instanceof Array) {
                     searchData.push({name: key, min: conditions[key][0], max: conditions[key][1]});
+                } else if (key == "search") {
+                    globalSearch = {
+                        value: conditions[key],
+                        regex: false
+                    }
                 } else {
                     searchData.push({name: key, min: conditions[key], max: conditions[key]});
                 }
@@ -248,15 +272,17 @@ export default config({
             start: pageNum == 1 ? 0 : (pageNum - 1) * pageSize,
             grid: dbGridName,
             columns: resColums.api_colums,
-            advancedSearchFormData: searchData
+            advancedSearchFormData: searchData,
+            DisableStatus: disableStatus,
+            search: globalSearch,
         };
 
-    }, [location, conditions, pageNum, pageSize, order]);
+    }, [location, conditions, pageNum, pageSize, order, disableStatus]);
     // 使用现有查询条件，重新发起请求
     const refreshSearch = useCallback(() => {
         setConditions(form.getFieldsValue());
     }, [form]);
-    // // 获取列表
+    // 获取列表
     const {data: {dataSource, total} = {}} = props.ajax.usePost('DbGrid/Page', params, [params], {
         headers: {'Content-Type': 'multipart/form-data'},
         setLoading,
@@ -320,7 +346,8 @@ export default config({
         const res = await props.ajax.post('DbGrid/Download', convertToFormData({
             DbGridName: dbGridName,
             draw: DRAW,
-            AdvancedSearch: JSON.stringify(searchFormData)
+            AdvancedSearch: JSON.stringify(searchFormData),
+            order: order
         }), {
             responseType: "blob",
             errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
@@ -570,6 +597,15 @@ export default config({
                                 onFinish={(values) => setPageNum(1) || setConditions(values)}
                             >
                                 <Row style={{marginBottom: 15, marginTop: 15}}>
+                                    <FormItem
+                                        hidden={false}
+                                        {...queryItem}
+                                        label={getLange(loginUser?.id) == "zh_CN" ? "全局搜索" : "Global search"}
+                                        labelCol={{style: {width: 223}}}
+                                        name={'search'}
+                                        allowClear
+                                        placeholder={getLange(loginUser?.id) == "zh_CN" ? "全局搜索" : "Global search"}
+                                    />
                                     {searchColumns.map((item, k) => {
                                         if (item.type == 27) {//带null的Enum
                                             return (
@@ -776,6 +812,12 @@ export default config({
                                     </Button>
                                     : null
                             }
+                            {(resBtnFlags & BtnFlags.IncludeArchived) > 0 ?
+                                <Switch style={{
+                                    float: "right",
+                                    marginRight: 10,
+                                }} onChange={(checked) => setDisableStatus(checked)}/>
+                                : null}
 
 
                         </Col>

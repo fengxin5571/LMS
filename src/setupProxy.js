@@ -10,7 +10,7 @@ const fs = require('fs');
 module.exports = function (app) {
     proxyConfig
         .filter((item) => !item.disabled)
-        .forEach(({ baseUrl, target }) => {
+        .forEach(({baseUrl, target}) => {
             app.use(
                 proxy(baseUrl, {
                     target,
@@ -21,11 +21,17 @@ module.exports = function (app) {
                     secure: false, // 是否验证证书
                     ws: true, // 启用websocket
                     // 作为子系统时，需要设置允许跨域
-                    // onProxyRes(proxyRes, req, res) {
-                    //     proxyRes.headers['Access-Control-Allow-Origin'] = '*';
-                    //     proxyRes.headers['Access-Control-Allow-Methods'] = '*';
-                    //     proxyRes.headers['Access-Control-Allow-Headers'] = '*';
-                    // },
+                    onProxyRes(proxyRes, req, res) {
+                        const key = 'set-cookie';
+                        if (proxyRes.headers[key]) {
+                            const cookies = proxyRes.headers[key].join('').split(' ');
+                            // 切割掉一些严格的安全校验，只保留了第一项和Path，这样secure、domain都被忽略了。
+                            proxyRes.headers[key] = [cookies[0], 'Path=/'].join(' ');
+                        }
+                        // proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+                        // proxyRes.headers['Access-Control-Allow-Methods'] = '*';
+                        // proxyRes.headers['Access-Control-Allow-Headers'] = '*';
+                    },
                 }),
             );
         });
@@ -48,7 +54,7 @@ function modifyTestNg() {
     const ngConfig = fs.readFileSync(ngConfigPath, 'UTF-8');
     const locations = proxyConfig
         .filter((item) => !item.disabled)
-        .map(({ name, baseUrl, target }) => {
+        .map(({name, baseUrl, target}) => {
             return `
     # 代理ajax请求 ${name}
     location ^~${baseUrl} {

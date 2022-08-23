@@ -66,6 +66,46 @@ export const GridStatus = {
     Responded: 0x2000,
     Approved: 0x4000,
 }
+
+// 判断显示隐藏公共方法
+export function publics(judge, a, b, c) {
+    const jurisdiction = JSON.parse(sessionStorage.getItem('react-admin_login_user'))
+    if (jurisdiction.CompanyId == null && jurisdiction.TenantId == null) {
+        if (!judge) {
+            a(b)
+        } else {
+            c(1)
+        }
+    } else {
+        if (!judge) {
+            a(b)
+        } else {
+            c(1)
+        }
+    }
+}
+
+// 客服统计和人工核算公共组件
+export function publics1(judge, a, b, c, d, e) {
+    const jurisdiction = JSON.parse(sessionStorage.getItem('react-admin_login_user'))
+    if (jurisdiction.CompanyId == null && jurisdiction.TenantId == null) {
+        if (!judge) {
+            a(b)
+            d(e)
+        } else {
+            c(1)
+        }
+    } else {
+        if (!judge) {
+            a(b)
+            d(e)
+        } else {
+            c(1)
+        }
+    }
+}
+
+
 /**
  * 字段权限
  * @type {{view: number, change: number, create: number, readOnly: number}}
@@ -96,12 +136,10 @@ export function convertToFormData(values) {
                             const [eKey, eValue] = e;
                             if (eValue != null) {
                                 name = `${key}[${index}].${eKey}`
-                                //console.log(`key=${name},value=${eValue}`)
                                 formData.append(name, eValue)
                             }
                         })
                     } else if (v != null) {
-                        //console.log(`key=${key},value=${v}`)
                         formData.append(key, v)
                     }
                 })
@@ -110,16 +148,13 @@ export function convertToFormData(values) {
                     const [eKey, eValue] = e;
                     if (eValue != null) {
                         name = `${key}.${eKey}`
-                        //console.log(`key=${name},value=${eValue}`)
                         formData.append(name, eValue)
                     }
                 })
             } else {
-                //console.log(`key=${key},value=${value}`)
                 formData.append(key, value)
             }
         } else {
-            //console.log(`key=${key},value=${value}`)
             formData.append(key, value)
         }
     })
@@ -496,7 +531,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                 }
                 let required = false;
                 let rules = [];
-                if (item.min != undefined || item.max != undefined) {
+                if (item.min != undefined ) {
                     required = true;
                     rules.push({
                         required: true,

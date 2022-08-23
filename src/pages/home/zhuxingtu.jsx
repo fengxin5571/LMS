@@ -7,101 +7,104 @@ import 'echarts/lib/component/legend'
 import 'echarts/lib/component/markPoint'
 import 'echarts/lib/component/grid'
 
-import { useState, useEffect } from 'react';
-import { data } from 'jquery';
+import {useState, useEffect, useRef} from 'react';
+import {data} from 'jquery';
+import {getLange} from "../../commons";
 
 
 const Echartszx = (props) => {
-  let [main, setMain] = useState('')
-  // console.log(props.profitX);
-  let data2 = props.profitX
-  let data1 = props.profitY
-
-  const option = {
-    tooltip: {
-      trigger: 'axis',
-      // formatter: '$ \n{c}',
-      formatter: function name (params) {
-        // console.log(params[0].value);
-        return '￡' + String(params[0].value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-      },
-    },
-    grid: {
-      left: "4%",
-      // right: "4%",
-      // bottom: "3%",
-      top: '20%',
-      width: "92%",
-      height: "80%",
-      containLabel: true
-    },
-    xAxis: {
-      axisLabel: {
-        //x轴文字的配置
-        show: true,
-        interval: 0,//使x轴文字显示全
-        formatter: function (value) {
-          let valueTxt = '';
-          if (value.length > 2) {
-            valueTxt = value.substring(0, 2) + '...';
-          }
-          else {
-            valueTxt = value;
-          }
-          return valueTxt;
-        }
-      },
-      fontSize: '16px',
-      data: data2,
-      // data: ['中外运敦豪', '联邦快递', 'TNT', '欧商宝', '美国', '德国本土DHL'],
+    const containerRef = useRef(null);
+    let data2 = props.profitX
+    let data1 = props.profitY
+    const option = {
+        tooltip: {
+            trigger: 'axis',
+            // formatter: '$ \n{c}',
+            formatter: function name(params) {
+                // console.log(params[0].value);
+                return '￡' + String(params[0].value).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+            },
+        },
+        grid: {
+            left: "4%",
+            // right: "4%",
+            // bottom: "3%",
+            top: '20%',
+            width: "92%",
+            height: "80%",
+            containLabel: true
+        },
+        xAxis: {
+            axisLabel: {
+                //x轴文字的配置
+                show: true,
+                interval: 0,//使x轴文字显示全
+                formatter: function (value) {
+                    let valueTxt = '';
+                    if (value.length > 2) {
+                        valueTxt = value.substring(0, 2) + '...';
+                    } else {
+                        valueTxt = value;
+                    }
+                    return valueTxt;
+                }
+            },
+            fontSize: '16px',
+            data: data2,
+            // data: ['中外运敦豪', '联邦快递', 'TNT', '欧商宝', '美国', '德国本土DHL'],
 
 
-    },
-    yAxis: {
-      name: props.getLange(props.loginUser?.id) == "zh_CN" ? "单位：英镑" : 'Company:pound',
-      type: 'value',
-      nameLocation: "end",
-      nameTextStyle: {
-        padding: [0, 20, 20, 0]    // 四个数字分别为上右下左与原位置距离
-      }
-    },
-    series: [
-      {
-        // name: '$',
-        type: 'bar',
-        barWidth: '15',
-        // 在这里对data进行自定义配置即可
-        data: data1.map(item => {
-          // console.log(item, 'item')
-          return {
-            value: item,
-
-            itemStyle: {
-              normal: {
-                barBorderRadius: item > 0 ? [5, 5, 0, 0] : [0, 0, 5, 5], // 动态设置柱状图圆角
-                color: item > 0 ? '#10C248' : '#FCC561'
-
-              }
+        },
+        yAxis: {
+            name: props.getLange(props.loginUser?.id) == "zh_CN" ? "单位：英镑" : 'Company:pound',
+            type: 'value',
+            nameLocation: "end",
+            nameTextStyle: {
+                padding: [0, 20, 20, 0]    // 四个数字分别为上右下左与原位置距离
             }
-          }
-        })
-      }
-    ]
-  };
-  useEffect(() => {
-    var node = document.getElementById('main1')
-    setMain(node)
-  }, [])
-  if (main !== "") {
-    var myChart = echarts.init(main);
-    myChart.setOption(option);
-    window.addEventListener("resize", function () {
-      myChart.resize();
-    });
-  }
-  return (
-    <div style={{ width: '100%', height: '15.5vw', paddingLeft: '1vw', position: 'relative', bottom: '1.5vw' }} id="main1"></div>
-  )
+        },
+        series: [
+            {
+                // name: '$',
+                type: 'bar',
+                barWidth: '15',
+                // 在这里对data进行自定义配置即可
+                data: data1.map(item => {
+                    // console.log(item, 'item')
+                    return {
+                        value: item,
+
+                        itemStyle: {
+                            normal: {
+                                barBorderRadius: item > 0 ? [5, 5, 0, 0] : [0, 0, 5, 5], // 动态设置柱状图圆角
+                                color: item > 0 ? '#10C248' : '#FCC561'
+
+                            }
+                        }
+                    }
+                })
+            }
+        ]
+    };
+    useEffect(() => {
+        var myChart = echarts.init(containerRef.current);
+        if (props.loading) {
+            myChart.showLoading('default', {
+                color: '#6599FE',
+                text: getLange(props.loginUser?.id) == "zh_CN" ? "载入中" : "loading"
+            });
+        } else {
+            myChart.hideLoading();
+        }
+        myChart.setOption(option);
+        window.addEventListener("resize", function () {
+            myChart.resize();
+        });
+    }, [containerRef, props.loading])
+    return (
+        <div style={{width: '100%', height: '15.5vw', paddingLeft: '1vw', position: 'relative', bottom: '1.5vw'}}
+             id="main1" ref={containerRef}></div>
+    )
 }
 export default Echartszx;
 

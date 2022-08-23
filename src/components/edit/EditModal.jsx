@@ -82,7 +82,7 @@ export default config({
             const params = {
                 DbGridName: props.dbGridName,
                 draw: DRAW,
-                // Includes: includes,
+                Includes: includes,
             };
             Object.keys(values).forEach(key => {
                 //处理不是文件流的数据
