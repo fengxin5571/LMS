@@ -127,6 +127,7 @@ export default config({
         setPageNum(1);
         setPageSize(20);
         setConditions({});
+        setOrder(null);
         form.resetFields();
     }, [location]);
     //表格排序

@@ -334,9 +334,9 @@ export function handleGridDataTypeColumn(columns, isModalVisible, setIsModalVisi
                     }
                 };
                 //设置排序字段
-                if (value.type == 11 || value.type == 6 || value.type == 7) {
-                    table_column.sorter = true;
-                }
+                //if (value.type == 11 || value.type == 6 || value.type == 7) {
+                table_column.sorter = true;
+                // }
 
                 table_colums.push(table_column);
             }
@@ -531,7 +531,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                 }
                 let required = false;
                 let rules = [];
-                if (item.min != undefined ) {
+                if (item.min != undefined) {
                     required = true;
                     rules.push({
                         required: true,
@@ -550,7 +550,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                 type="select"
                                 required={required}
                                 disabled={isDetail}
-                                placeholder={item.header}
+                                placeholder={isDetail ? "" : item.header}
                                 style={is_style ? {width: '11rem'} : {width: '13rem'}}
                                 options={[
                                     {value: true, label: <FormattedMessage id="True"/>},
@@ -605,7 +605,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                 disabled={isDetail}
                                 stringMode
                                 style={is_style ? {width: '11rem'} : {width: '13rem'}}
-                                placeholder={item.header}
+                                placeholder={isDetail ? "" : item.header}
                                 rules={rules}
                             />
                         </Col>
@@ -656,7 +656,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                 stringMode
                                 step="0.1"
                                 style={is_style ? {width: '11rem'} : {width: "13rem"}}
-                                placeholder={item.header}
+                                placeholder={isDetail ? "" : item.header}
                                 rules={rules}
                             />
                         </Col>
@@ -695,7 +695,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                 style={is_style ? {width: '11rem'} : {width: '13rem'}}
                                 required={required}
                                 disabled={isDetail}
-                                placeholder={item.header}
+                                placeholder={isDetail ? "" : item.header}
                                 rules={rules}
 
                             />
@@ -723,7 +723,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                 showTime
                                 style={is_style ? {width: '11rem'} : {width: '13rem'}}
                                 dateFormat={"YYYY-MM-DD HH:mm:ss"}
-                                placeholder={item.header}
+                                placeholder={isDetail ? "" : item.header}
                                 rules={rules}
                                 disabledDate={disabledRangeDate}
                             />
@@ -749,7 +749,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                 required={required}
                                 disabled={isDetail}
                                 dateFormat={"YYYY-MM-DD HH:mm:ss"}
-                                placeholder={item.header}
+                                placeholder={isDetail ? "" : item.header}
                                 rules={rules}
                                 style={is_style ? {width: '11rem'} : {width: '13rem'}}
                                 disabledDate={disabledRangeDate}
@@ -770,7 +770,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                 disabled={isDetail}
                                 maxLength={250}
                                 style={is_style ? {width: '11rem'} : {width: '13rem'}}
-                                placeholder={item.header}
+                                placeholder={isDetail ? "" : item.header}
                                 rules={rules}
                             />
                         </Col>
@@ -796,7 +796,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                 required={required}
                                 disabled={isDetail}
                                 style={is_style ? {width: '11rem'} : {width: '13rem'}}
-                                placeholder={item.header}
+                                placeholder={isDetail ? "" : item.header}
                                 options={item.options.map(item => {
                                     return {
                                         value: parseFloat(item.value).toString() == "NaN" ? item.value : parseInt(item.value),
@@ -820,7 +820,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                 noSpace
                                 type="password"
                                 style={is_style ? {width: '11rem'} : {width: '13rem'}}
-                                placeholder={item.header}
+                                placeholder={isDetail ? "" : item.header}
                                 rules={rules}
                             />
                         </Col>
@@ -836,7 +836,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                 type="select"
                                 required={required}
                                 disabled={isDetail}
-                                placeholder={item.header}
+                                placeholder={isDetail ? "" : item.header}
                                 style={is_style ? {width: '11rem'} : {width: '13rem'}}
                                 options={item.options.map(item => {
                                     return {
@@ -1010,7 +1010,6 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                                         </div>
                                                     ))}
                                                 </Space>
-                                                {console.log(item.ColumnConfigs)}
                                                 {fields.map((subfield) => (
                                                     <Space
                                                         key={subfield.key}
@@ -1103,7 +1102,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                 type="select"
                                 required={required}
                                 disabled={isDetail}
-                                placeholder={item.header}
+                                placeholder={isDetail ? "" : item.header}
                                 style={is_style ? {width: '11rem'} : {width: '13rem'}}
                                 options={[{
                                     value: "null",
@@ -1365,7 +1364,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                 fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
                                 required={required}
                                 disabled={isDetail}
-                                placeholder={item.header}
+                                placeholder={isDetail ? "" : item.header}
                                 style={is_style ? {width: '11rem'} : {width: '13rem'}}
                                 rules={rules}
                             />

@@ -1,4 +1,3 @@
-// import {Redirect} from 'react-router-dom';
 import {
     Tabs,
     Col,
@@ -12,7 +11,7 @@ import {
 import {PageContent, getLoginUser, FormItem, setLoginUser, Content} from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
 import styles from './style.less';
-import {DownOutlined, UserOutlined, SwapOutlined, PoundCircleOutlined, LoadingOutlined} from '@ant-design/icons';
+import {SwapOutlined, PoundCircleOutlined} from '@ant-design/icons';
 import './style.css'
 import './iconfont/iconfont.css'
 import Echartstest from './bingtu'
@@ -340,7 +339,6 @@ export default config({
 
     //票数、重量统计参数
     const statisticsParams = useMemo(() => {
-
         return {
             DbGridName: 'Shipment Orders',
             X: 'ShipmentDate',
@@ -386,7 +384,6 @@ export default config({
                 })
                 setSingle1(dataSource.Y)
             }
-
         }
     }, [dataSource]);
     /**
