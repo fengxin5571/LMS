@@ -470,6 +470,7 @@
   "GridFlags_CanStart": "Start",
   "GridFlags_CanFinish": "Finish",
   "GridFlags_CanApprove": "Approve",
+  "GridFlags_CanUndo": "Recovery",
   "CompanyType_Supplier": "Supplier",
   "CompanyType_Client": "Client",
   "HttpMethod_HTTP_None": "None",

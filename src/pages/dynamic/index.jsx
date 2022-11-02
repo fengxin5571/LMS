@@ -57,7 +57,9 @@ import {
     UserAddOutlined,
     PoweroffOutlined,
     PlayCircleOutlined,
-    PaperClipOutlined
+    PaperClipOutlined,
+    UndoOutlined,
+    PayCircleOutlined
 } from "@ant-design/icons";
 import FileModal from "../../components/form/FileModal";
 
@@ -107,10 +109,13 @@ export default config({
     const [fileModaVisible, setFileModaVisible] = useState(false);
     const [form] = Form.useForm();
     const [balanceForm] = Form.useForm();
+    const [transferForm] = Form.useForm();
     const [uploadItemName, setUploadItemName] = useState();
     const [viewFilePath, setViewFilePath] = useState([]);
     const [viewFile, setViewFile] = useState([]);
     const [disableStatus, setDisableStatus] = useState(false);
+    const [transferVisible, setTransferVisible] = useState(false);
+    const [bankAccountOption, setBankAccountOption] = useState([]);
     const fileModal = useRef();
     useEffect(async () => {
         const resp = await fetch(window.location.origin + `/lang/${lang}.json`)
@@ -195,6 +200,7 @@ export default config({
                             <FormattedMessage
                                 id="Split" defaultMessage="Split"/>
                         </Menu.Item> : null}
+
                         {((resault.BtnFlags & BtnFlags.CanApprove) > 0) ? <Menu.Item
                             icon={<UserAddOutlined/>}
                             style={{color: "#CDCDCD"}}
@@ -204,6 +210,16 @@ export default config({
                             <FormattedMessage
                                 id="GridFlags_CanApprove"
                                 defaultMessage="Approve"/>
+                        </Menu.Item> : null}
+                        {((resault.BtnFlags & BtnFlags.CanUndo) > 0) ? <Menu.Item
+                            icon={<UndoOutlined/>}
+                            style={{color: "#bafc03"}}
+                            onClick={() => dbGridRecovery(record?.Id)}
+                            disabled={record?.Status != undefined && (record?.Status & 0x8000) != 0 ? true : false}
+                        >
+                            <FormattedMessage
+                                id="GridFlags_CanUndo"
+                                defaultMessage="Recovery"/>
                         </Menu.Item> : null}
                         {((resault.BtnFlags & BtnFlags.CanStart) > 0) ? <Menu.Item
                             icon={<PlayCircleOutlined/>}
@@ -407,6 +423,24 @@ export default config({
         },
     };
     /**
+     * 获取银行账号列表
+     * @returns {Promise<void>}
+     * @constructor
+     */
+    const TransferableBankAccounts = async () => {
+        var result = [];
+        const res = await props.ajax.get('/Proj/TransferableBankAccounts', null, {
+            errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
+        })
+        result = res;
+        result.map(item => {
+            item.label = item.bankName;
+            item.value = item.gridName
+        })
+        setBankAccountOption(result);
+    }
+
+    /**
      * 拆分
      * @returns {Promise<void>}
      */
@@ -425,6 +459,22 @@ export default config({
         });
         window.sessionStorage.removeItem(dbGridName + '-config-' + loginUser?.id)
     }
+    /**
+     * 恢复
+     * @type {(function(*): Promise<void>)|*}
+     */
+    const dbGridRecovery = useCallback(
+        async (Id) => {
+            await props.ajax.post(`/Setting/RestoreChange`, convertToFormData({
+                Id: Id,
+            }), {
+                successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!",
+                errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
+            });
+            //触发列表更新
+            refreshSearch();
+        }, [refreshSearch]
+    );
     /**
      * 工作授权
      * @type {(function(*=): Promise<void>)|*}
@@ -475,6 +525,31 @@ export default config({
         });
         //触发列表更新
         refreshSearch();
+    }, [refreshSearch]);
+    /**
+     * 转账
+     * @type {(function(): Promise<void>)|*}
+     */
+    const dbTransfer = useCallback(async () => {
+        let toBankAccount = transferForm.getFieldValue('ToBankAccount');
+        let balance = transferForm.getFieldValue('Balance');
+        console.log(toBankAccount);
+        if (toBankAccount == undefined || toBankAccount == "" || balance == undefined || balance <= 0) {
+            return;
+        }
+        await props.ajax.post(`/DbGrid/Transfer`, convertToFormData({
+            DbGridName: dbGridName,
+            draw: DRAW,
+            to: toBankAccount,
+            Balance:balance
+        }), {
+            successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!",
+            errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
+        });
+        //触发列表更新
+        refreshSearch();
+        transferForm.resetFields()
+
     }, [refreshSearch]);
     /**
      * 打印选中记录
@@ -775,6 +850,21 @@ export default config({
                                     : null
                             }
                             {
+                                (resBtnFlags & BtnFlags.CanTransfer) > 0 ?
+                                    <Button size="small" type="primary" style={{
+                                        float: "right",
+                                        marginRight: 10,
+                                        background: "#FFBF10",
+                                        borderColor: '#FFBF10'
+                                    }}
+                                            onClick={() => setTransferVisible(true) || setRecord(record) || TransferableBankAccounts()}>
+                                        <PayCircleOutlined/> <FormattedMessage id="GridFlags_CanTransfer"
+                                                                               defaultMessage="Transfer"/>
+                                    </Button>
+
+                                    : null
+                            }
+                            {
                                 ((resBtnFlags & BtnFlags.CanUpload) > 0) ?
                                     <Button size="small" type="primary" style={{
                                         float: "right",
@@ -916,6 +1006,24 @@ export default config({
                             <FormItem type="number" placeholder="NewBalance" name="NewBalance" required
                                       min={1}
                                       label={<FormattedMessage id="NewBalance"/>}>
+                            </FormItem>
+                        </Form>
+                    </Modal>
+                    <Modal
+                        visible={transferVisible}
+                        onCancel={() => setTransferVisible(false)}
+                        onOk={() => setTransferVisible(false) || dbTransfer() || transferForm.resetFields()}
+                    >
+                        <Form autoComplete="off" style={{paddingTop: 30}} form={transferForm}>
+                            <FormItem placeholder="ToBankAccount" name="ToBankAccount" required
+                                      min={1}
+                                      label={<FormattedMessage id="Banks"/>}
+                                      options={bankAccountOption}
+                            >
+                            </FormItem>
+                            <FormItem type="number" placeholder="Balance" name="Balance" required
+                                      min={1}
+                                      label={<FormattedMessage id="Balance"/>}>
                             </FormItem>
                         </Form>
                     </Modal>

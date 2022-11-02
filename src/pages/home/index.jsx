@@ -6,9 +6,10 @@ import {
     DatePicker,
     Modal,
     ConfigProvider,
-    Form
+    Form,
+    Table
 } from 'antd';
-import {PageContent, getLoginUser, FormItem, setLoginUser, Content} from '@ra-lib/admin';
+import {PageContent, getLoginUser, FormItem, setLoginUser, Content, ModalContent} from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
 import styles from './style.less';
 import {SwapOutlined, PoundCircleOutlined} from '@ant-design/icons';
@@ -21,7 +22,7 @@ import Echartszxt1 from './zhexian2'
 import zhCN from 'antd/lib/locale/zh_CN';
 import enUS from 'antd/lib/locale/en_US';
 import {FormattedMessage, IntlProvider} from 'react-intl';
-import {convertToFormData, publics, publics1} from "src/commons/common";
+import {convertToFormData, GetDateNow, publics, publics1} from "src/commons/common";
 import {getLange, setLange} from 'src/commons';
 import {DRAW} from 'src/config';
 
@@ -49,6 +50,9 @@ export default config({
         label: getLange(props.loginUser?.id) == "zh_CN" ? "控制台" : "Console",
         value: null
     }]);
+    const [homeBtnModaVisible, setHomeBtnModaVisible] = useState(false);
+    const [homeBtnModaType, setHomeBtnModaType] = useState(1);
+    const [dataHomeSource, setDataHomeSource] = useState(null);
     //租户下拉默认选项
     const [defaultTenantValue, setDefaultTenantValue] = useState(null);
     //公司下拉默认选项
@@ -606,6 +610,71 @@ export default config({
         setHomeSummaryCompletionDate(endDate);
 
     }
+    /**
+     * 处理首页按钮返回展示
+     * @param res 接口返回结果
+     */
+    const handelHomeBtnRes = (res) => {
+        if (res.type == 'Message') { //返回提示消息
+            return Modal.success({
+                title: getLange(props.loginUser?.id) == "zh_CN" ? "温馨提示" : "Kind tips",
+                content: res.Message,
+
+            });
+        } else if (res.type == 'Html') { //返回html
+            setHomeBtnModaVisible(true);
+            setDataHomeSource(res.Html);
+            setHomeBtnModaType(1);
+        } else if (res.type == 'Table') { //返回表格
+            setHomeBtnModaVisible(true);
+            let table_colums = [];
+            let table_data=[];
+            res.Table.Headers.map((item,index)=>{
+                var colum={
+                    title: item,
+                    dataIndex: "c_"+index,
+                    key: item,
+                }
+                table_colums.push(colum);
+            });
+
+            res.Table.Data.map((item)=>{
+                var subItem={};
+                item.map((sub,index)=>{
+                    subItem["c_"+index]=sub
+                });
+                table_data.push(subItem);
+            })
+            console.log(table_data);
+            setDataHomeSource({Headers:table_colums,Data:table_data});
+            setHomeBtnModaType(2);
+        } else if (res.type == "File") { //返回文件
+            let blob = new Blob([res.File.Content]);
+            let name = res.File.FileName;
+            if (typeof window.navigator.msSaveBlob !== "undefined") {
+                // 兼容IE，window.navigator.msSaveBlob：以本地方式保存文件
+                window.navigator.msSaveBlob(blob, decodeURI(name));
+            } else {
+                // 创建新的URL并指向File对象或者Blob对象的地址
+                const blobURL = window.URL.createObjectURL(blob);
+                // 创建a标签，用于跳转至下载链接
+                const tempLink = document.createElement("a");
+                tempLink.style.display = "none";
+                tempLink.href = blobURL;
+                tempLink.setAttribute("download", decodeURI(name));
+                // 兼容：某些浏览器不支持HTML5的download属性
+                if (typeof tempLink.download === "undefined") {
+                    tempLink.setAttribute("target", "_blank");
+                }
+                // 挂载a标签
+                document.body.appendChild(tempLink);
+                tempLink.click();
+                document.body.removeChild(tempLink);
+                // 释放blob URL地址
+                window.URL.revokeObjectURL(blobURL);
+            }
+        }
+    }
     return (
         <IntlProvider locale="en" messages={locale}>
             <ConfigProvider locale={antLocale}>
@@ -646,13 +715,15 @@ export default config({
                                     {homeApiMenus.map((item, k) => {
                                         const {run: ajaxHomeBtn} = item.ActionHttpMethod == 1 ? props.ajax.useGet(item.UiRouter, null) : (item.ActionHttpMethod == 2 ? props.ajax.usePost(item.UiRouter, null) : props.ajax.useDel(item.UiRouter, null));
                                         const handleHomeBtn = async () => {
-                                            await ajaxHomeBtn(null, {
-                                                successTip: getLange(props.loginUser?.id) == "zh_CN" ? "操作成功" : "Operator Successfully",
+                                            const res = await ajaxHomeBtn(null, {
+                                                // successTip: getLange(props.loginUser?.id) == "zh_CN" ? "操作成功" : "Operator Successfully",
                                                 errorModal: {
                                                     okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"),
                                                     width: "70%"
                                                 },
                                             });
+                                            handelHomeBtnRes(res);
+                                            console.log(res);
                                         }
                                         return (
                                             <>
@@ -1188,19 +1259,19 @@ export default config({
 
                         </div>
                     </div>
-
-                    {/* <h1>首页</h1> */}
-                    {/* {process.env.REACT_APP_MOCK ? (
-      <Button
-        onClick={async () => {
-          await props.ajax.post('/initDB', null, { successTip: '数据库重置成功！' });
-          setTimeout(() => window.location.reload(), 2000);
-        }}
-      >
-        重置数据库
-      </Button>
-    ) : null} */}
+                    <Modal
+                        visible={homeBtnModaVisible}
+                        onCancel={() => setHomeBtnModaVisible(false)}
+                        onOk={() => setHomeBtnModaVisible(false)}
+                        width={'70%'}
+                    >
+                        <Content fitHeight otherHeight={200}>
+                            {homeBtnModaType == 1 ? <div dangerouslySetInnerHTML = {{ __html:dataHomeSource }}></div> : null}
+                            {homeBtnModaType ==2 ?<Table dataSource={dataHomeSource.Data} columns={dataHomeSource.Headers} />:null}
+                        </Content>
+                    </Modal>
                 </PageContent>
+
             </ConfigProvider>
         </IntlProvider>
     );
