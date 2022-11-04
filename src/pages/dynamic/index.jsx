@@ -37,13 +37,14 @@ import {
     formatPrice
 } from "src/commons/common";
 import {getLange, setLange} from 'src/commons';
-import {FormattedMessage, IntlProvider} from 'react-intl'; /* react-intl imports */
+import {FormattedMessage, IntlProvider, addLocaleDate} from 'react-intl'; /* react-intl imports */
 import zhCN from 'antd/lib/locale/zh_CN';
 import enUS from 'antd/lib/locale/en_US';
 import {useLocation, useHistory, useParams} from "react-router-dom";
 import TableModal from "src/pages/GridTools/TableModal";
 import TableList from "src/pages/GridTools/TableList";
 import {confirm} from '@ra-lib/components';
+
 import {
     UploadOutlined,
     PlusOutlined,
@@ -62,6 +63,7 @@ import {
     PayCircleOutlined
 } from "@ant-design/icons";
 import FileModal from "../../components/form/FileModal";
+import CreateModal from "../../components/PaymentToSuppliers/CreateModal";
 
 export default config({
     path: "/Dynamic/:dbGridName",
@@ -116,6 +118,7 @@ export default config({
     const [disableStatus, setDisableStatus] = useState(false);
     const [transferVisible, setTransferVisible] = useState(false);
     const [bankAccountOption, setBankAccountOption] = useState([]);
+    const [gridClassName, setGridClassName] = useState('');
     const fileModal = useRef();
     useEffect(async () => {
         const resp = await fetch(window.location.origin + `/lang/${lang}.json`)
@@ -153,6 +156,7 @@ export default config({
         //处理表格显示的字段
         const resColums = handleGridDataTypeColumn(resault.ColumnConfigs, isModalVisible, setIsModalVisible, setSubTableHeader, setSubTable, setModalTitle, setSubTableType, setIsListVisible);
         setBalance(resault.Balance);
+        setGridClassName(resault?.GridClassName != undefined ? resault?.GridClassName : '');
         let apiIncludes = resault.Includes.map((item) => item.Name);
         setIncludes(apiIncludes);
         resColums.table_colums.push({
@@ -177,13 +181,14 @@ export default config({
                         >
                             <FormattedMessage id="View"/>
                         </Menu.Item> : null}
-                        {((resault.BtnFlags & BtnFlags.CanUpdate) > 0) ? <Menu.Item
-                            icon={<EditOutlined/>}
-                            style={{color: "#FF9F54"}}
-                            onClick={() => setRecord(record) || setVisible(true) || setIsDetail(false) || setIsEdit(true)}
-                        >
-                            <FormattedMessage id="Edit"/>
-                        </Menu.Item> : null}
+                        {((resault.BtnFlags & BtnFlags.CanUpdate) > 0 && gridClassName != 'PaymentToSuppliersClassName') ?
+                            <Menu.Item
+                                icon={<EditOutlined/>}
+                                style={{color: "#FF9F54"}}
+                                onClick={() => setRecord(record) || setVisible(true) || setIsDetail(false) || setIsEdit(true)}
+                            >
+                                <FormattedMessage id="Edit"/>
+                            </Menu.Item> : null}
                         {((resault.BtnFlags & BtnFlags.CanPrint) > 0) ? <Menu.Item
                             icon={<PrinterOutlined/>}
                             style={{color: "#47BC69"}}
@@ -192,14 +197,15 @@ export default config({
                             <FormattedMessage
                                 id="GridFlags_CanPrint" defaultMessage="Print"/>
                         </Menu.Item> : null}
-                        {(resault.Balance != 9999.99 && resault.Balance != 0) ? <Menu.Item
-                            icon={<BlockOutlined/>}
-                            style={{color: "#FFBF10"}}
-                            onClick={() => setSplitVisible(true) || setRecord(record)}
-                        >
-                            <FormattedMessage
-                                id="Split" defaultMessage="Split"/>
-                        </Menu.Item> : null}
+                        {(resault.Balance != 9999.99 && resault.Balance != 0 && gridClassName != 'PaymentToSuppliersClassName') ?
+                            <Menu.Item
+                                icon={<BlockOutlined/>}
+                                style={{color: "#FFBF10"}}
+                                onClick={() => setRecord(record) || setSplitVisible(true)}
+                            >
+                                <FormattedMessage
+                                    id="Split" defaultMessage="Split"/>
+                            </Menu.Item> : null}
 
                         {((resault.BtnFlags & BtnFlags.CanApprove) > 0) ? <Menu.Item
                             icon={<UserAddOutlined/>}
@@ -444,7 +450,7 @@ export default config({
      * 拆分
      * @returns {Promise<void>}
      */
-    const dbGridSplit = async () => {
+    const dbGridSplit = useCallback(async (record) => {
         if (!(record?.Id)) return;
         let NewBalance = balanceForm.getFieldValue('NewBalance');
         if (!NewBalance) return;
@@ -458,7 +464,9 @@ export default config({
             errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
         });
         window.sessionStorage.removeItem(dbGridName + '-config-' + loginUser?.id)
-    }
+        //触发列表更新
+        refreshSearch();
+    }, [refreshSearch]);
     /**
      * 恢复
      * @type {(function(*): Promise<void>)|*}
@@ -541,7 +549,7 @@ export default config({
             DbGridName: dbGridName,
             draw: DRAW,
             to: toBankAccount,
-            Balance:balance
+            Balance: balance
         }), {
             successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!",
             errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
@@ -942,7 +950,8 @@ export default config({
                                                             defaultMessage=""/>}
                         onPageSizeChange={(pageSize) => setPageNum(1) || setPageSize(pageSize)}
                     />
-                    <EditModal
+                    //通用版表单
+                    {gridClassName != 'PaymentToSuppliersClassName' ? <EditModal
                         visible={visible}
                         dbGridName={dbGridName}
                         record={record}
@@ -955,7 +964,18 @@ export default config({
                         onCancel={() => setVisible(false)}
                         includes={includes}
                         isDetail={isDetail}
-                    />
+                    /> : null}
+                    //支付供应商添加
+                    {gridClassName == 'PaymentToSuppliersClassName' ? <CreateModal
+                        visible={visible}
+                        dbGridName={dbGridName}
+                        formColums={formColumns}
+                        antLocale={antLocale}
+                        locale={locale}
+                        onOk={() => setVisible(false) || refreshSearch()}
+                        onCancel={() => setVisible(false)}
+                    /> : null}
+
                     <TableModal
                         visible={isModalVisible}
                         title={modalTitle}
@@ -1000,7 +1020,7 @@ export default config({
                     <Modal
                         visible={splitVisible}
                         onCancel={() => setSplitVisible(false)}
-                        onOk={() => setSplitVisible(false) || dbGridSplit() || balanceForm.resetFields()}
+                        onOk={() => setSplitVisible(false) || (record) || balanceForm.resetFields()}
                     >
                         <Form autoComplete="off" style={{paddingTop: 30}} form={balanceForm}>
                             <FormItem type="number" placeholder="NewBalance" name="NewBalance" required
