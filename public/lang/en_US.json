@@ -16,6 +16,7 @@
   "PlaceholderCompanyName": "Enter One CompanyName",
   "RulesRequiredMsg": "Please Enter {name}",
   "RulesEmailMsg": "Please Enter The Email",
+  "SearchAddress":"Search Address",
   "RulesMinMsg": "{name} Enter At Least{num} Characters",
   "RulesNumberMinMsg": "{name} Enter At Least{num}",
   "RulesMaxMsg": "{name} Enter {num} Characters At Most",

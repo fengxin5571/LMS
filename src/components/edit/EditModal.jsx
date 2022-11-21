@@ -3,11 +3,20 @@ import React, {useCallback, useEffect, useState, useRef} from 'react';
 import BraftEditor, {EditorState} from 'braft-editor'
 // 引入编辑器样式
 import 'braft-editor/dist/index.css'
-import {Card, Form, ConfigProvider, Row} from 'antd';
-import {ModalContent, FormItem, Content, useDebounceValidator, getLoginUser} from '@ra-lib/admin';
+import {Card, Form, ConfigProvider, Row, Col, Button, Modal, Space} from 'antd';
+import {
+    ModalContent,
+    FormItem,
+    Content,
+    useDebounceValidator,
+    Table,
+    getLoginUser,
+    QueryBar,
+    Pagination
+} from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
 import {WITH_SYSTEMS, DRAW} from 'src/config';
-import {convertToFormData, handleFormItem} from "src/commons/common";
+import {authority, convertToFormData, handleFormItem} from "src/commons/common";
 import {FormattedMessage, IntlProvider} from 'react-intl'
 import {getLange} from "src/commons";
 import FileModal from "../form/FileModal";
@@ -22,7 +31,7 @@ export default config({
     },
 })(function Edit(props) {
     const loginUser = getLoginUser();
-    const {record, isEdit, onOk, formColums, antLocale, locale, includes, isDetail} = props;
+    const {record, isEdit, onOk, formColums, formAddressColums, antLocale, locale, includes, isDetail} = props;
     const [loadRecord, setloadRecord] = useState();
     const [loading, setLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -30,6 +39,7 @@ export default config({
     const [refreshLoad, setRefreshLoad] = useState(false);
     const [modalTitle, setModalTitle] = useState();
     const [form] = Form.useForm();
+    const [tableSearchForm] = Form.useForm();
     const [colLayout, setColLayout] = useState({span: 24});
     const [formViewUploadData, setFormViewUploadData] = useState({WithChildrenAttachments: []});
     const [viewFilePath, setViewFilePath] = useState([]);
@@ -37,14 +47,150 @@ export default config({
     const [editorState, setEditorState] = useState(BraftEditor.createEditorState(null));
     const [uploadItemName, setUploadItemName] = useState();
     const [treeData, setTreeData] = useState([]);
+    const [addressModalVisible, setAddressModalVisible] = useState(false);
+    const [pageNum, setPageNum] = useState(1);
+    const [pageSize, setPageSize] = useState(20);
+    const [dataSource, setDataSource] = useState([]);
+    const [conditions, setConditions] = useState({});
+    const [total, setTotal] = useState(0);
+    const [selectedRowKeysSearch, setSelectedRowKeysSearch] = useState([]);
+    const [selectedRowsSearch, setSelectedRowsSearch] = useState();
+    const [searchRecord, setSearchRecord] = useState({});
+    const [addressTypeColums, setAddressTypeColums] = useState([]);
+    const [currentAddress, setCurrentAddress] = useState('');
+    const [oldAddress, setOldAddress] = useState([]);
     const fileModal = useRef();
+    const addressTypeColumsRef = useRef();
     useEffect(async () => {
+        var addressTypecolums = [];
         formColums.forEach((item) => {
             if (item.type == 28) {
                 setColLayout({xs: {span: 24}, sm: {span: 14}});
             }
+            //获取地址类型字段名
+            if (item.type == 31) {
+                addressTypecolums.push(item.name);
+
+            }
         });
-    }, [isDetail, isEdit,treeData]);
+        setAddressTypeColums([...addressTypecolums]);
+        addressTypeColumsRef.current = [...addressTypecolums];
+    }, [isDetail, isEdit, treeData]);
+    useEffect(async () => {
+        let advancedSearchFormData = [];
+        if (conditions.ContactName != undefined && conditions.ContactName) {
+            advancedSearchFormData.push({
+                name: 'ContactName',
+                min: conditions.ContactName,
+                max: conditions.ContactName,
+            })
+        }
+        if (conditions.ContactCompanyName != undefined && conditions.ContactCompanyName) {
+            advancedSearchFormData.push({
+                name: 'ContactCompanyName',
+                min: conditions.ContactCompanyName,
+                max: conditions.ContactCompanyName,
+            })
+        }
+        if (conditions.AddressLine1 != undefined && conditions.AddressLine1) {
+            advancedSearchFormData.push({
+                name: 'AddressLine1',
+                min: conditions.AddressLine1,
+                max: conditions.AddressLine1,
+            })
+        }
+        if (conditions.AddressLine2 != undefined && conditions.AddressLine2) {
+            advancedSearchFormData.push({
+                name: 'AddressLine2',
+                min: conditions.AddressLine2,
+                max: conditions.AddressLine2,
+            })
+        }
+        if (conditions.AddressLine3 != undefined && conditions.AddressLine3) {
+            advancedSearchFormData.push({
+                name: 'AddressLine3',
+                min: conditions.AddressLine3,
+                max: conditions.AddressLine3,
+            })
+        }
+        if (conditions.PostCode != undefined && conditions.PostCode) {
+            advancedSearchFormData.push({
+                name: 'PostCode',
+                min: conditions.PostCode,
+                max: conditions.PostCode,
+            })
+        }
+        if (conditions.Email != undefined && conditions.Email) {
+            advancedSearchFormData.push({
+                name: 'Email',
+                min: conditions.Email,
+                max: conditions.Email,
+            })
+        }
+        if (conditions.Phone != undefined && conditions.Phone) {
+            advancedSearchFormData.push({
+                name: 'Phone',
+                min: conditions.Phone,
+                max: conditions.Phone,
+            })
+        }
+        if (conditions.Mobile != undefined && conditions.Mobile) {
+            advancedSearchFormData.push({
+                name: 'Mobile',
+                min: conditions.Mobile,
+                max: conditions.Mobile,
+            })
+        }
+        if (conditions.City != undefined && conditions.City) {
+            advancedSearchFormData.push({
+                name: 'City',
+                min: conditions.City,
+                max: conditions.City,
+            })
+        }
+        if (conditions.CityDistrict != undefined && conditions.CityDistrict) {
+            advancedSearchFormData.push({
+                name: 'CityDistrict',
+                min: conditions.CityDistrict,
+                max: conditions.CityDistrict,
+            })
+        }
+        if (conditions.BuildingName != undefined && conditions.BuildingName) {
+            advancedSearchFormData.push({
+                name: 'BuildingName',
+                min: conditions.BuildingName,
+                max: conditions.BuildingName,
+            })
+        }
+        let params = {
+            draw: DRAW,
+            pageNum,
+            pageSize,
+            length: pageSize,
+            start: pageNum == 1 ? 0 : (pageNum - 1) * pageSize,
+            grid: 'Receiver Addresses',
+            DisableStatus: false,
+            order: [
+                {
+                    column: 'Id',
+                    dir: 'asc'
+                }
+            ],
+            advancedSearchFormData: advancedSearchFormData,
+        };
+        if (addressModalVisible == true) {
+            const res = await props.ajax.post("/DbGrid/Page", convertToFormData(params), {
+                errorModal: {
+                    okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"),
+                    width: "70%"
+                }
+            });
+            setTotal(res?.recordsTotal || 0);
+            setDataSource(res?.data || []);
+        }
+        console.log(params);
+    }, [addressModalVisible, conditions, pageNum]);
+
     // 获取详情 data为表单回显数据
     props.ajax.usePost('/DbGrid/Load', convertToFormData({
         DbGridName: props.dbGridName,
@@ -64,6 +210,63 @@ export default config({
             setloadRecord(values);
         },
     });
+    /**
+     * 地址表格单选
+     * @type {{onChange: rowSelection.onChange, selectedRowKeys: *[]}}
+     */
+    const rowSelectionSearch = {
+        setSelectedRowKeysSearch,
+        onChange: (selectedRowKeys1, selectedRows1) => {
+            setSelectedRowKeysSearch(selectedRowKeys1);
+            setSelectedRowsSearch(selectedRows1);
+        },
+    };
+    /**
+     * 回填地址
+     * @param values
+     * @returns {Promise<void>}
+     */
+    const fillAddress = async (values) => {
+        var oldAddress = [];
+        if (values == undefined || values.length == 0) {
+            return;
+        }
+        var params = {};
+        params[currentAddress + '-Id'] = values[0].Id;
+        params[currentAddress + '-ContactName'] = values[0].ContactName;
+        params[currentAddress + '-ContactCompanyName'] = values[0].ContactCompanyName;
+        params[currentAddress + '-AddressLine1'] = values[0].AddressLine1;
+        params[currentAddress + '-AddressLine2'] = values[0].AddressLine2;
+        params[currentAddress + '-AddressLine3'] = values[0].AddressLine3;
+        params[currentAddress + '-PostCode'] = values[0].PostCode;
+        params[currentAddress + '-Country'] = values[0].Country;
+        params[currentAddress + '-Email'] = values[0].Email;
+        params[currentAddress + '-Phone'] = values[0].Phone;
+        params[currentAddress + '-Mobile'] = values[0].Mobile;
+        params[currentAddress + '-CityDistrict'] = values[0].CityDistrict;
+        params[currentAddress + '-City'] = values[0].City;
+        if (values[0].VatNumber != undefined) {
+            params[currentAddress + '-VatNumber'] = values[0].VatNumber;
+        }
+        if (values[0].EORI != undefined) {
+            params[currentAddress + '-EORI'] = values[0].EORI;
+        }
+        if (values[0].TaxCode != undefined) {
+            params[currentAddress + '-TaxCode'] = values[0].TaxCode;
+        }
+        addressTypeColums.map(item => {
+            oldAddress.push({
+                'key': currentAddress,
+                'value': params
+            })
+        });
+        form.setFieldsValue(params);
+        setOldAddress([...oldAddress]);
+    }
+
+    /**
+     * 添加hook
+     */
     const {run: createOperation} = props.ajax.usePost('/DbGrid/Create', null, {
         setLoading,
         successTip: getLange(loginUser?.id) == "zh_CN" ? "创建成功！" : "Created Successfully",
@@ -79,11 +282,16 @@ export default config({
     const handleSubmit = useCallback(
         async (values) => {
             var Files = [];
+            var subParams = [];
             const params = {
                 DbGridName: props.dbGridName,
                 draw: DRAW,
                 Includes: includes,
             };
+            console.log(addressTypeColumsRef.current);
+            addressTypeColumsRef.current.map(() => {
+                subParams.push({});
+            })
             Object.keys(values).forEach(key => {
                 //处理不是文件流的数据
                 if (values[key] instanceof Object && key != "Files") {
@@ -103,12 +311,26 @@ export default config({
                 if (key == "Files" && values[key] != undefined) {
                     Files = values[key];
                 }
+                addressTypeColumsRef.current.map((item, index) => {
+                    if (key.indexOf(item + "-") != -1) {
+                        var ind = key.indexOf(item + "-");
+                        var colum = key.substring(ind + (item + "-").length);
+                        subParams[index][colum] = values[key];
+                        delete params[key];
+                    }
 
+                });
             });
             if (Files.length > 0) {
                 delete params.Files;
                 delete params[Files];
             }
+            addressTypeColumsRef.current.map((item, index) => {
+                if (JSON.stringify(subParams[index]) != "{}") {
+
+                    params[item] = JSON.stringify(subParams[index]);
+                }
+            });
             const formData = convertToFormData(params);
             Files.forEach((file) => {
                 formData.append("Files", file);
@@ -164,26 +386,209 @@ export default config({
                                 <Content otherHeight={0}>
                                     <Row gutter={16}>
                                         {
-                                            handleFormItem(form,props, treeData, setTreeData,setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [28, 21, 24, 29], {}, locale)
+                                            handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [28, 21, 24, 29, 31], {}, locale)
                                         }
                                     </Row>
                                 </Content>
                             </Card>
 
-                            {handleFormItem(form,props, treeData, setTreeData,setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 30], {
+                            {formAddressColums.map(item => {
+                                return (
+                                    <Card
+                                        title={<><span style={{color: "#1890ff", fontSize: 18}}><CodeSandboxOutlined/> </span>
+                                            {item.label} </>}
+                                        style={{marginTop: 10}} extra={
+                                        <Button type="primary" onClick={() => {
+                                            setAddressModalVisible(true);
+                                            setCurrentAddress(item.name);
+                                        }}>
+                                            <FormattedMessage id="SearchAddress"/>
+                                        </Button>
+                                    }
+                                    >
+                                        <Content otherHeight={0}>
+                                            <Row gutter={16}>
+                                                <Col span={4} style={{marginRight: "2rem"}}>
+                                                    <FormItem
+                                                        {...layout}
+                                                        label={<FormattedMessage id="ContactName"
+                                                                                 defaultMessage=""/>}
+                                                        placeholder={isDetail ? "" : 'ContactName'}
+                                                        name={item.name + '-' + 'ContactName'}
+                                                    />
+                                                </Col>
+                                                <Col span={4} style={{marginRight: "2rem"}}>
+                                                    <FormItem
+                                                        {...layout}
+                                                        label={<FormattedMessage id="ContactCompanyName"
+                                                                                 defaultMessage=""/>}
+                                                        placeholder={isDetail ? "" : 'ContactCompanyName'}
+                                                        name={item.name + '-' + 'ContactCompanyName'}
+                                                    />
+                                                </Col>
+                                                <Col span={4} style={{marginRight: "2rem"}}>
+                                                    <FormItem
+                                                        {...layout}
+                                                        label={<FormattedMessage id="AddressLine1"
+                                                                                 defaultMessage=""/>}
+                                                        placeholder={isDetail ? "" : 'AddressLine1'}
+                                                        name={item.name + '-' + 'AddressLine1'}
+                                                    />
+                                                </Col>
+                                                <Col span={4} style={{marginRight: "2rem"}}>
+                                                    <FormItem
+                                                        {...layout}
+                                                        label={<FormattedMessage id="AddressLine2"
+                                                                                 defaultMessage=""/>}
+                                                        placeholder={isDetail ? "" : 'AddressLine2'}
+                                                        name={item.name + '-' + 'AddressLine2'}
+                                                    />
+                                                </Col>
+                                                <Col span={4} style={{marginRight: "2rem"}}>
+                                                    <FormItem
+                                                        {...layout}
+                                                        label={<FormattedMessage id="AddressLine3"
+                                                                                 defaultMessage=""/>}
+                                                        placeholder={isDetail ? "" : 'AddressLine3'}
+                                                        name={item.name + '-' + 'AddressLine3'}
+                                                    />
+                                                </Col>
+                                                <Col span={4} style={{marginRight: "2rem"}}>
+                                                    <FormItem
+                                                        {...layout}
+                                                        label={<FormattedMessage id="PostCode"
+                                                                                 defaultMessage=""/>}
+                                                        placeholder={isDetail ? "" : 'PostCode'}
+                                                        name={item.name + '-' + 'PostCode'}
+                                                    />
+                                                </Col>
+                                                <Col span={4} style={{marginRight: "2rem"}}>
+                                                    <FormItem
+                                                        {...layout}
+                                                        label={<FormattedMessage id="Email"
+                                                                                 defaultMessage=""/>}
+                                                        placeholder={isDetail ? "" : 'Email'}
+                                                        name={item.name + '-' + 'Email'}
+                                                        type="email"
+                                                        rules={[
+                                                            {
+                                                                pattern: new RegExp(/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/, "g"),
+                                                                message: <FormattedMessage id="RulesEmailMsg"/>
+                                                            }
+                                                        ]}
+                                                    />
+                                                </Col>
+                                                <Col span={4} style={{marginRight: "2rem"}}>
+                                                    <FormItem
+                                                        {...layout}
+                                                        label={<FormattedMessage id="Phone"
+                                                                                 defaultMessage=""/>}
+                                                        placeholder={isDetail ? "" : 'Phone'}
+                                                        name={item.name + '-' + 'Phone'}
+                                                    />
+                                                </Col>
+                                                <Col span={4} style={{marginRight: "2rem"}}>
+                                                    <FormItem
+                                                        {...layout}
+                                                        label={<FormattedMessage id="Mobile"
+                                                                                 defaultMessage=""/>}
+                                                        placeholder={isDetail ? "" : 'Mobile'}
+                                                        name={item.name + '-' + 'Mobile'}
+                                                    />
+                                                </Col>
+
+                                                <Col span={4} style={{marginRight: "2rem"}}>
+                                                    <FormItem
+                                                        {...layout}
+                                                        label={<FormattedMessage id="City"
+                                                                                 defaultMessage=""/>}
+                                                        placeholder={isDetail ? "" : 'City'}
+                                                        name={item.name + '-' + 'City'}
+                                                    />
+                                                </Col>
+                                                <Col span={4} style={{marginRight: "2rem"}}>
+                                                    <FormItem
+                                                        {...layout}
+                                                        label={<FormattedMessage id="CityDistrict"
+                                                                                 defaultMessage=""/>}
+                                                        placeholder={isDetail ? "" : 'CityDistrict'}
+                                                        name={item.name + '-' + 'CityDistrict'}
+                                                    />
+                                                </Col>
+                                                <Col span={4} style={{marginRight: "2rem"}}>
+                                                    <FormItem
+                                                        {...layout}
+                                                        label={<FormattedMessage id="BuildingName"
+                                                                                 defaultMessage=""/>}
+                                                        placeholder={isDetail ? "" : 'BuildingName'}
+                                                        name={item.name + '-' + 'BuildingName'}
+                                                    />
+                                                </Col>
+                                                {item.ColumnConfigs.map(subItem => {
+                                                    if (subItem.name == "Country") {
+                                                        var options = subItem.options || [];
+                                                        return (
+                                                            <Col span={4} style={{marginRight: "2rem"}}>
+                                                                <FormItem
+                                                                    {...layout}
+                                                                    label={<FormattedMessage id={subItem.header}
+                                                                                             defaultMessage=""/>}
+                                                                    placeholder={isDetail ? "" : subItem.header}
+                                                                    name={item.name + '-31-' + 'Country'}
+                                                                    type={"select"}
+                                                                    options={options.map(sub => {
+                                                                        return {
+                                                                            value: parseFloat(sub.value).toString() == "NaN" ? sub.value : parseInt(sub.value),
+                                                                            label: sub.name
+                                                                        }
+                                                                    })}
+                                                                />
+                                                            </Col>
+                                                        )
+                                                    }
+                                                    if (subItem.name == 'VatNumber' || subItem.name == 'EORI' || subItem.name == 'TaxCode') {
+                                                        if ((!isEdit && !isDetail) && !((subItem.access & authority.create) > 0)) {
+                                                            return;
+                                                        } else if (isEdit && !((subItem.access & authority.change) > 0)) {
+                                                            return;
+                                                        } else if (isDetail && !((subItem.access & authority.view) > 0)) {
+                                                            return;
+                                                        }
+                                                        return (
+                                                            <Col span={4} style={{marginRight: "2rem"}}>
+                                                                <FormItem
+                                                                    {...layout}
+                                                                    label={<FormattedMessage id={subItem.header}
+                                                                                             defaultMessage=""/>}
+                                                                    placeholder={isDetail ? "" : subItem.header}
+
+                                                                />
+                                                            </Col>
+                                                        )
+                                                    }
+
+                                                })}
+                                            </Row>
+                                        </Content>
+                                    </Card>
+                                )
+                            })}
+
+                            {handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 30, 31], {
                                 fitHeight: false,
                                 otherHeight: 0
                             }, locale)}
 
-                            {handleFormItem(form,props,treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 25, 26, 27, 28, 29, 30], {
+                            {handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 25, 26, 27, 28, 29, 30, 31], {
                                 fitHeight: false,
                                 otherHeight: 0
                             }, locale)}
-                            {handleFormItem(form,props,treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30], {
+                            {handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31], {
                                 fitHeight: false,
                                 otherHeight: 0
                             }, locale)}
                         </Content>
+
                     </ModalContent>
                     <FileModal
                         visible={isModalVisible}
@@ -257,6 +662,233 @@ export default config({
                         antLocale={antLocale}
                     />
                 </Form>
+                <Modal
+                    width={"75%"}
+                    visible={addressModalVisible}
+                    onOk={() => setAddressModalVisible(false) || fillAddress(selectedRowKeysSearch)}
+                    onCancel={() => setAddressModalVisible(false) || setPageNum(1)}
+                >
+                    <Content otherHeight={200}>
+                        <QueryBar>
+                            <Form
+                                layout="inline"
+                                form={tableSearchForm}
+                                initialValues={{position: '01'}}
+                                onFinish={(values) => setPageNum(1) || setConditions(values)}
+                            >
+                                <Row style={{marginBottom: 15, marginTop: 15}}>
+                                    <FormItem
+                                        label={<FormattedMessage id={"ContactName"}/>}
+                                        name={"ContactName"}
+                                        allowClear
+                                        placeholder={'ContactName'}
+                                    />
+                                    <FormItem
+                                        label={<FormattedMessage id={"ContactCompanyName"}/>}
+                                        name={"ContactCompanyName"}
+                                        allowClear
+                                        placeholder={'ContactCompanyName'}
+                                    />
+                                    <FormItem
+                                        label={<FormattedMessage id={"AddressLine1"}/>}
+                                        name={"AddressLine1"}
+                                        allowClear
+                                        placeholder={'AddressLine1'}
+                                    />
+                                    <FormItem
+                                        label={<FormattedMessage id={"AddressLine2"}/>}
+                                        name={"AddressLine2"}
+                                        allowClear
+                                        placeholder={'AddressLine2'}
+                                    />
+                                    <FormItem
+                                        label={<FormattedMessage id={"AddressLine3"}/>}
+                                        name={"AddressLine3"}
+                                        allowClear
+                                        placeholder={'AddressLine3'}
+                                    />
+                                    <FormItem
+                                        label={<FormattedMessage id={"PostCode"}/>}
+                                        name={"PostCode"}
+                                        allowClear
+                                        placeholder={'PostCode'}
+                                    />
+                                    <FormItem
+                                        label={<FormattedMessage id={"Email"}/>}
+                                        name={"Email"}
+                                        allowClear
+                                        placeholder={'Email'}
+                                    />
+                                    <FormItem
+                                        label={<FormattedMessage id={"Phone"}/>}
+                                        name={"Phone"}
+                                        allowClear
+                                        placeholder={'Phone'}
+                                    />
+                                    <FormItem
+                                        label={<FormattedMessage id={"Mobile"}/>}
+                                        name={"Mobile"}
+                                        allowClear
+                                        placeholder={'Mobile'}
+                                    />
+                                    <FormItem
+                                        label={<FormattedMessage id={"City"}/>}
+                                        name={"City"}
+                                        allowClear
+                                        placeholder={'City'}
+                                    />
+                                    <FormItem
+                                        label={<FormattedMessage id={"CityDistrict"}/>}
+                                        name={"CityDistrict"}
+                                        allowClear
+                                        placeholder={'CityDistrict'}
+                                    />
+                                    <FormItem
+                                        label={<FormattedMessage id={"BuildingName"}/>}
+                                        name={"BuildingName"}
+                                        allowClear
+                                        placeholder={'BuildingName'}
+                                    />
+                                    <FormItem>
+                                        <Space>
+                                            <Button type="primary" htmlType="submit">
+                                                <FormattedMessage id="Search"/>
+                                            </Button>
+                                            <Button onClick={() => tableSearchForm.resetFields() || setConditions({})}>
+                                                <FormattedMessage
+                                                    id="Reset"/></Button>
+                                        </Space>
+                                    </FormItem>
+                                </Row>
+                            </Form>
+                        </QueryBar>
+                        <Table
+                            columns={[
+                                {
+                                    key: 'Id',
+                                    title: <FormattedMessage id='Id' defaultMessage="Id"/>,
+                                    dataIndex: 'Id',
+                                    width: 100,
+                                    fixed: 'left',
+                                    align: "center",
+                                },
+                                {
+                                    key: 'ContactName',
+                                    title: <FormattedMessage id='ContactName' defaultMessage="ContactName"/>,
+                                    dataIndex: 'ContactName',
+                                    width: 250,
+                                    align: "center",
+                                },
+                                {
+                                    key: 'ContactCompanyName',
+                                    title: <FormattedMessage id='ContactCompanyName'
+                                                             defaultMessage="ContactCompanyName"/>,
+                                    dataIndex: 'ContactCompanyName',
+                                    width: 300,
+                                    align: "center",
+                                },
+                                {
+                                    key: 'AddressLine1',
+                                    title: <FormattedMessage id='AddressLine1' defaultMessage="AddressLine1"/>,
+                                    dataIndex: 'AddressLine1',
+                                    width: 300,
+                                    align: "center",
+                                },
+                                {
+                                    key: 'AddressLine2',
+                                    title: <FormattedMessage id='AddressLine2' defaultMessage="AddressLine2"/>,
+                                    dataIndex: 'AddressLine2',
+                                    width: 300,
+                                    align: "center",
+                                },
+                                {
+                                    key: 'AddressLine3',
+                                    title: <FormattedMessage id='AddressLine3' defaultMessage="AddressLine3"/>,
+                                    dataIndex: 'AddressLine3',
+                                    width: 300,
+                                    align: "center",
+                                },
+                                {
+                                    key: 'PostCode',
+                                    title: <FormattedMessage id='PostCode' defaultMessage="PostCode"/>,
+                                    dataIndex: 'PostCode',
+                                    width: 150,
+                                    align: "center",
+                                },
+                                {
+                                    key: 'Country',
+                                    title: <FormattedMessage id='Country' defaultMessage="Country"/>,
+                                    dataIndex: 'Country',
+                                    width: 150,
+                                    align: "center",
+                                },
+                                {
+                                    key: 'Email',
+                                    title: <FormattedMessage id='Email' defaultMessage="Email"/>,
+                                    dataIndex: 'Email',
+                                    width: 200,
+                                    align: "center",
+                                },
+                                {
+                                    key: 'Phone',
+                                    title: <FormattedMessage id='Phone' defaultMessage="Phone"/>,
+                                    dataIndex: 'Phone',
+                                    width: 200,
+                                    align: "center",
+                                },
+                                {
+                                    key: 'Mobile',
+                                    title: <FormattedMessage id='Mobile' defaultMessage="Mobile"/>,
+                                    dataIndex: 'Mobile',
+                                    width: 200,
+                                    align: "center",
+                                },
+                                {
+                                    key: 'City',
+                                    title: <FormattedMessage id='City' defaultMessage="City"/>,
+                                    dataIndex: 'City',
+                                    width: 200,
+                                    align: "center",
+                                },
+                                {
+                                    key: 'CityDistrict',
+                                    title: <FormattedMessage id='CityDistrict' defaultMessage="CityDistrict"/>,
+                                    dataIndex: 'CityDistrict',
+                                    width: 200,
+                                    align: "center",
+                                },
+                                {
+                                    key: 'BuildingName',
+                                    title: <FormattedMessage id='BuildingName' defaultMessage="BuildingName"/>,
+                                    dataIndex: 'BuildingName',
+                                    width: 300,
+                                    align: "center",
+                                },
+                            ]}
+                            scroll={{
+                                x: 1300,
+                            }}
+                            pageNum={pageNum}
+                            pageSize={pageSize}
+                            fitHeight
+                            dataSource={dataSource}
+                            rowKey={searchRecord => searchRecord}
+                            rowSelection={{
+                                type: 'radio',
+                                ...rowSelectionSearch
+                            }}
+                        />
+                        <Pagination
+                            total={total}
+                            pageNum={pageNum}
+                            pageSize={pageSize}
+                            onPageNumChange={setPageNum}
+                            showTotal={(t) => <FormattedMessage id="Pagination" values={{total: t}}
+                                                                defaultMessage=""/>}
+                            onPageSizeChange={(pageSize) => setPageNum(1) || setPageSize(pageSize)}
+                        />
+                    </Content>
+                </Modal>
             </ConfigProvider>
         </IntlProvider>
     );

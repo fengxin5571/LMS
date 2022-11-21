@@ -20,6 +20,7 @@
   "RulesMaxMsg": "{name}最多输入{num}字符",
   "RulesNumberMaxMsg": "{name}最多输入{num}",
   "RulesEmailMsg": "请输入正确的邮箱",
+  "SearchAddress":"搜索地址",
   "Pagination": "共{total}条数据",
   "QueryBarCollapsedTips": "展开更多",
   "QueryBarExpandedTips": "收起更多",

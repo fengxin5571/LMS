@@ -119,6 +119,7 @@ export default config({
     const [transferVisible, setTransferVisible] = useState(false);
     const [bankAccountOption, setBankAccountOption] = useState([]);
     const [gridClassName, setGridClassName] = useState('');
+    const [formAddressColumns, setFormAddressColumns] = useState([]);
     const fileModal = useRef();
     useEffect(async () => {
         const resp = await fetch(window.location.origin + `/lang/${lang}.json`)
@@ -269,6 +270,8 @@ export default config({
         setTableColumns(resColums.table_colums);
         setSearchColumns(resColums.search_colums);
         setFormColumns(resColums.form_colums);
+        var addressColumns = resColums.form_colums.filter(item => item.type == 31);
+        setFormAddressColumns(addressColumns);
         let searchData = [];
         let globalSearch = null;
         Object.keys(conditions).forEach(key => {
@@ -950,7 +953,6 @@ export default config({
                                                             defaultMessage=""/>}
                         onPageSizeChange={(pageSize) => setPageNum(1) || setPageSize(pageSize)}
                     />
-                    //通用版表单
                     {gridClassName != 'PaymentToSuppliersClassName' ? <EditModal
                         visible={visible}
                         dbGridName={dbGridName}
@@ -958,6 +960,7 @@ export default config({
                         isEdit={isEdit}
                         isCreate={isCreate}
                         formColums={formColumns}
+                        formAddressColums={formAddressColumns}
                         antLocale={antLocale}
                         locale={locale}
                         onOk={() => setVisible(false) || refreshSearch()}
@@ -965,7 +968,7 @@ export default config({
                         includes={includes}
                         isDetail={isDetail}
                     /> : null}
-                    //支付供应商添加
+
                     {gridClassName == 'PaymentToSuppliersClassName' ? <CreateModal
                         visible={visible}
                         dbGridName={dbGridName}
