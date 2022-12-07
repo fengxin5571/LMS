@@ -462,6 +462,7 @@ const en_US = {
     "GridFlags_CanCopyRecord": "CopyRecord",
     "GridFlags_CanPrint": "Print",
     "GridFlags_CanPrintAll": "PrintAll",
+    "GridFlags_DeleteUnprinted": "DeleteUnprinted",
     "GridFlags_CustomerSupport": "tomerSupport",
     "GridFlags_CanCS": "CS",
     "GridFlags_CanUV": "UV",

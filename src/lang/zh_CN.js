@@ -463,6 +463,7 @@ const zh_CN = {
     "GridFlags_CanCopyRecord": "复制",
     "GridFlags_CanPrint": "打印",
     "GridFlags_CanPrintAll": "全部打印",
+    "GridFlags_DeleteUnprinted": "删除未打印",
     "GridFlags_CustomerSupport": "客服",
     "GridFlags_CanCS": "假货",
     "GridFlags_CanUV": "低报",

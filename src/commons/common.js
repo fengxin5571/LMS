@@ -511,10 +511,10 @@ export function renderTableColumns(column, text, record, index, isModalVisible, 
  * @param field
  * @returns {*}
  */
-export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, filter_type = [], style_object = {}, locale, is_style = false, field) {
+export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickupOptions, form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, filter_type = [], style_object = {}, locale, is_style = false, field) {
     {
         formColums.sort((a, b) => {
-            var order = [10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 27, 26, 28, 29, 21, 24, 25];
+            var order = [10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 27, 26, 32, 28, 29, 21, 24, 25];
             return order.indexOf(a.type) - order.indexOf(b.type);
         });
         var elementItem = formColums.map((item, index) => {
@@ -603,7 +603,6 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                 type="number"
                                 required={required}
                                 disabled={isDetail}
-                                stringMode
                                 style={is_style ? {width: '11rem'} : {width: '13rem'}}
                                 placeholder={isDetail ? "" : item.header}
                                 rules={rules}
@@ -653,7 +652,6 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                 type="number"
                                 required={required}
                                 disabled={isDetail}
-                                stringMode
                                 step="0.1"
                                 style={is_style ? {width: '11rem'} : {width: "13rem"}}
                                 placeholder={isDetail ? "" : item.header}
@@ -738,6 +736,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                             return begin || end
                         }
                     }
+
                     return (
                         <Col span={4} style={!is_style ? {marginRight: "2rem"} : {}}>
                             <FormItem
@@ -748,11 +747,17 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                 type="date"
                                 required={required}
                                 disabled={isDetail}
-                                dateFormat={"YYYY-MM-DD HH:mm:ss"}
+                                dateFormat={"YYYY-MM-DD "}
                                 placeholder={isDetail ? "" : item.header}
                                 rules={rules}
                                 style={is_style ? {width: '11rem'} : {width: '13rem'}}
+
                                 disabledDate={disabledRangeDate}
+                                onChange={(dayjs, timeString) => {
+                                    if (item.name == 'ShipmentDate') {
+                                        setShipmentDate(dayjs);
+                                    }
+                                }}
                             />
                         </Col>
                     );
@@ -845,6 +850,39 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                     }
                                 })}
                                 rules={rules}
+                                onChange={(value) => {
+                                    if (item.name == 'CompanyId') {
+                                        setCompanyId(value)
+                                    }
+                                    if (item.name == 'TenantId') {
+                                        setTenantId(value);
+                                    }
+                                }}
+                            />
+                        </Col>
+                    );
+                } else if (item.type == 32) {
+
+                    return (
+                        <Col span={4} style={!is_style ? {marginRight: "2rem"} : {}}>
+                            <FormItem
+                                {...layout}
+                                label={item.label}
+                                name={field != undefined ? [field?.name, item.name] : item.name}
+                                fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
+                                type="select"
+                                required={required}
+                                disabled={isDetail}
+                                placeholder={isDetail ? "" : item.header}
+                                style={is_style ? {width: '11rem'} : {width: '13rem'}}
+                                options={pickupOptions.map(item=>{
+                                    return {
+                                        value: parseFloat(item.Id).toString() == "NaN" ? item.Id : parseInt(item.Id),
+                                        label: item.Name
+                                    }
+                                })}
+                                rules={rules}
+
                             />
                         </Col>
                     );
@@ -898,7 +936,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                                         }}
                                                         direction="horizontal"
                                                     >
-                                                        {handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.subcolumns, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
+                                                        {handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickupOptions,form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.subcolumns, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
                                                         {!isDetail ? <Button type="primary" size="small" style={{
                                                                 background: "#FF6060",
                                                                 borderColor: '#FF6060',
@@ -943,7 +981,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                                     align="baseline"
                                                 >
 
-                                                    {handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.subcolumns, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
+                                                    {handleFormItem(setShipmentDate,setCompanyId, setTenantId,pickupOptions, form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.subcolumns, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
                                                     {!isDetail ? <Button type="primary" size="small" style={{
                                                             background: "#FF6060",
                                                             borderColor: '#FF6060',
@@ -1019,7 +1057,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                                         }}
                                                         direction="horizontal"
                                                     >
-                                                        {handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
+                                                        {handleFormItem(setShipmentDate,setCompanyId, setTenantId,pickupOptions, form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
                                                         {!isDetail ? <Button type="primary" size="small" style={{
                                                                 background: "#FF6060",
                                                                 borderColor: '#FF6060',
@@ -1065,7 +1103,7 @@ export function handleFormItem(form, props, treeData, setTreeData, setRefreshLoa
                                                     }}
                                                     direction="horizontal"
                                                 >
-                                                    {handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
+                                                    {handleFormItem(setShipmentDate,setCompanyId, setTenantId,pickupOptions, form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
                                                     {!isDetail ? <Button type="primary" size="small" style={{
                                                             background: "#FF6060",
                                                             borderColor: '#FF6060',
@@ -1451,4 +1489,18 @@ export function GetDateNow() {
 
 export function formatPrice(price) {
     return String(price).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+export function openWin(url, name, iWidth, iHeight) {
+    var url; // 转向网页的地址;
+    var name; // 网页名称，可为空;
+    var iWidth; // 弹出窗口的宽度;
+    var iHeight; // 弹出窗口的高度;
+    // window.screen.height获得屏幕的高，window.screen.width获得屏幕的宽
+    var iTop = (window.screen.height - 30 - iHeight) / 2; // 获得窗口的垂直位置;
+    var iLeft = (window.screen.width - 10 - iWidth) / 2; // 获得窗口的水平位置;
+    let pdfWindow = window.open(url, name, 'height=' + iHeight + ',innerHeight=' + iHeight
+        + ',width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft
+        + ',toolbar=no,menubar=no,scrollbars=auto,resizeable=no,location=no,status=no');
+    return pdfWindow;
 }

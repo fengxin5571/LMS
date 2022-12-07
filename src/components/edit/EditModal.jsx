@@ -16,7 +16,7 @@ import {
 } from '@ra-lib/admin';
 import config from 'src/commons/config-hoc';
 import {WITH_SYSTEMS, DRAW} from 'src/config';
-import {authority, convertToFormData, handleFormItem} from "src/commons/common";
+import {authority, BtnFlags, convertToFormData, GetDateNow, handleFormItem, openWin} from "src/commons/common";
 import {FormattedMessage, IntlProvider} from 'react-intl'
 import {getLange} from "src/commons";
 import FileModal from "../form/FileModal";
@@ -31,7 +31,18 @@ export default config({
     },
 })(function Edit(props) {
     const loginUser = getLoginUser();
-    const {record, isEdit, onOk, formColums, formAddressColums, antLocale, locale, includes, isDetail} = props;
+    const {
+        record,
+        isEdit,
+        onOk,
+        formColums,
+        formAddressColums,
+        antLocale,
+        locale,
+        includes,
+        isDetail,
+        resBtnFlags
+    } = props;
     const [loadRecord, setloadRecord] = useState();
     const [loading, setLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -59,25 +70,46 @@ export default config({
     const [addressTypeColums, setAddressTypeColums] = useState([]);
     const [currentAddress, setCurrentAddress] = useState('');
     const [oldAddress, setOldAddress] = useState([]);
+    const [searchAddressTable, setSearchAddressTable] = useState('');
+    const [shipmentDate, setShipmentDate] = useState();
+    const [companyId, setCompanyId] = useState();
+    const [tenantId, setTenantId] = useState();
+    const [pickupOptions, setPickupOptions] = useState([]);
     const fileModal = useRef();
     const addressTypeColumsRef = useRef();
+    const pickupRef = useRef();
+    const pickupColumsRef = useRef();
     useEffect(async () => {
         var addressTypecolums = [];
+        var pickupColums = [];
         formColums.forEach((item) => {
+
             if (item.type == 28) {
                 setColLayout({xs: {span: 24}, sm: {span: 14}});
             }
             //获取地址类型字段名
             if (item.type == 31) {
                 addressTypecolums.push(item.name);
-
+            }
+            //取货emum类型
+            if (item.type == 32) {
+                pickupRef.current = true;
+                pickupColums.push(item.name)
             }
         });
         setAddressTypeColums([...addressTypecolums]);
         addressTypeColumsRef.current = [...addressTypecolums];
+        pickupColumsRef.current = [...pickupColums];
     }, [isDetail, isEdit, treeData]);
     useEffect(async () => {
         let advancedSearchFormData = [];
+        if (conditions.Name != undefined && conditions.Name) {
+            advancedSearchFormData.push({
+                name: 'Name',
+                min: conditions.Name,
+                max: conditions.Name,
+            })
+        }
         if (conditions.ContactName != undefined && conditions.ContactName) {
             advancedSearchFormData.push({
                 name: 'ContactName',
@@ -168,7 +200,7 @@ export default config({
             pageSize,
             length: pageSize,
             start: pageNum == 1 ? 0 : (pageNum - 1) * pageSize,
-            grid: 'Receiver Addresses',
+            grid: searchAddressTable,
             DisableStatus: false,
             order: [
                 {
@@ -190,7 +222,39 @@ export default config({
         }
         console.log(params);
     }, [addressModalVisible, conditions, pageNum]);
+    useEffect(async () => {
+        if (shipmentDate && pickupRef.current) {
+            var params = {
+                DbGridName: props.dbGridName,
+                ShipmentDate: shipmentDate,
+            }
+            if (companyId) {
+                params['CompanyId'] = companyId;
+            }
+            if (tenantId) {
+                params['TenantId'] = tenantId;
+            }
+            const res = await props.ajax.post("/Proj/GetPickupList", convertToFormData(params), {
+                errorModal: {
+                    okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"),
+                    width: "70%"
+                }
+            });
+            res.sort((a, b) => {
+                return b.Id - a.Id;
+            });
+            if (pickupColumsRef.current != undefined) {
+                pickupColumsRef.current.map(item => {
+                    var params = {};
+                    params[item] = res[0]?.Id|| '';
+                    form.setFieldsValue(params)
+                });
+            }
 
+            setPickupOptions(res);
+        }
+
+    }, [shipmentDate, companyId, tenantId]);
     // 获取详情 data为表单回显数据
     props.ajax.usePost('/DbGrid/Load', convertToFormData({
         DbGridName: props.dbGridName,
@@ -206,7 +270,47 @@ export default config({
             const values = {
                 ...res.data,
             };
+            Object.keys(values).forEach(key => {
+                addressTypeColumsRef.current.map(item => {
+                    if (item == key) {
+                        values[item + '-Id'] = values[key].Id;
+                        values[item + '-ContactName'] = values[key].ContactName;
+                        values[item + '-ContactCompanyName'] = values[key].ContactCompanyName;
+                        values[item + '-AddressLine1'] = values[key].AddressLine1;
+                        values[item + '-AddressLine2'] = values[key].AddressLine2;
+                        values[item + '-AddressLine3'] = values[key].AddressLine3;
+                        values[item + '-PostCode'] = values[key].PostCode;
+                        values[item + '-Country'] = values[key].Country;
+                        values[item + '-Email'] = values[key].Email;
+                        values[item + '-Phone'] = values[key].Phone;
+                        values[item + '-Mobile'] = values[key].Mobile;
+                        values[item + '-CityDistrict'] = values[key].CityDistrict;
+                        values[item + '-City'] = values[key].City;
+                        if (values[key].VatNumber != undefined) {
+                            values[item + '-VatNumber'] = values[key].VatNumber;
+                        }
+                        if (values[key].EORI != undefined) {
+                            values[item + '-EORI'] = values[key].EORI;
+                        }
+                        if (values[key].TaxCode != undefined) {
+                            values[item + '-TaxCode'] = values[key].TaxCode;
+                        }
+                    }
+                });
+            });
+            console.log(values)
             form.setFieldsValue(values);
+            if (pickupRef.current) {
+                if (values?.ShipmentDate != undefined) {
+                    setShipmentDate(values.ShipmentDate);
+                }
+                if (values?.TenantId != undefined) {
+                    setTenantId(values.TenantId);
+                }
+                if (values?.CompanyId != undefined) {
+                    setCompanyId(values.CompanyId);
+                }
+            }
             setloadRecord(values);
         },
     });
@@ -227,6 +331,7 @@ export default config({
      * @returns {Promise<void>}
      */
     const fillAddress = async (values) => {
+        console.log(values);
         var oldAddress = [];
         if (values == undefined || values.length == 0) {
             return;
@@ -256,7 +361,7 @@ export default config({
         }
         addressTypeColums.map(item => {
             oldAddress.push({
-                'key': currentAddress,
+                'key': searchAddressTable,
                 'value': params
             })
         });
@@ -270,6 +375,22 @@ export default config({
     const {run: createOperation} = props.ajax.usePost('/DbGrid/Create', null, {
         setLoading,
         successTip: getLange(loginUser?.id) == "zh_CN" ? "创建成功！" : "Created Successfully",
+        errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"},
+    });
+    /**
+     * 直接打印添加
+     */
+    const {run: createPrintDirectly} = props.ajax.usePost('/DbGrid/PrintDirectly', null, {
+        setLoading,
+        responseType: "blob",
+        successTip: getLange(loginUser?.id) == "zh_CN" ? "创建成功！" : "Created Successfully",
+        errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"},
+    });
+    // 直接打印更新请求
+    const {run: updatePrintDirectly} = props.ajax.usePost('DbGrid/PrintDirectly', null, {
+        setLoading,
+        responseType: "blob",
+        successTip: getLange(loginUser?.id) == "zh_CN" ? "修改成功！" : "Modified Successfully",
         errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"},
     });
     // 更新请求
@@ -325,22 +446,61 @@ export default config({
                 delete params.Files;
                 delete params[Files];
             }
+            if (params?.DirectPrinting != undefined) {
+                delete params["DirectPrinting"];
+            }
             addressTypeColumsRef.current.map((item, index) => {
                 if (JSON.stringify(subParams[index]) != "{}") {
-
                     params[item] = JSON.stringify(subParams[index]);
                 }
             });
+            console.log(values);
             const formData = convertToFormData(params);
             Files.forEach((file) => {
                 formData.append("Files", file);
             });
             if (isEdit) {
-                //编辑操作
-                await updateOperation(formData);
+                if (values.DirectPrinting == true) {
+                    //直接打印添加
+                    const res = await updatePrintDirectly(formData);
+                    let blob = new Blob([res]);
+                    let name = props.dbGridName + "-" + GetDateNow() + '.pdf';
+                    let reader = new FileReader();
+                    reader.readAsDataURL(blob); // 转换为base64，可以直接放入a标签href
+                    reader.addEventListener("load", function () {
+                        let base64 = reader.result
+                        let url = base64.split(',')[1];
+                        let pdfWindow = openWin('', '', 900, 600);
+                        pdfWindow.document.write("<iframe width='100%' height='100%' src='data:application/pdf;base64, " + encodeURI(url) + "'></iframe>");
+                        pdfWindow.document.title = name
+                        pdfWindow.document.close();
+                    });
+                } else {
+                    //编辑操作
+                    await updateOperation(formData);
+                }
+
             } else {
-                //添加操作
-                await createOperation(formData);
+                if (values.DirectPrinting == true) {
+                    //直接打印添加
+                    const res = await createPrintDirectly(formData);
+                    let blob = new Blob([res]);
+                    let name = props.dbGridName + "-" + GetDateNow() + '.pdf';
+                    let reader = new FileReader();
+                    reader.readAsDataURL(blob); // 转换为base64，可以直接放入a标签href
+                    reader.addEventListener("load", function () {
+                        let base64 = reader.result
+                        let url = base64.split(',')[1];
+                        let pdfWindow = openWin('', '', 900, 600);
+                        pdfWindow.document.write("<iframe width='100%' height='100%' src='data:application/pdf;base64, " + encodeURI(url) + "'></iframe>");
+                        pdfWindow.document.title = name
+                        pdfWindow.document.close();
+                    });
+                } else {
+                    //添加操作
+                    await createOperation(formData);
+                }
+
             }
             if (fileType == 1) {
                 window.sessionStorage.removeItem("fileManager-local-" + uploadItemName.toString() + "-" + loginUser?.id);
@@ -380,14 +540,32 @@ export default config({
                     >
                         <Content fitHeight otherHeight={200} style={{backgroundColor: "#f0f2f5"}}>
                             {isEdit ? <FormItem hidden name="Id" value={record?.Id}/> : null}
+
                             <Card title={<><span style={{color: "#1890ff", fontSize: 18}}><CodeSandboxOutlined/> </span>
-                                <FormattedMessage id="BasicInformation"/></>}
+                                <FormattedMessage id="BasicInformation"/>
+                                {isDetail == false && ((resBtnFlags & BtnFlags.CanPrintAll) > 0 || (resBtnFlags & BtnFlags.CanPrint) > 0) ?
+                                    <Row gutter={10} style={{float: "right", paddingRight: "10px"}}>
+                                        <FormItem
+                                            label={<FormattedMessage id="Direct Printing"
+                                                                     defaultMessage="Direct Printing"/>}
+                                            name={'DirectPrinting'}
+                                            disabled={isDetail}
+                                            type={'switch'}
+                                        />
+                                    </Row>
+
+                                    : null}
+                            </>
+
+                            }
+                                  bodyStyle={{padding: 10}} style={{marginTop: 10}}
                             >
                                 <Content otherHeight={0}>
                                     <Row gutter={16}>
                                         {
-                                            handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [28, 21, 24, 29, 31], {}, locale)
+                                            handleFormItem(setShipmentDate, setCompanyId, setTenantId, pickupOptions, form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [28, 21, 24, 29, 31], {}, locale)
                                         }
+
                                     </Row>
                                 </Content>
                             </Card>
@@ -400,8 +578,11 @@ export default config({
                                         style={{marginTop: 10}} extra={
                                         <Button type="primary" onClick={() => {
                                             setAddressModalVisible(true);
+                                            setSearchAddressTable(item.related);
                                             setCurrentAddress(item.name);
-                                        }}>
+                                        }}
+                                                disabled={isDetail}
+                                        >
                                             <FormattedMessage id="SearchAddress"/>
                                         </Button>
                                     }
@@ -415,6 +596,7 @@ export default config({
                                                                                  defaultMessage=""/>}
                                                         placeholder={isDetail ? "" : 'ContactName'}
                                                         name={item.name + '-' + 'ContactName'}
+                                                        disabled={isDetail}
                                                     />
                                                 </Col>
                                                 <Col span={4} style={{marginRight: "2rem"}}>
@@ -424,6 +606,7 @@ export default config({
                                                                                  defaultMessage=""/>}
                                                         placeholder={isDetail ? "" : 'ContactCompanyName'}
                                                         name={item.name + '-' + 'ContactCompanyName'}
+                                                        disabled={isDetail}
                                                     />
                                                 </Col>
                                                 <Col span={4} style={{marginRight: "2rem"}}>
@@ -433,6 +616,7 @@ export default config({
                                                                                  defaultMessage=""/>}
                                                         placeholder={isDetail ? "" : 'AddressLine1'}
                                                         name={item.name + '-' + 'AddressLine1'}
+                                                        disabled={isDetail}
                                                     />
                                                 </Col>
                                                 <Col span={4} style={{marginRight: "2rem"}}>
@@ -442,6 +626,7 @@ export default config({
                                                                                  defaultMessage=""/>}
                                                         placeholder={isDetail ? "" : 'AddressLine2'}
                                                         name={item.name + '-' + 'AddressLine2'}
+                                                        disabled={isDetail}
                                                     />
                                                 </Col>
                                                 <Col span={4} style={{marginRight: "2rem"}}>
@@ -451,6 +636,7 @@ export default config({
                                                                                  defaultMessage=""/>}
                                                         placeholder={isDetail ? "" : 'AddressLine3'}
                                                         name={item.name + '-' + 'AddressLine3'}
+                                                        disabled={isDetail}
                                                     />
                                                 </Col>
                                                 <Col span={4} style={{marginRight: "2rem"}}>
@@ -460,6 +646,7 @@ export default config({
                                                                                  defaultMessage=""/>}
                                                         placeholder={isDetail ? "" : 'PostCode'}
                                                         name={item.name + '-' + 'PostCode'}
+                                                        disabled={isDetail}
                                                     />
                                                 </Col>
                                                 <Col span={4} style={{marginRight: "2rem"}}>
@@ -476,6 +663,7 @@ export default config({
                                                                 message: <FormattedMessage id="RulesEmailMsg"/>
                                                             }
                                                         ]}
+                                                        disabled={isDetail}
                                                     />
                                                 </Col>
                                                 <Col span={4} style={{marginRight: "2rem"}}>
@@ -485,6 +673,7 @@ export default config({
                                                                                  defaultMessage=""/>}
                                                         placeholder={isDetail ? "" : 'Phone'}
                                                         name={item.name + '-' + 'Phone'}
+                                                        disabled={isDetail}
                                                     />
                                                 </Col>
                                                 <Col span={4} style={{marginRight: "2rem"}}>
@@ -494,6 +683,7 @@ export default config({
                                                                                  defaultMessage=""/>}
                                                         placeholder={isDetail ? "" : 'Mobile'}
                                                         name={item.name + '-' + 'Mobile'}
+                                                        disabled={isDetail}
                                                     />
                                                 </Col>
 
@@ -504,6 +694,7 @@ export default config({
                                                                                  defaultMessage=""/>}
                                                         placeholder={isDetail ? "" : 'City'}
                                                         name={item.name + '-' + 'City'}
+                                                        disabled={isDetail}
                                                     />
                                                 </Col>
                                                 <Col span={4} style={{marginRight: "2rem"}}>
@@ -513,6 +704,7 @@ export default config({
                                                                                  defaultMessage=""/>}
                                                         placeholder={isDetail ? "" : 'CityDistrict'}
                                                         name={item.name + '-' + 'CityDistrict'}
+                                                        disabled={isDetail}
                                                     />
                                                 </Col>
                                                 <Col span={4} style={{marginRight: "2rem"}}>
@@ -522,6 +714,7 @@ export default config({
                                                                                  defaultMessage=""/>}
                                                         placeholder={isDetail ? "" : 'BuildingName'}
                                                         name={item.name + '-' + 'BuildingName'}
+                                                        disabled={isDetail}
                                                     />
                                                 </Col>
                                                 {item.ColumnConfigs.map(subItem => {
@@ -534,7 +727,7 @@ export default config({
                                                                     label={<FormattedMessage id={subItem.header}
                                                                                              defaultMessage=""/>}
                                                                     placeholder={isDetail ? "" : subItem.header}
-                                                                    name={item.name + '-31-' + 'Country'}
+                                                                    name={item.name + '-' + 'Country'}
                                                                     type={"select"}
                                                                     options={options.map(sub => {
                                                                         return {
@@ -542,6 +735,7 @@ export default config({
                                                                             label: sub.name
                                                                         }
                                                                     })}
+                                                                    disabled={isDetail}
                                                                 />
                                                             </Col>
                                                         )
@@ -561,7 +755,7 @@ export default config({
                                                                     label={<FormattedMessage id={subItem.header}
                                                                                              defaultMessage=""/>}
                                                                     placeholder={isDetail ? "" : subItem.header}
-
+                                                                    disabled={isDetail}
                                                                 />
                                                             </Col>
                                                         )
@@ -574,19 +768,20 @@ export default config({
                                 )
                             })}
 
-                            {handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 30, 31], {
+                            {handleFormItem(setShipmentDate, setCompanyId, setTenantId, pickupOptions, form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 30, 31, 32], {
                                 fitHeight: false,
                                 otherHeight: 0
                             }, locale)}
 
-                            {handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 25, 26, 27, 28, 29, 30, 31], {
+                            {handleFormItem(setShipmentDate, setCompanyId, setTenantId, pickupOptions, form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 25, 26, 27, 28, 29, 30, 31, 32], {
                                 fitHeight: false,
                                 otherHeight: 0
                             }, locale)}
-                            {handleFormItem(form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31], {
+                            {handleFormItem(setShipmentDate, setCompanyId, setTenantId, pickupOptions, form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32], {
                                 fitHeight: false,
                                 otherHeight: 0
                             }, locale)}
+
                         </Content>
 
                     </ModalContent>
@@ -675,8 +870,15 @@ export default config({
                                 form={tableSearchForm}
                                 initialValues={{position: '01'}}
                                 onFinish={(values) => setPageNum(1) || setConditions(values)}
+                                onValuesChange={(changedValues, allValues) => setPageNum(1) || setConditions(allValues)}
                             >
                                 <Row style={{marginBottom: 15, marginTop: 15}}>
+                                    <FormItem
+                                        label={<FormattedMessage id={"Name"}/>}
+                                        name={"Name"}
+                                        allowClear
+                                        placeholder={'Name'}
+                                    />
                                     <FormItem
                                         label={<FormattedMessage id={"ContactName"}/>}
                                         name={"ContactName"}
@@ -763,6 +965,11 @@ export default config({
                             </Form>
                         </QueryBar>
                         <Table
+                            onRow={record => {
+                                return {
+                                    onDoubleClick: (e) => e.stopPropagation() || setAddressModalVisible(false) || fillAddress([record]),
+                                };
+                            }}
                             columns={[
                                 {
                                     key: 'Id',

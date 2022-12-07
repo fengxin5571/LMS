@@ -464,7 +464,10 @@
   "GridFlags_CanCopyRecord": "复制",
   "GridFlags_CanPrint": "打印",
   "GridFlags_CanPrintAll": "全部打印",
+  "GridFlags_DeleteUnprinted": "删除未打印",
+  "GridFlags_Unprinted" : "打印未打印",
   "GridFlags_CustomerSupport": "客服",
+  "GridFlags_BatchPrinting": "批量打单",
   "GridFlags_CanUndo": "取消",
   "GridFlags_CanCS": "假货",
   "GridFlags_CanUV": "低报",
@@ -687,5 +690,6 @@
   "Address Authorization": "授权地址",
   "Custom Declaration": "海关申报",
   "Package List": "装箱单",
-  "Shipment Orders": "订单"
+  "Shipment Orders": "订单",
+  "Direct Printing" :"直接打印"
 }

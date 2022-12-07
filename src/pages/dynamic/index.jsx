@@ -34,7 +34,7 @@ import {
     asyncConfigData,
     convertToFormData,
     GetDateNow,
-    formatPrice
+    formatPrice, openWin
 } from "src/commons/common";
 import {getLange, setLange} from 'src/commons';
 import {FormattedMessage, IntlProvider, addLocaleDate} from 'react-intl'; /* react-intl imports */
@@ -44,7 +44,6 @@ import {useLocation, useHistory, useParams} from "react-router-dom";
 import TableModal from "src/pages/GridTools/TableModal";
 import TableList from "src/pages/GridTools/TableList";
 import {confirm} from '@ra-lib/components';
-
 import {
     UploadOutlined,
     PlusOutlined,
@@ -60,10 +59,12 @@ import {
     PlayCircleOutlined,
     PaperClipOutlined,
     UndoOutlined,
-    PayCircleOutlined
+    PayCircleOutlined,
+    SnippetsOutlined
 } from "@ant-design/icons";
 import FileModal from "../../components/form/FileModal";
 import CreateModal from "../../components/PaymentToSuppliers/CreateModal";
+import {Viewer, Worker} from '@phuocng/react-pdf-viewer';
 
 export default config({
     path: "/Dynamic/:dbGridName",
@@ -120,6 +121,8 @@ export default config({
     const [bankAccountOption, setBankAccountOption] = useState([]);
     const [gridClassName, setGridClassName] = useState('');
     const [formAddressColumns, setFormAddressColumns] = useState([]);
+    const [pdfBlob, setPdfBlob] = useState("");
+    const [pdfVisible, setPdfVisible] = useState(false);
     const fileModal = useRef();
     useEffect(async () => {
         const resp = await fetch(window.location.origin + `/lang/${lang}.json`)
@@ -325,7 +328,7 @@ export default config({
         async (id, name) => {
             await confirm({
                 title: getLange(loginUser?.id) == "zh_CN" ? "提示" : "Tips",
-                content: getLange(loginUser?.id) == "zh_CN" ? "您确定删除「" + name + "」吗？" : "Are you sure you want to delete [{" + name + "}]?",
+                content: getLange(loginUser?.id) == "zh_CN" ? "您确定删除「" + name || id + "」吗？" : "Are you sure you want to delete [{" + name + "}]?",
 
             });
             await props.ajax.post(`DbGrid/Delete`, {
@@ -404,10 +407,45 @@ export default config({
         }
     };
     /**
+     * 批量打单
+     * @returns {Promise<void>}
+     */
+    const batchPrint = async () => {
+        var formartName = dbGridName.replace(new RegExp(/( )/g), "")
+        const res = await props.ajax.post('/DbGrid/DownloadFile&fileName=' + formartName + '%2Ftemplate.zip', convertToFormData({}), {
+            responseType: "blob",
+            errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
+        });
+        let blob = new Blob([res]);
+        let name = dbGridName + "-" + GetDateNow() + '.zip';
+        if (typeof window.navigator.msSaveBlob !== "undefined") {
+            // 兼容IE，window.navigator.msSaveBlob：以本地方式保存文件
+            window.navigator.msSaveBlob(blob, decodeURI(name));
+        } else {
+            // 创建新的URL并指向File对象或者Blob对象的地址
+            const blobURL = window.URL.createObjectURL(blob);
+            // 创建a标签，用于跳转至下载链接
+            const tempLink = document.createElement("a");
+            tempLink.style.display = "none";
+            tempLink.href = blobURL;
+            tempLink.setAttribute("download", decodeURI(name));
+            // 兼容：某些浏览器不支持HTML5的download属性
+            if (typeof tempLink.download === "undefined") {
+                tempLink.setAttribute("target", "_blank");
+            }
+            // 挂载a标签
+            document.body.appendChild(tempLink);
+            tempLink.click();
+            document.body.removeChild(tempLink);
+            // 释放blob URL地址
+            window.URL.revokeObjectURL(blobURL);
+        }
+    };
+    /**
      * 上载数据
      * @returns {Promise<void>}
      */
-    const dbGridUpload = async () => {
+    const dbGridUpload = useCallback(async () => {
         if (fileList.length == 0) return;
         let formData = convertToFormData({
             DbGridName: dbGridName,
@@ -420,7 +458,9 @@ export default config({
             errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
         });
         setFileList([]);
-    };
+        //触发列表更新
+        refreshSearch();
+    }, [refreshSearch])
     const queryItem = {
         style: {width: 160},
     };
@@ -577,28 +617,38 @@ export default config({
         });
         let blob = new Blob([res]);
         let name = dbGridName + "-" + GetDateNow() + '.pdf';
-        if (typeof window.navigator.msSaveBlob !== "undefined") {
-            // 兼容IE，window.navigator.msSaveBlob：以本地方式保存文件
-            window.navigator.msSaveBlob(blob, decodeURI(name));
-        } else {
-            // 创建新的URL并指向File对象或者Blob对象的地址
-            const blobURL = window.URL.createObjectURL(blob);
-            // 创建a标签，用于跳转至下载链接
-            const tempLink = document.createElement("a");
-            tempLink.style.display = "none";
-            tempLink.href = blobURL;
-            tempLink.setAttribute("download", decodeURI(name));
-            // 兼容：某些浏览器不支持HTML5的download属性
-            if (typeof tempLink.download === "undefined") {
-                tempLink.setAttribute("target", "_blank");
-            }
-            // 挂载a标签
-            document.body.appendChild(tempLink);
-            tempLink.click();
-            document.body.removeChild(tempLink);
-            // 释放blob URL地址
-            window.URL.revokeObjectURL(blobURL);
-        }
+        let reader = new FileReader();
+        reader.readAsDataURL(blob); // 转换为base64，可以直接放入a标签href
+        reader.addEventListener("load", function () {
+            let base64 = reader.result
+            let url = base64.split(',')[1];
+            let pdfWindow = openWin('', '', 900, 600);
+            pdfWindow.document.write("<iframe width='100%' height='100%' src='data:application/pdf;base64, " + encodeURI(url) + "'></iframe>");
+            pdfWindow.document.title = name
+            pdfWindow.document.close();
+        });
+        // if (typeof window.navigator.msSaveBlob !== "undefined") {
+        //     // 兼容IE，window.navigator.msSaveBlob：以本地方式保存文件
+        //     window.navigator.msSaveBlob(blob, decodeURI(name));
+        // } else {
+        //     // 创建新的URL并指向File对象或者Blob对象的地址
+        //     const blobURL = window.URL.createObjectURL(blob);
+        //     // 创建a标签，用于跳转至下载链接
+        //     const tempLink = document.createElement("a");
+        //     tempLink.style.display = "none";
+        //     tempLink.href = blobURL;
+        //     tempLink.setAttribute("download", decodeURI(name));
+        //     // 兼容：某些浏览器不支持HTML5的download属性
+        //     if (typeof tempLink.download === "undefined") {
+        //         tempLink.setAttribute("target", "_blank");
+        //     }
+        //     // 挂载a标签
+        //     document.body.appendChild(tempLink);
+        //     tempLink.click();
+        //     document.body.removeChild(tempLink);
+        //     // 释放blob URL地址
+        //     window.URL.revokeObjectURL(blobURL);
+        // }
     };
     /**
      * 打印全部
@@ -608,36 +658,120 @@ export default config({
         const res = await props.ajax.post('DbGrid/PrintAll', convertToFormData({
             DbGridName: dbGridName,
             draw: DRAW,
-            UnprintedOnly: false
         }), {
             responseType: "blob",
             errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
         });
-        let blob = new Blob([res]);
+        let blob = new Blob([res], {type: 'application/pdf'});
+        let reader = new FileReader();
         let name = dbGridName + "-" + GetDateNow() + '.pdf';
-        if (typeof window.navigator.msSaveBlob !== "undefined") {
-            // 兼容IE，window.navigator.msSaveBlob：以本地方式保存文件
-            window.navigator.msSaveBlob(blob, decodeURI(name));
-        } else {
-            // 创建新的URL并指向File对象或者Blob对象的地址
-            const blobURL = window.URL.createObjectURL(blob);
-            // 创建a标签，用于跳转至下载链接
-            const tempLink = document.createElement("a");
-            tempLink.style.display = "none";
-            tempLink.href = blobURL;
-            tempLink.setAttribute("download", decodeURI(name));
-            // 兼容：某些浏览器不支持HTML5的download属性
-            if (typeof tempLink.download === "undefined") {
-                tempLink.setAttribute("target", "_blank");
-            }
-            // 挂载a标签
-            document.body.appendChild(tempLink);
-            tempLink.click();
-            document.body.removeChild(tempLink);
-            // 释放blob URL地址
-            window.URL.revokeObjectURL(blobURL);
-        }
+        reader.readAsDataURL(blob); // 转换为base64，可以直接放入a标签href
+        reader.addEventListener("load", function () {
+            let base64 = reader.result
+            let url = base64.split(',')[1];
+            let pdfWindow = openWin('', '23232', 900, 600);
+            pdfWindow.document.write("<iframe width='100%' height='100%' src='data:application/pdf;base64, " + encodeURI(url) + "'></iframe>");
+            pdfWindow.document.title = name
+            pdfWindow.document.close();
+        });
+
+        // if (typeof window.navigator.msSaveBlob !== "undefined") {
+        //     // 兼容IE，window.navigator.msSaveBlob：以本地方式保存文件
+        //     window.navigator.msSaveBlob(blob, decodeURI(name));
+        // } else {
+        //     创建新的URL并指向File对象或者Blob对象的地址
+        //     const blobURL = window.URL.createObjectURL(blob);
+        //
+        //
+        //     let url = window.URL.createObjectURL(new Blob([res], { type: 'application/pdf' }))//获得一个pdf的url对象
+        //     openWin(url,name,900,600)
+        //     URL.revokeObjectURL(url) //释放内存
+        //     // 创建a标签，用于跳转至下载链接
+        //     const tempLink = document.createElement("a");
+        //     tempLink.style.display = "none";
+        //     tempLink.href = blobURL;
+        //     tempLink.setAttribute("download", decodeURI(name));
+        //     // 兼容：某些浏览器不支持HTML5的download属性
+        //     if (typeof tempLink.download === "undefined") {
+        //         tempLink.setAttribute("target", "_blank");
+        //     }
+        //     // 挂载a标签
+        //     document.body.appendChild(tempLink);
+        //     tempLink.click();
+        //     document.body.removeChild(tempLink);
+        //     // 释放blob URL地址
+        //     window.URL.revokeObjectURL(blobURL);blobURL
+        // }
     }
+    /**
+     * 打印未打印
+     * @returns {Promise<void>}
+     */
+    const dbGridPrintAllUnprinted = async () => {
+        const res = await props.ajax.post('DbGrid/PrintAll', convertToFormData({
+            DbGridName: dbGridName,
+            draw: DRAW,
+            UnprintedOnly: true
+        }), {
+            responseType: "blob",
+            errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
+        });
+        let blob = new Blob([res], {type: 'application/pdf'});
+        let reader = new FileReader();
+        let name = dbGridName + "-" + GetDateNow() + '.pdf';
+        reader.readAsDataURL(blob); // 转换为base64，可以直接放入a标签href
+        reader.addEventListener("load", function () {
+            let base64 = reader.result
+            let url = base64.split(',')[1];
+            let pdfWindow = openWin('', '23232', 900, 600);
+            pdfWindow.document.write("<iframe width='100%' height='100%' src='data:application/pdf;base64, " + encodeURI(url) + "'></iframe>");
+            pdfWindow.document.title = name
+            pdfWindow.document.close();
+        });
+
+        // if (typeof window.navigator.msSaveBlob !== "undefined") {
+        //     // 兼容IE，window.navigator.msSaveBlob：以本地方式保存文件
+        //     window.navigator.msSaveBlob(blob, decodeURI(name));
+        // } else {
+        //     创建新的URL并指向File对象或者Blob对象的地址
+        //     const blobURL = window.URL.createObjectURL(blob);
+        //
+        //
+        //     let url = window.URL.createObjectURL(new Blob([res], { type: 'application/pdf' }))//获得一个pdf的url对象
+        //     openWin(url,name,900,600)
+        //     URL.revokeObjectURL(url) //释放内存
+        //     // 创建a标签，用于跳转至下载链接
+        //     const tempLink = document.createElement("a");
+        //     tempLink.style.display = "none";
+        //     tempLink.href = blobURL;
+        //     tempLink.setAttribute("download", decodeURI(name));
+        //     // 兼容：某些浏览器不支持HTML5的download属性
+        //     if (typeof tempLink.download === "undefined") {
+        //         tempLink.setAttribute("target", "_blank");
+        //     }
+        //     // 挂载a标签
+        //     document.body.appendChild(tempLink);
+        //     tempLink.click();
+        //     document.body.removeChild(tempLink);
+        //     // 释放blob URL地址
+        //     window.URL.revokeObjectURL(blobURL);blobURL
+        // }
+    }
+    /**
+     * 删除未打印
+     * @type {(function(): Promise<void>)|*}
+     */
+    const dbGridDeleteUnprinted = useCallback(async () => {
+        const res = await props.ajax.post('DbGrid/DeleteUnprinted', convertToFormData({
+            DbGridName: dbGridName,
+            draw: DRAW,
+        }), {
+            successTip: getLange(loginUser?.id) == "zh_CN" ? "操作成功" : "Operation successful!",
+            errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
+        });
+        //触发列表更新
+        refreshSearch();
+    }, [refreshSearch])
     /**
      * 读取表格附件
      * @type {(function(): Promise<void>)|*}
@@ -861,6 +995,36 @@ export default config({
                                     : null
                             }
                             {
+                                (resBtnFlags & BtnFlags.CanPrintAll) > 0 || (resBtnFlags & BtnFlags.CanPrint) > 0 ?
+                                    <Button size="small" type="primary" style={{
+                                        float: "right",
+                                        marginRight: 10,
+                                        background: "#FF6060",
+                                        borderColor: '#FF6060'
+                                    }}
+                                            onClick={() => dbGridDeleteUnprinted()}>
+                                        <PrinterOutlined/> <FormattedMessage id="GridFlags_DeleteUnprinted"
+                                                                             defaultMessage="DeleteUnprinted"/>
+                                    </Button>
+
+                                    : null
+                            }
+                            {
+                                (resBtnFlags & BtnFlags.CanPrintAll) > 0 || (resBtnFlags & BtnFlags.CanPrint) > 0 ?
+                                    <Button size="small" type="primary" style={{
+                                        float: "right",
+                                        marginRight: 10,
+                                        background: "rgb(80, 193, 233)",
+                                        borderColor: 'rgb(80, 193, 233)'
+                                    }}
+                                            onClick={() => dbGridPrintAllUnprinted()}>
+                                        <PrinterOutlined/> <FormattedMessage id="GridFlags_Unprinted"
+                                                                             defaultMessage="Print Unprinted"/>
+                                    </Button>
+
+                                    : null
+                            }
+                            {
                                 (resBtnFlags & BtnFlags.CanTransfer) > 0 ?
                                     <Button size="small" type="primary" style={{
                                         float: "right",
@@ -911,6 +1075,19 @@ export default config({
                                             style={{float: "right", marginRight: 10}}
                                             onClick={() => setRecord(null) || setVisible(true) || setIsCreate(true) || setIsDetail(false) || setIsEdit(false)}>
                                         <PlusOutlined/> <FormattedMessage id="Create" defaultMessage=""/>
+                                    </Button>
+                                    : null
+                            }
+                            {
+                                gridClassName == "ShippingLabelAccountClassName" ?
+                                    <Button size="small" type="primary"
+                                            style={{
+                                                float: "right", marginRight: 10, background: "#FF9F54",
+                                                borderColor: '#FF9F54'
+                                            }}
+                                            onClick={() => batchPrint()}>
+                                        <SnippetsOutlined/> <FormattedMessage id="GridFlags_BatchPrinting"
+                                                                              defaultMessage="Batch Printing"/>
                                     </Button>
                                     : null
                             }
@@ -967,6 +1144,7 @@ export default config({
                         onCancel={() => setVisible(false)}
                         includes={includes}
                         isDetail={isDetail}
+                        resBtnFlags={resBtnFlags}
                     /> : null}
 
                     {gridClassName == 'PaymentToSuppliersClassName' ? <CreateModal
@@ -1106,6 +1284,17 @@ export default config({
                         viewFile={viewFile}
                         antLocale={antLocale}
                     />
+                    <Modal
+                        visible={pdfVisible}
+                        onCancel={() => setPdfVisible(false)}
+                    >
+                        <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.4.456/build/pdf.worker.min.js">
+                            <div style={{height: '750px'}}>
+                                <Viewer fileUrl={pdfBlob}/>
+                            </div>
+                        </Worker>
+                    </Modal>
+
                 </PageContent>
             </ConfigProvider>
         </IntlProvider>
