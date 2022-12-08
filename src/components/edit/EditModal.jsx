@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState, useRef} from 'react';
+import React, {useCallback, useEffect, useState, useRef, useImperativeHandle} from 'react';
 // 引入编辑器组件
 import BraftEditor, {EditorState} from 'braft-editor'
 // 引入编辑器样式
@@ -246,7 +246,7 @@ export default config({
             if (pickupColumsRef.current != undefined) {
                 pickupColumsRef.current.map(item => {
                     var params = {};
-                    params[item] = res[0]?.Id|| '';
+                    params[item] = res[0]?.Id || '';
                     form.setFieldsValue(params)
                 });
             }
@@ -255,6 +255,13 @@ export default config({
         }
 
     }, [shipmentDate, companyId, tenantId]);
+    useImperativeHandle(props.childRef, () => ({
+        //暴露给父组件的方法
+        form: form,
+        setShipmentDate: (time) => {
+            setShipmentDate(time)
+        }
+    }));
     // 获取详情 data为表单回显数据
     props.ajax.usePost('/DbGrid/Load', convertToFormData({
         DbGridName: props.dbGridName,

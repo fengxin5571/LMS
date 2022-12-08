@@ -34,7 +34,7 @@ import {
     asyncConfigData,
     convertToFormData,
     GetDateNow,
-    formatPrice, openWin
+    formatPrice, openWin, GridStatus
 } from "src/commons/common";
 import {getLange, setLange} from 'src/commons';
 import {FormattedMessage, IntlProvider, addLocaleDate} from 'react-intl'; /* react-intl imports */
@@ -60,7 +60,8 @@ import {
     PaperClipOutlined,
     UndoOutlined,
     PayCircleOutlined,
-    SnippetsOutlined
+    SnippetsOutlined,
+    CopyOutlined
 } from "@ant-design/icons";
 import FileModal from "../../components/form/FileModal";
 import CreateModal from "../../components/PaymentToSuppliers/CreateModal";
@@ -124,6 +125,7 @@ export default config({
     const [pdfBlob, setPdfBlob] = useState("");
     const [pdfVisible, setPdfVisible] = useState(false);
     const fileModal = useRef();
+    const childForm = useRef();
     useEffect(async () => {
         const resp = await fetch(window.location.origin + `/lang/${lang}.json`)
         const data = await resp.json();
@@ -247,13 +249,22 @@ export default config({
                         >
                             <FormattedMessage id="GridFlags_CanFinish" defaultMessage="Finish"/>
                         </Menu.Item> : null}
-                        {((resault.BtnFlags & BtnFlags.CanDelete) > 0) ? <Menu.Item
-                            icon={<DeleteOutlined/>}
-                            style={{color: "#FF6565"}}
-                            onClick={() => handleDelete(id, record?.Name)}
+
+                        {((resault.BtnFlags & BtnFlags.CanCopyRecord) > 0) ? <Menu.Item
+                            icon={<CopyOutlined/>}
+                            style={{color: "#8E44AD"}}
+                            onClick={() => setRecord(null) || setVisible(true) || setIsCreate(true) || setIsDetail(false) || setIsEdit(false) || handleCopy(id, includes)}
                         >
-                            <FormattedMessage id="Delete"/>
+                            <FormattedMessage id="GridFlags_CanCopyRecord"/>
                         </Menu.Item> : null}
+                        {((resault.BtnFlags & BtnFlags.CanDelete) > 0) && (record.Access & GridStatus.Deleted > 0) ?
+                            <Menu.Item
+                                icon={<DeleteOutlined/>}
+                                style={{color: "#FF6565"}}
+                                onClick={() => handleDelete(id, record?.Name)}
+                            >
+                                <FormattedMessage id="Delete"/>
+                            </Menu.Item> : null}
                     </Menu>
                 )
                 return (
@@ -324,6 +335,81 @@ export default config({
             };
         },
     });
+    /**
+     * 复制
+     * @type {(function(*): Promise<void>)|*}
+     */
+    const handleCopy = async (id, includesList) => {
+        const res = await props.ajax.post(`/DbGrid/Copy`, {
+            DbGridName: dbGridName,
+            Id: id,
+            draw: DRAW,
+            Includes: includesList,
+        }, {
+            headers: {'Content-Type': 'multipart/form-data'},
+            setLoading,
+            errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"},
+
+        });
+        var addressTypecolums = [];
+        var pickupColums = [];
+
+        formColumns.map((item) => {
+            //获取地址类型字段名
+            if (item.type == 31) {
+                addressTypecolums.push(item.name);
+            }
+            //取货emum类型
+            if (item.type == 32) {
+                pickupColums.push(item.name)
+            }
+        });
+        const values = {
+            ...res.data,
+        };
+        var shipmentDate = values?.ShipmentDate || '';
+        var companyId = values?.CompanyId || '';
+        var tenantId = values?.TenantId || '';
+        //判断发货地址是否有值并且有32类型的字段
+        if (shipmentDate && pickupColums) {
+            //调用子组件的方法
+            childForm.current.setShipmentDate(shipmentDate);
+        }
+        Object.keys(values).forEach(key => {
+            addressTypecolums.map(item => {
+                if (item == key) {
+                    values[item + '-Id'] = values[key].Id;
+                    values[item + '-ContactName'] = values[key].ContactName;
+                    values[item + '-ContactCompanyName'] = values[key].ContactCompanyName;
+                    values[item + '-AddressLine1'] = values[key].AddressLine1;
+                    values[item + '-AddressLine2'] = values[key].AddressLine2;
+                    values[item + '-AddressLine3'] = values[key].AddressLine3;
+                    values[item + '-PostCode'] = values[key].PostCode;
+                    values[item + '-Country'] = values[key].Country;
+                    values[item + '-Email'] = values[key].Email;
+                    values[item + '-Phone'] = values[key].Phone;
+                    values[item + '-Mobile'] = values[key].Mobile;
+                    values[item + '-CityDistrict'] = values[key].CityDistrict;
+                    values[item + '-City'] = values[key].City;
+                    if (values[key].VatNumber != undefined) {
+                        values[item + '-VatNumber'] = values[key].VatNumber;
+                    }
+                    if (values[key].EORI != undefined) {
+                        values[item + '-EORI'] = values[key].EORI;
+                    }
+                    if (values[key].TaxCode != undefined) {
+                        values[item + '-TaxCode'] = values[key].TaxCode;
+                    }
+                }
+            });
+        });
+        console.log(values);
+        childForm.current.form.setFieldsValue(values);
+    }
+    /**
+     * 删除
+     * @type {(function(*, *): Promise<void>)|*}
+     */
     const handleDelete = useCallback(
         async (id, name) => {
             await confirm({
@@ -412,12 +498,21 @@ export default config({
      */
     const batchPrint = async () => {
         var formartName = dbGridName.replace(new RegExp(/( )/g), "")
-        const res = await props.ajax.post('/DbGrid/DownloadFile&fileName=' + formartName + '%2Ftemplate.zip', convertToFormData({}), {
-            responseType: "blob",
+        const res = await props.ajax.post('/DbGrid/DownloadFile', convertToFormData({
+            DbGridName: dbGridName,
+            draw: DRAW,
+            fileName: "BatchPrintTemplate.zip",
+        }), {
             errorModal: {okText: (getLange(props.loginUser?.id) == "zh_CN" ? "取消" : "Cancel"), width: "70%"}
         });
-        let blob = new Blob([res]);
-        let name = dbGridName + "-" + GetDateNow() + '.zip';
+        var byteString = atob(res.File.Content); //base64 解码
+        var arrayBuffer = new ArrayBuffer(byteString.length); //创建缓冲数组
+        var intArray = new Uint8Array(arrayBuffer); //创建视图
+        for (var i = 0; i < byteString.length; i++) {
+            intArray[i] = byteString.charCodeAt(i);
+        }
+        let blob = new Blob([intArray], {type: "application/zip"});
+        let name = res.File.FileName;
         if (typeof window.navigator.msSaveBlob !== "undefined") {
             // 兼容IE，window.navigator.msSaveBlob：以本地方式保存文件
             window.navigator.msSaveBlob(blob, decodeURI(name));
@@ -445,7 +540,7 @@ export default config({
      * 上载数据
      * @returns {Promise<void>}
      */
-    const dbGridUpload = useCallback(async () => {
+    const dbGridUpload = async () => {
         if (fileList.length == 0) return;
         let formData = convertToFormData({
             DbGridName: dbGridName,
@@ -460,7 +555,7 @@ export default config({
         setFileList([]);
         //触发列表更新
         refreshSearch();
-    }, [refreshSearch])
+    }
     const queryItem = {
         style: {width: 160},
     };
@@ -1145,6 +1240,7 @@ export default config({
                         includes={includes}
                         isDetail={isDetail}
                         resBtnFlags={resBtnFlags}
+                        childRef={childForm}
                     /> : null}
 
                     {gridClassName == 'PaymentToSuppliersClassName' ? <CreateModal
@@ -1284,16 +1380,7 @@ export default config({
                         viewFile={viewFile}
                         antLocale={antLocale}
                     />
-                    <Modal
-                        visible={pdfVisible}
-                        onCancel={() => setPdfVisible(false)}
-                    >
-                        <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.4.456/build/pdf.worker.min.js">
-                            <div style={{height: '750px'}}>
-                                <Viewer fileUrl={pdfBlob}/>
-                            </div>
-                        </Worker>
-                    </Modal>
+
 
                 </PageContent>
             </ConfigProvider>

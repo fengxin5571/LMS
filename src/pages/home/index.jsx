@@ -723,7 +723,6 @@ export default config({
                                                 },
                                             });
                                             handelHomeBtnRes(res);
-                                            console.log(res);
                                         }
                                         return (
                                             <>

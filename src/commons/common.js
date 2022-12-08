@@ -1504,3 +1504,14 @@ export function openWin(url, name, iWidth, iHeight) {
         + ',toolbar=no,menubar=no,scrollbars=auto,resizeable=no,location=no,status=no');
     return pdfWindow;
 }
+export function dataURItoBlob(dataURI) {
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]; // mime类型
+    var byteString = atob(dataURI.split(',')[1]); //base64 解码
+    var arrayBuffer = new ArrayBuffer(byteString.length); //创建缓冲数组
+    var intArray = new Uint8Array(arrayBuffer); //创建视图
+
+    for (var i = 0; i < byteString.length; i++) {
+        intArray[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([intArray], {type: mimeString});
+}
