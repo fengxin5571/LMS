@@ -25,9 +25,9 @@ import {CodeSandboxOutlined} from "@ant-design/icons";
 export default config({
     modal: {
         title: (props) => (<FormattedMessage id={props.dbGridName}/>),
-        width: '85%',
+        //width: '85%',
         top: 50,
-
+        fullScreen:true
     },
 })(function Edit(props) {
     const loginUser = getLoginUser();
@@ -544,8 +544,9 @@ export default config({
                         cancelText={<FormattedMessage id="Reset"/>}
                         onCancel={() => form.resetFields()}
                         footer={isDetail ? true : null}
+                        fitHeight
                     >
-                        <Content fitHeight otherHeight={200} style={{backgroundColor: "#f0f2f5"}}>
+                        <Content  style={{backgroundColor: "#f0f2f5"}}>
                             {isEdit ? <FormItem hidden name="Id" value={record?.Id}/> : null}
 
                             <Card title={<><span style={{color: "#1890ff", fontSize: 18}}><CodeSandboxOutlined/> </span>

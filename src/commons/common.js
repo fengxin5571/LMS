@@ -511,7 +511,7 @@ export function renderTableColumns(column, text, record, index, isModalVisible, 
  * @param field
  * @returns {*}
  */
-export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickupOptions, form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, filter_type = [], style_object = {}, locale, is_style = false, field) {
+export function handleFormItem(setShipmentDate, setCompanyId, setTenantId, pickupOptions, form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, formColums, isEdit, isDetail, layout, loginUser, editorState, filter_type = [], style_object = {}, locale, is_style = false, field) {
     {
         formColums.sort((a, b) => {
             var order = [10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 23, 27, 26, 32, 28, 29, 21, 24, 25];
@@ -603,6 +603,7 @@ export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickup
                                 type="number"
                                 required={required}
                                 disabled={isDetail}
+                                initialValue={item?.def || ""}
                                 style={is_style ? {width: '11rem'} : {width: '13rem'}}
                                 placeholder={isDetail ? "" : item.header}
                                 rules={rules}
@@ -653,6 +654,7 @@ export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickup
                                 required={required}
                                 disabled={isDetail}
                                 step="0.1"
+                                initialValue={item?.def || ""}
                                 style={is_style ? {width: '11rem'} : {width: "13rem"}}
                                 placeholder={isDetail ? "" : item.header}
                                 rules={rules}
@@ -695,7 +697,7 @@ export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickup
                                 disabled={isDetail}
                                 placeholder={isDetail ? "" : item.header}
                                 rules={rules}
-
+                                initialValue={item?.def || ""}
                             />
                         </Col>
                     );
@@ -703,8 +705,8 @@ export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickup
                     var disabledRangeDate;
                     if (item.min != undefined || item.max != undefined) {
                         disabledRangeDate = current => {
-                            const begin = current < moment().subtract((parseInt(item.min) + 1), 'day');
-                            const end = current > moment().add(item.max, 'd');
+                            const begin = current <= moment().add(parseInt(item.min) - 1, 'days');
+                            const end = current > moment().add(parseInt(item.min) - 1, 'days').add(item.max, 'day');
                             return begin || end
                         }
                     }
@@ -715,7 +717,7 @@ export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickup
                                 label={item.label}
                                 name={field != undefined ? [field?.name, item.name] : item.name}
                                 fieldKey={field != undefined ? [field?.fieldKey, item.name] : item.name}
-                                type="date"
+                                type="date-time"
                                 required={required}
                                 disabled={isDetail}
                                 showTime
@@ -723,6 +725,7 @@ export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickup
                                 dateFormat={"YYYY-MM-DD HH:mm:ss"}
                                 placeholder={isDetail ? "" : item.header}
                                 rules={rules}
+                                initialValue={item?.def || ""}
                                 disabledDate={disabledRangeDate}
                             />
                         </Col>
@@ -730,9 +733,10 @@ export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickup
                 } else if (item.type == 7) {//日期
                     var disabledRangeDate;
                     if (item.min != undefined || item.max != undefined) {
+
                         disabledRangeDate = current => {
-                            const begin = current < moment().subtract((parseInt(item.min) + 1), 'day');
-                            const end = current > moment().add(item.max, 'd');
+                            const begin = current <= moment().add(parseInt(item.min) - 1, 'days');
+                            const end = current > moment().add(parseInt(item.min) - 1, 'days').add(item.max, 'days');
                             return begin || end
                         }
                     }
@@ -747,7 +751,7 @@ export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickup
                                 type="date"
                                 required={required}
                                 disabled={isDetail}
-                                dateFormat={"YYYY-MM-DD "}
+                                dateFormat={"YYYY-MM-DD"}
                                 placeholder={isDetail ? "" : item.header}
                                 rules={rules}
                                 style={is_style ? {width: '11rem'} : {width: '13rem'}}
@@ -762,6 +766,15 @@ export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickup
                         </Col>
                     );
                 } else if (item.type == 9) { //文本
+                    if (item.max != undefined) {
+                        rules.push({
+                            max: item.max,
+                            message: <FormattedMessage id="RulesMaxMsg" values={{
+                                name: item.header,
+                                num: item.max
+                            }}/>
+                        })
+                    }
                     return (
                         <Col span={is_style ? 24 : 4} style={!is_style ? {marginRight: "2rem"} : {}}>
                             <FormItem
@@ -774,6 +787,7 @@ export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickup
                                 required={required}
                                 disabled={isDetail}
                                 maxLength={250}
+                                initialValue={item?.def || ""}
                                 style={is_style ? {width: '11rem'} : {width: '13rem'}}
                                 placeholder={isDetail ? "" : item.header}
                                 rules={rules}
@@ -808,6 +822,7 @@ export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickup
                                         label: <FormattedMessage id={item.name}/>
                                     }
                                 })}
+                                initialValue={parseInt(item?.def).toString() == "NaN" ? item?.def : parseInt(item?.def)}
                                 rules={rules}
                             />
                         </Col>
@@ -850,6 +865,7 @@ export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickup
                                     }
                                 })}
                                 rules={rules}
+                                initialValue={parseInt(item?.def).toString() == "NaN" ? item?.def : parseInt(item?.def)}
                                 onChange={(value) => {
                                     if (item.name == 'CompanyId') {
                                         setCompanyId(value)
@@ -875,14 +891,14 @@ export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickup
                                 disabled={isDetail}
                                 placeholder={isDetail ? "" : item.header}
                                 style={is_style ? {width: '11rem'} : {width: '13rem'}}
-                                options={pickupOptions.map(item=>{
+                                options={pickupOptions.map(item => {
                                     return {
                                         value: parseFloat(item.Id).toString() == "NaN" ? item.Id : parseInt(item.Id),
                                         label: item.Name
                                     }
                                 })}
                                 rules={rules}
-
+                                initialValue={item?.def || ""}
                             />
                         </Col>
                     );
@@ -936,7 +952,7 @@ export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickup
                                                         }}
                                                         direction="horizontal"
                                                     >
-                                                        {handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickupOptions,form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.subcolumns, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
+                                                        {handleFormItem(setShipmentDate, setCompanyId, setTenantId, pickupOptions, form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.subcolumns, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
                                                         {!isDetail ? <Button type="primary" size="small" style={{
                                                                 background: "#FF6060",
                                                                 borderColor: '#FF6060',
@@ -981,7 +997,7 @@ export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickup
                                                     align="baseline"
                                                 >
 
-                                                    {handleFormItem(setShipmentDate,setCompanyId, setTenantId,pickupOptions, form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.subcolumns, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
+                                                    {handleFormItem(setShipmentDate, setCompanyId, setTenantId, pickupOptions, form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.subcolumns, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
                                                     {!isDetail ? <Button type="primary" size="small" style={{
                                                             background: "#FF6060",
                                                             borderColor: '#FF6060',
@@ -1057,7 +1073,7 @@ export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickup
                                                         }}
                                                         direction="horizontal"
                                                     >
-                                                        {handleFormItem(setShipmentDate,setCompanyId, setTenantId,pickupOptions, form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
+                                                        {handleFormItem(setShipmentDate, setCompanyId, setTenantId, pickupOptions, form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
                                                         {!isDetail ? <Button type="primary" size="small" style={{
                                                                 background: "#FF6060",
                                                                 borderColor: '#FF6060',
@@ -1103,7 +1119,7 @@ export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickup
                                                     }}
                                                     direction="horizontal"
                                                 >
-                                                    {handleFormItem(setShipmentDate,setCompanyId, setTenantId,pickupOptions, form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
+                                                    {handleFormItem(setShipmentDate, setCompanyId, setTenantId, pickupOptions, form, props, treeData, setTreeData, setRefreshLoad, setUploadItemName, setIsModalVisible, setFileType, setModalTitle, formViewUploadData, setFormViewUploadData, setViewFilePath, setViewFile, viewFilePath, item.ColumnConfigs, isEdit, isDetail, layout, loginUser, editorState, [], style_object, locale, true, subfield)}
                                                     {!isDetail ? <Button type="primary" size="small" style={{
                                                             background: "#FF6060",
                                                             borderColor: '#FF6060',
@@ -1148,6 +1164,7 @@ export function handleFormItem(setShipmentDate, setCompanyId, setTenantId,pickup
                                 }].concat(item.options.map(item => {
                                     return {value: item.value, label: item.name}
                                 }))}
+                                initialValue={item?.def || ""}
                                 rules={rules}
                             />
                         </Col>
@@ -1504,6 +1521,7 @@ export function openWin(url, name, iWidth, iHeight) {
         + ',toolbar=no,menubar=no,scrollbars=auto,resizeable=no,location=no,status=no');
     return pdfWindow;
 }
+
 export function dataURItoBlob(dataURI) {
     var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]; // mime类型
     var byteString = atob(dataURI.split(',')[1]); //base64 解码

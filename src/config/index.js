@@ -40,7 +40,7 @@ export const AJAX_PREFIX = SHOW_PROXY
     ? window.localStorage.getItem('AJAX_PREFIX') || '/api'
     : c('AJAX_PREFIX', isQianKun ? `${isQianKunPublicPath}api` : '/api');
 // ajax 超时时间
-export const AJAX_TIMEOUT = c('AJAX_TIMEOUT', 1000 * 60, Number);
+export const AJAX_TIMEOUT = c('AJAX_TIMEOUT', 1000 * 600, Number);
 // 配置环境
 export const CONFIG_ENV = process.env.REACT_APP_CONFIG_ENV;
 // config-hoc 配置存储key
